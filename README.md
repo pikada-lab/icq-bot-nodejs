@@ -1,0 +1,2 @@
+# icq-bot
+ICQ-BOT LIB NODEJS
