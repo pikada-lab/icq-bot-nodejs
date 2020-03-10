@@ -28,7 +28,7 @@ Install from sources:
 ```bash
 git clone https://github.com/pikada-lab/icq-bot-nodejs.git
 cd icq-bot-nodejs
-npm install ntsc
+npm install ntsc -g
 ntsc
 ```
 
