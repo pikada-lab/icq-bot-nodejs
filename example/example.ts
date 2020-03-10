@@ -3,7 +3,7 @@ import { MessageHandler } from "../src/interfaces/Handler";
 import { RegexpFilter, MessageFilter, CommandFilter } from "../src/interfaces/Filter";
 
 let TOKEN = "XXX";
-// const bot = new Bot(TOKEN, "", "AuxiliumBot", "0.0.1-alpha", 30, 30);
+// const bot = new Bot(TOKEN);
 // const chatId = "750623381";
 // const chatGroupId = "682548187@chat.agent";
 // const filePath = '/Users/dzhigurda/Documents/icon/19.png'
@@ -85,5 +85,4 @@ let TOKEN = "XXX";
 // bot.getDispatcher().addHandler(handler);
 
 
-// bot.startPolling();
-// bot.idle();
+// bot.startPolling(); 

@@ -196,33 +196,3 @@ export class ICQEvent {
         }
     }
 }
-
-    // class Event(object):
-    // def __init__(self, type_, data):
-    //     super(Event, self).__init__()
-
-    //     self.type = type_
-    //     self.data = data
-
-    //     if type_ == EventType.NEW_MESSAGE:
-    //         self.text = data['text']
-    //         self.from_chat = data['chat']['chatId']
-    //         self.message_author = data['from']
-
-    // def __repr__(self):
-    //     return "Event(type='{self.type}', data='{self.data}')".format(self=self)
-
-
-    // export class MessageHandler implements Handler {
-
-    //     constructor(callback: (response: Response) => void) {
-    //         this.filter = new MessageFilter();
-    //     }
-
-    //     check(event: Event, dispatcher: Dispatcher) {
-
-    //     };
-    //     handler(event: Event, dispatcher: Dispatcher) {
-
-    //     };
-    // }

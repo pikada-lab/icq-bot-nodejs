@@ -1,16 +1,21 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
+    "noImplicitAny": false,
+    "preserveConstEnums": true,
+    "moduleResolution": "node",
     "sourceMap": true,
     "module": "commonjs",
     "target": "es5",
     "allowJs": true,
-    "rootDir": "src"
+    "rootDir": "src",
+    "declaration": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
   ],
   "exclude": [
-    "old/*"
+    "old/*",
+    "example/*"
   ]
 }

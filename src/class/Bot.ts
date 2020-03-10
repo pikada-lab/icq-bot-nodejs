@@ -34,7 +34,7 @@ export class Bot implements ICQBot {
     private apiBaseUrl;
     private http: HttpClient;
     constructor(private token: string, apiUrlBase = "", name = "", version = "", timeoutS = 20, pollTimeS = 60) {
-        this.apiBaseUrl = "https://api.icq.net/bot/v1" + (apiUrlBase ? apiUrlBase : '');
+        this.apiBaseUrl =  (apiUrlBase ? apiUrlBase : "https://api.icq.net/bot/v1");
         this.name = name
         this.version = version
         this.timeoutS = timeoutS
