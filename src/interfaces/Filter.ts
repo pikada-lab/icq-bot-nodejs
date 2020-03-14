@@ -1,6 +1,7 @@
 import { PartsType, PartFile, PayLoadFileType } from "./Entities/Part";
-import { ICQEvent } from "./Handler";
+
 import { NewMessageEvent } from "./Events/NewMessageEvent";
+import { ICQEvent } from "../class/ICQEvent";
 
 
 export interface Filter {
@@ -46,8 +47,7 @@ export class SenderFilter extends MessageFilter {
 export class FileFilter extends MessageFilter {
     filter(event) {
         return super.filter(event) && event.data['parts'] &&
-            event.data['parts'].findIndex(r => r.type == PartsType.FILE) >= 0
-
+            event.data['parts'].findIndex(r => r && r.type == PartsType.FILE) >= 0
     }
 }
 
@@ -55,28 +55,28 @@ export class FileFilter extends MessageFilter {
 export class ImageFilter extends FileFilter {
     filter(event: ICQEvent) {
         return super.filter(event) &&
-            event.data['parts'].findIndex(r => r["payload"] && r.payload["type"] && (r.payload as PartFile).type == PayLoadFileType.IMAGE) >= 0
+            event.data['parts'].findIndex(r => r && r["payload"] && r.payload["type"] && (r.payload as PartFile).type == PayLoadFileType.IMAGE) >= 0
     }
 }
 
 export class VideoFilter extends FileFilter {
     filter(event: ICQEvent) {
         return super.filter(event) &&
-            event.data['parts'].findIndex(r => r["payload"] && r.payload["type"] && (r.payload as PartFile).type == PayLoadFileType.VIDEO) >= 0
+            event.data['parts'].findIndex(r => r && r["payload"] && r.payload["type"] && (r.payload as PartFile).type == PayLoadFileType.VIDEO) >= 0
     }
 }
 
 export class AudioFilter extends FileFilter {
     filter(event: ICQEvent) {
         return super.filter(event) &&
-            event.data['parts'].findIndex(r => r["payload"] && r.payload["type"] && (r.payload as PartFile).type == PayLoadFileType.AUDIO) >= 0
+            event.data['parts'].findIndex(r => r && r["payload"] && r.payload["type"] && (r.payload as PartFile).type == PayLoadFileType.AUDIO) >= 0
     }
 }
 
 export class StickerFilter extends FileFilter {
     filter(event: ICQEvent) {
         return super.filter(event) && event.data['parts'] &&
-            event.data['parts'].findIndex(r => r.type == PartsType.STICKER) >= 0
+            event.data['parts'].findIndex(r => r && r.type == PartsType.STICKER) >= 0
     }
 }
 
@@ -85,25 +85,24 @@ export class StickerFilter extends FileFilter {
 export class MentionFilter extends MessageFilter {
     constructor(public userId: Number) {
         super();
-
     }
     filter(event) {
         return super.filter(event) && event.data['parts'] &&
-            event.data['parts'].findIndex(r => r.type == PartsType.MENTION && (!this.userId || r.payload.userId == this.userId)) >= 0
+            event.data['parts'].findIndex(r => r && r.type == PartsType.MENTION && (!this.userId || r.payload.userId == this.userId)) >= 0
     }
 }
 
 
 export class ForwardFilter extends MessageFilter {
     filter(event: ICQEvent) {
-        return event.data['parts'] && (event.data as NewMessageEvent).parts.findIndex(r => r.type == PartsType.FORWARD) >= 0
+        return event.data['parts'] && (event.data as NewMessageEvent).parts.findIndex(r => r && r.type == PartsType.FORWARD) >= 0
     }
 }
 
 export class ReplyFilter extends MessageFilter {
     filter(event: ICQEvent) {
         return super.filter(event) && event.data['parts'] &&
-            (event.data as NewMessageEvent).parts.findIndex(r => r.type == PartsType.REPLY) >= 0
+            (event.data as NewMessageEvent).parts.findIndex(r => r && r.type == PartsType.REPLY) >= 0
     }
 }
 
@@ -119,6 +118,38 @@ export class URLFilter extends RegexpFilter {
     }
 }
 
+export enum TypeFilterOperation {
+    and = 1,
+    or,
+    not
+}
+export class FilterComposite implements Filter {
+    constructor(private type: TypeFilterOperation, private leftFilter: Filter, private rightFilter?: Filter) {
+
+    }
+    static and(leftFilter: Filter, rightFilter: Filter) {
+        return new FilterComposite(TypeFilterOperation.and, leftFilter, rightFilter);
+    }
+    static or(leftFilter: Filter, rightFilter: Filter) {
+        return new FilterComposite(TypeFilterOperation.or, leftFilter, rightFilter);
+    }
+    static not(filter: Filter) {
+        return new FilterComposite(TypeFilterOperation.not, filter);
+
+    }
+    filter(event: ICQEvent) {
+        switch (this.type) {
+            case TypeFilterOperation.and:
+                return this.leftFilter.filter(event) && this.rightFilter.filter(event);
+            case TypeFilterOperation.or:
+                return this.leftFilter.filter(event) || this.rightFilter.filter(event);
+            case TypeFilterOperation.not:
+                return !this.leftFilter.filter(event);
+        }
+        throw "Not type filter"
+    }
+}
+
 
 export class Filter {
     static message = new MessageFilter()
@@ -127,11 +158,11 @@ export class Filter {
     static image = new ImageFilter()
     static video = new VideoFilter()
     static audio = new AudioFilter()
-    static media = Filter.image || Filter.video || Filter.audio;
-    static data = Filter.file && !Filter.media;
+    static media = FilterComposite.or(FilterComposite.or(Filter.image, Filter.video), Filter.audio);
+    static data = FilterComposite.and(Filter.file, FilterComposite.not(Filter.media));
     static sticker = new StickerFilter()
     static url = new URLFilter()
-    static text = Filter.message && !(Filter.command || Filter.sticker || Filter.file || Filter.url);
+    static text = FilterComposite.and(Filter.message, FilterComposite.not(FilterComposite.or(FilterComposite.or(FilterComposite.or(Filter.command, Filter.sticker), Filter.file), Filter.url)));
     static regexp = RegexpFilter
     static mention = MentionFilter
     static forward = new ForwardFilter()

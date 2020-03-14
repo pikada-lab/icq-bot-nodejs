@@ -3,11 +3,11 @@ import { HttpClient, FormDataICQ, ICQHttpClient } from "./ICQHttpClient";
 import { Self } from "../interfaces/Entities/Self";
 
 import { Chat } from "../interfaces/Entities/Chat";
-import { ICQBot } from "../interfaces/ICQBot";
+import { ICQBot, ICQOptions } from "../interfaces/ICQBot";
 
 import { Event, ResponseEvent } from "../interfaces/Events/Event";
 import { DispatcherMessage, Dispatcher } from "../interfaces/Dispatcher";
-import { ICQEvent, MessageHandler } from "../interfaces/Handler";
+import { MessageHandler } from "../interfaces/Handler";
 import { ResponseMessage } from "../interfaces/Response/ResponseMessage";
 import { ResponseUploadFile, ResponseSendFile } from "../interfaces/Response/ResponseSendFile";
 import { ResponseUploadVoice, ResponseSendVoice } from "../interfaces/Response/ResponseSendVoice";
@@ -15,45 +15,38 @@ import { ResponseAdmin } from "../interfaces/Response/ResponseAdmin";
 import { ResponseFileInfo } from "../interfaces/Response/ResponseFileInfo";
 import { ResponseMembers } from "../interfaces/Response/ResponseMembers";
 import { ResponseUsers } from "../interfaces/Response/ResponseUsers";
+import { ICQEvent } from "icq-bot/src/class/ICQEvent";
 
-export class Bot implements ICQBot {
+export class Bot implements ICQBot { 
 
+    private token;
     private uin;
     private running = false;
     private dispatcher;
-    private lastEventId: number;
+    private lastEventId: number = 0;
     private timeoutS: number;
     private pollTimeS: number;
     private version: string;
     private name: string;
-
-    private lock = true;
-    private pollingThread;
-    private sentImCache;
+    /** Номер таймера для возможной отмены. В версии не используется */
+    private pollingThread: number;
 
     private apiBaseUrl;
     private http: HttpClient;
-    constructor(private token: string, apiUrlBase = "", name = "", version = "", timeoutS = 20, pollTimeS = 60) {
-        this.apiBaseUrl =  (apiUrlBase ? apiUrlBase : "https://api.icq.net/bot/v1");
+    constructor(token: string, options?: ICQOptions) {
+        this.token = token;
+        this.apiBaseUrl = (options.apiUrlBase ? options.apiUrlBase : "https://api.icq.net/bot/v1");
         this.name = name
-        this.version = version
-        this.timeoutS = timeoutS
-        this.pollTimeS = pollTimeS
-        this.lastEventId = 0
+        this.version = options.version
+        this.timeoutS = options.timeoutS ? options.timeoutS : 20
+        this.pollTimeS = options.pollTimeS ? options.pollTimeS : 60
         this.dispatcher = new DispatcherMessage(this)
         this.uin = this.token.split(":")[this.token.split(":").length - 1];
 
         this.setHttpSession(new ICQHttpClient());
 
-        //  this.lock = Lock() // Блокирует трейд поток
-        this.pollingThread = null
-
-        //   this.sentImCache = new ExpiringDict(Math.pow(2, 10), 60); // Создаёт словарь отработанных сообщений и команд
-
         // Пропускает повторяющиеся сообщения (Хранит в кэщ)
         this.dispatcher.addHandler(new SkipDuplicateMessageHandler({}));
-
-
     }
 
     getDispatcher(): Dispatcher {
@@ -63,7 +56,7 @@ export class Bot implements ICQBot {
         return this.uin;
     }
     getUserAgent(): string {
-        let libraryVersion = "1.0.1-beta";
+        let libraryVersion = "2.0.0-beta";
         return `${this.name}/${this.version} (uin=${this.uin ? this.uin : null}) bot-nodejs/${libraryVersion}`
     }
 
@@ -138,7 +131,7 @@ export class Bot implements ICQBot {
                     });
 
                 }
-                r(response);
+                r(response as ResponseEvent);
             })
         });
     }

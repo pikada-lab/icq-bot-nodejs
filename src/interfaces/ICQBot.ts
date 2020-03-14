@@ -10,8 +10,16 @@ import { ResponseEvent } from "./Events/Event";
 import { ResponseMembers } from "./Response/ResponseMembers";
 import { ResponseUsers } from "./Response/ResponseUsers";
 
-export interface ICQBot {
+export interface ICQOptions {
+    apiUrlBase:string, 
+    name:string, 
+    version:string, 
+    timeoutS: number, 
+    pollTimeS: number
+}
 
+export interface ICQBot {
+ 
     getUNI(): number;
     getUserAgent(): string;
     startPolling(): ICQBot;

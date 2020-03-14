@@ -1,18 +1,50 @@
 {
-  "name": "icq-bot",
-  "version": "1.0.3",
+  "_from": "icq-bot",
+  "_id": "icq-bot@1.0.5",
+  "_inBundle": false,
+  "_integrity": "sha512-lH0uEy1Vt7Oa7ALI3qcUJyRsLWUxL3eqUxAgwzt/ISyaAWG0iJi6zoBsTLh3iHxU7UfLmrON5oXpOJcsnbC9OA==",
+  "_location": "/icq-bot",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "icq-bot",
+    "name": "icq-bot",
+    "escapedName": "icq-bot",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/icq-bot/-/icq-bot-1.0.5.tgz",
+  "_shasum": "11b98cbe67a1aecdf5976fc4a3132aaea1137e23",
+  "_spec": "icq-bot",
+  "_where": "/Users/dzhigurda/Desktop/ic/noties",
+  "author": {
+    "name": "Dzhigurda A Anton"
+  },
+  "bundleDependencies": [],
+  "dependencies": {},
+  "deprecated": false,
   "description": "ICQ-BOT",
-  "main": "/dist/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "@types/node": "^13.9.0",
+    "mocha": "^2.4.5"
   },
   "keywords": [
-    "ICQ, BOT"
+    "ICQ",
+    "BOT",
+    "API",
+    "NodeJS"
   ],
-  "author": "Dzhigurda A Anton",
   "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^13.9.0"
+  "main": "dist/index.js",
+  "name": "icq-bot",
+  "scripts": {
+    "test": "mocha --timeout 10000"
   },
-  "dependencies": {}
+  "version": "2.1.6"
 }

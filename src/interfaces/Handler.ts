@@ -1,17 +1,9 @@
 import { Filter } from "./Filter";
 import { Dispatcher } from "./Dispatcher";
 import { EventType } from "./Events/Event";
-import { NewMessageEvent } from "./Events/NewMessageEvent";
-import { EditedMessageEvent } from "./Events/EditedMessageEvent";
-import { DeletedMessageEvent } from "./Events/DeletedMessageEvent";
-import { PinnedMessageEvent } from "./Events/PinnedMessageEvent";
-import { UnpinnedMessageEvent } from "./Events/UnpinnedMessageEvent";
-import { NewChatMembersEvent } from "./Events/NewChatMembersEvent";
-import { LeftChatMembersEvent } from "./Events/LeftChatMembersEvent";
-import { UserWidthName } from "./Entities/User";
-import { Event } from "./Events/Event";
 import { Bot } from "../class/Bot";
 import { ICQBot } from "./ICQBot";
+import { ICQEvent } from "../class/ICQEvent";
 
 /**
  * Обработчик событий по фильтру
@@ -25,7 +17,7 @@ export interface Handler {
 export class HandlerBase implements Handler {
     constructor(protected filters: Filter, protected callback: (bot: ICQBot, event: ICQEvent) => void) { }
 
-    check(event: ICQEvent, dispatcher: Dispatcher) {
+    check(event: ICQEvent, dispatcher: Dispatcher) { 
         return (!this.filters || this.filters.filter(event));
     }
     handle(event: ICQEvent, dispatcher: Dispatcher) {
@@ -81,8 +73,7 @@ export class UnPinnedMessageHandler extends HandlerBase {
 
 
 export class MessageHandler extends HandlerBase {
-    public check(event, dispatcher) {
-        console.log(super.check(event, dispatcher));
+    public check(event, dispatcher) { 
         return (super.check(event, dispatcher) && event.type == EventType.NEW_MESSAGE)
     }
 }
@@ -114,9 +105,10 @@ export class CommandHandler extends MessageHandler {
     }
     public check(event, dispatcher) {
         if (super.check(event, dispatcher)) {
+            if (!this.command) return true;
             let command = event.data["text"].split(" ")[0].toLowerCase()
-            return !this.command || this.command.findIndex(c => c.toLowerCase() == command) >= 0
-
+            if (Array.isArray(this.command)) return this.command.findIndex(c => c.toLowerCase() == command) >= 0
+            return this.command == command;
         }
     }
 }
@@ -133,14 +125,17 @@ export class StartCommandHandler extends CommandHandler {
 
 export class FeedbackCommandHandler extends CommandHandler {
 
-    private target: string; // chat id
+    /**
+     * ChatID moderator
+     */
+    private target: string;
     private message: String;
     private reply;
     private error_reply;
     constructor(target: string, message = "Feedback from {source}: {message}", reply = "Got it!", error_reply = null,
         command = "feedback", filters = null
     ) {
-        super(command, filters) // TODO WTF
+        super(command, filters);
         this.callback = this.message_cb;
         this.target = target
         this.message = message
@@ -148,11 +143,14 @@ export class FeedbackCommandHandler extends CommandHandler {
         this.error_reply = error_reply
     }
     public async message_cb(bot: Bot, event: ICQEvent) {
-        let source = event.data['chat']['chatId']
-        let feedback_text = event.data["text"].split(" ")[2].strip() // TODO
 
+        let source = event.data['chat']['chatId'];
+        let chunks = event.data["text"].split(" ");
+        chunks.shift();
+        let feedback_text = chunks.join(' ').trim(); // TODO 
         if (feedback_text) {
             let result = await bot.sendText(this.target, this.message.replace(/\{source\}/i, source).replace(/\{message\}/i, feedback_text))
+
             if (!result.ok) console.log("Не удалось отправить запрос sendText");
             if (this.reply != "") {
                 let result = await bot.sendText(source, this.reply)
@@ -167,11 +165,11 @@ export class FeedbackCommandHandler extends CommandHandler {
 
 export class UnknownCommandHandler extends CommandHandler {
     constructor(filters, callback) {
-        super(filters, callback);
+        super(null, filters, callback);
     }
     public check(event, dispatcher) {
-        return super.check(event, dispatcher) && !
-            dispatcher.handlers.foreach(h => h != this && h.check(event, dispatcher))
+        return super.check(event, dispatcher) &&
+            dispatcher.handlers.findIndex(h => h != this && h.check(event, dispatcher)) == -1
     }
 
     public handle(event, dispatcher) {
@@ -180,19 +178,3 @@ export class UnknownCommandHandler extends CommandHandler {
     }
 }
 
-export class ICQEvent {
-    type: EventType;
-    data: NewMessageEvent | EditedMessageEvent | DeletedMessageEvent | PinnedMessageEvent | UnpinnedMessageEvent | NewChatMembersEvent | LeftChatMembersEvent
-    text: String;
-    messageAuthor: UserWidthName;
-    fromChatId: string;
-    constructor(event: Event) {
-        this.type = event.type;
-        this.data = event.payload;
-        if (this.type == EventType.NEW_MESSAGE) {
-            this.text = (this.data as NewMessageEvent).text
-            this.fromChatId = (this.data as NewMessageEvent).chat.chatId
-            this.messageAuthor = (this.data as NewMessageEvent).from
-        }
-    }
-}

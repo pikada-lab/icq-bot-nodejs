@@ -1,6 +1,6 @@
 import { Bot } from "../class/Bot";
-import { HandlerBase, ICQEvent } from "./Handler";
-
+import { HandlerBase } from "./Handler";
+import { ICQEvent } from "../class/ICQEvent"
 /**
  * Управляет обработчиками
  */
