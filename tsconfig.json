@@ -3,19 +3,18 @@
     "outDir": "./dist/",
     "noImplicitAny": false,
     "preserveConstEnums": true,
-    "moduleResolution": "node",
+    // "moduleResolution": "node",
     "sourceMap": true,
     "module": "commonjs",
     "target": "es5",
-    "allowJs": true,
+    // "allowJs": true,
     "rootDir": "src",
     "declaration": true
   },
   "include": [
-    "src/**/*",
+    "src/**/*"
   ],
   "exclude": [
-    "old/*",
     "example/*"
   ]
 }

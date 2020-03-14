@@ -40,6 +40,10 @@
     "API",
     "NodeJS"
   ],
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/pikada-lab/icq-bot-nodejs.git"
+  },
   "license": "ISC",
   "main": "dist/index.js",
   "name": "icq-bot",
