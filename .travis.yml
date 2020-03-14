@@ -1,9 +1,18 @@
 language: node_js
-scripts:
+
+install:
     - npm install codecov -g
-    - npm install ntsc -g
-    - npm install mocha
-after_success:
-    - ntsc
+    - npm install ntsc -g 
+    - npm i
+scripts: 
+    - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
     - codecov
-    - npm test
+    - ntsc
+    - npm test 
+
+notifications:
+    email: 
+      recipients:
+        - info@fake-mm.ru
+    on_success: never
+    on_failure: always
