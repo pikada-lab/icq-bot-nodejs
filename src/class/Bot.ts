@@ -15,7 +15,7 @@ import { ResponseAdmin } from "../interfaces/Response/ResponseAdmin";
 import { ResponseFileInfo } from "../interfaces/Response/ResponseFileInfo";
 import { ResponseMembers } from "../interfaces/Response/ResponseMembers";
 import { ResponseUsers } from "../interfaces/Response/ResponseUsers";
-import { ICQEvent } from "icq-bot/src/class/ICQEvent";
+import { ICQEvent } from "../class/ICQEvent";
 
 export class Bot implements ICQBot { 
 

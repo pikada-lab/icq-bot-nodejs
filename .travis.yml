@@ -6,11 +6,10 @@ cache:  npm
 
 install:
     - npm ci
-    - npm install -g ts-node
-    - npm install -g typescript
+    - npm install -g tsc
    # - npm install codecov -g 
 scripts: 
-    - ts-node
+    - tsc
     - npm test 
    # - codecov
 
