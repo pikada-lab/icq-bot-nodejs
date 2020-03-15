@@ -560,7 +560,7 @@ describe("Handler.", () => {
 
     describe("UnknownCommandHandler.check(event)", () => {
         let message = new Handlers.UnknownCommandHandler(null, () => { });
-        let dispatcherProxy = { handlers: [message] }
+        let dispatcherProxy = { handlers: [message] , getBot : () => {return this}}
         it("feedbackCommandMessage event should by true", () => {
             assert(message.check(new ICQEvent(event.feedbackCommandMessage), dispatcherProxy))
         })
@@ -594,11 +594,11 @@ describe("Handler.", () => {
         })
 
 
-        it("helpCommandMessage event should by handle with error", (done) => {
+        it("helpCommandMessage event should by handle with error", () => {
             try {
                 message.handle(new ICQEvent(event.helpCommandMessage), dispatcherProxy);
             } catch(ex) {
-                done()
+                assert(ex.message == "UnknownCommandHandler");
             }
         })
     })
