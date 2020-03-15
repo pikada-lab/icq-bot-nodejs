@@ -41,7 +41,7 @@ describe("Filters.", () => {
             assert(!filter.filter(new ICQEvent(event.eventDeleteMessage)));
         })
         it("eventEditMessage must by MessageFilter false", () => {
-            assert(!filter.filter(new ICQEvent(event.eventEditMessage)));
+            assert(filter.filter(new ICQEvent(event.eventEditMessage)));
         })
         it("eventPinnedMessage must by MessageFilter true", () => {
             assert(filter.filter(new ICQEvent(event.eventPinnedMessage)));

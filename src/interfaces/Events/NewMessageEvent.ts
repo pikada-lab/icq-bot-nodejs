@@ -7,6 +7,6 @@ import { Part } from "../Entities/Part";
         chat: Chat;
         from: UserWidthName;
         timestamp: number;
-        text: String;
+        text: string;
         parts: Part[]; 
     }

@@ -8,7 +8,6 @@ import { ICQBot, ICQOptions } from "../interfaces/ICQBot";
 import { Event, ResponseEvent } from "../interfaces/Events/Event";
 import { Dispatcher } from "../interfaces/Dispatcher";
 import { DispatcherMessage } from "./DispatcherMessage";
-import { MessageHandler } from "../interfaces/Handler";
 import { ResponseMessage } from "../interfaces/Response/ResponseMessage";
 import { ResponseUploadFile, ResponseSendFile } from "../interfaces/Response/ResponseSendFile";
 import { ResponseUploadVoice, ResponseSendVoice } from "../interfaces/Response/ResponseSendVoice";
@@ -17,6 +16,7 @@ import { ResponseFileInfo } from "../interfaces/Response/ResponseFileInfo";
 import { ResponseMembers } from "../interfaces/Response/ResponseMembers";
 import { ResponseUsers } from "../interfaces/Response/ResponseUsers";
 import { ICQEvent } from "../class/ICQEvent";
+import { SkipDuplicateMessageHandler } from "./SkipDuplicateMessageHandler";
 
 export class Bot implements ICQBot { 
 
@@ -342,30 +342,5 @@ export class Bot implements ICQBot {
         if (userId) options['userId'] = userId;
         if (everyone != !!userId) throw new Error("Должен быть указан один из двух параметров: userId или everyone. Эти параметры не могут быть указаны одновременно.");
         return this.http.get<Response>(`${this.apiBaseUrl}/chats/resolvePending`, options, { "user-agent": this.getUserAgent() });
-    }
-}
-
-
-/**
- * Пропускает повторяющиеся транзакции сверяя их номера (сообщений) с номерами в кэше
- */
-class SkipDuplicateMessageHandler extends MessageHandler {
-    /**
-     * 
-     * @param cache Это объект типо ключ значение, где ключ это номер в виде строки, а значение - текст сообщения
-     */
-    constructor(protected cache: { [key: string]: string }) {
-        super(null, null)
-        if (!this.cache) this.cache = {};
-    }
-    public check(event, dispatcher) {
-        if (super.check(event, dispatcher)) {
-            for (let i in this.cache) {
-                if (i == event.data.msgId && this.cache[i] == event.data.text) {
-                    throw new Error(`Caught StopDispatching id'${i}' exception, stopping dispatching.`);
-                }
-            }
-        }
-        return true
     }
 }

@@ -279,7 +279,7 @@ const eventEditMessage = {
             "lastName": "SurName"
         },
         "timestamp": 1546290000,
-        "text": "Hello!",
+        "text": "Hello! Comrade!",
         "editedTimestamp": 1546290099
     }
 };
