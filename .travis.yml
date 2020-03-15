@@ -7,11 +7,11 @@ cache:  npm
 install:
     - npm ci
     - npm install typescript -g
-   # - npm install codecov -g 
+    - npm install codecov -g 
 scripts: 
     - tsc
     - npm test 
-   # - codecov
+    - codecov
 
 notifications:
     email: 
