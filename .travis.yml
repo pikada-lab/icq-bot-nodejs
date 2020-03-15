@@ -10,6 +10,7 @@ install:
     - npm install typescript -g
     - npm install codecov -g 
     - npm i nyc -g
+    - mkdir coverage
 scripts: 
     - tsc
     - nyc npm test 
