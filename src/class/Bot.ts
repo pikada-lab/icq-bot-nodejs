@@ -6,7 +6,8 @@ import { Chat } from "../interfaces/Entities/Chat";
 import { ICQBot, ICQOptions } from "../interfaces/ICQBot";
 
 import { Event, ResponseEvent } from "../interfaces/Events/Event";
-import { DispatcherMessage, Dispatcher } from "../interfaces/Dispatcher";
+import { Dispatcher } from "../interfaces/Dispatcher";
+import { DispatcherMessage } from "./DispatcherMessage";
 import { MessageHandler } from "../interfaces/Handler";
 import { ResponseMessage } from "../interfaces/Response/ResponseMessage";
 import { ResponseUploadFile, ResponseSendFile } from "../interfaces/Response/ResponseSendFile";
