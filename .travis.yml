@@ -8,14 +8,12 @@ sudo:
 install:
     - npm ci
     - npm install typescript -g
-    - npm install codecov -g 
-    - npm i nyc -g
-    - mkdir coverage
+    - npm install codecov -g   
 scripts: 
     - tsc
     - nyc npm test 
-    - codecov
-    - nyc report --reporter=json > coverage/coverage.json
+    - npm run coverage
+    - codecov 
 
 notifications:
     email: 
