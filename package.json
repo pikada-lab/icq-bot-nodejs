@@ -32,7 +32,8 @@
   "description": "ICQ-BOT",
   "devDependencies": {
     "@types/node": "^13.9.1",
-    "mocha": "^7.1.0"
+    "codecov": "^3.6.5",
+    "mocha": "^7.1.0" 
   },
   "keywords": [
     "ICQ",
@@ -41,8 +42,8 @@
     "NodeJS"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/pikada-lab/icq-bot-nodejs.git"
+    "type": "git",
+    "url": "https://github.com/pikada-lab/icq-bot-nodejs.git"
   },
   "license": "ISC",
   "main": "dist/index.js",
