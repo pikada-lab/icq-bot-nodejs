@@ -31,10 +31,11 @@
   "deprecated": false,
   "description": "ICQ-BOT",
   "devDependencies": {
+    "@types/mocha": "5.2.5",
     "@types/node": "^13.9.1",
-    "codecov": "^3.6.5",
-    "istanbul": "^0.4.5",
-    "mocha": "^7.1.0"
+    "codecov": "^3.6.5", 
+    "mocha": "^7.1.0",
+    "nyc": "^15.0.0"
   },
   "keywords": [
     "ICQ",
@@ -50,8 +51,8 @@
   "main": "dist/index.js",
   "name": "icq-bot",
   "scripts": {
-    "test": "mocha --timeout 10000",
-    "coverage": "istanbul cover _mocha test/*.spec.js"
+    "test": "nyc mocha",
+    "posttest": "nyc report --reporter=json"
   },
   "version": "2.1.7"
 }

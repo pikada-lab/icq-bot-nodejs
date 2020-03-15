@@ -2,8 +2,7 @@ language: node_js
 node_js:
     - 12.14.1
 cache:  npm 
-sudo:
-    false
+sudo: false
 
 install:
     - npm ci
@@ -11,8 +10,8 @@ install:
     - npm install codecov -g   
 scripts: 
     - tsc
-    - npm run coverage
-    - codecov 
+    - npm test
+    - codecov -f coverage/*.json
 
 notifications:
     email: 
