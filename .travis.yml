@@ -6,7 +6,7 @@ cache:  npm
 
 install:
     - npm ci
-    - npm install -g tsc
+    - npm install typescript -g
    # - npm install codecov -g 
 scripts: 
     - tsc
