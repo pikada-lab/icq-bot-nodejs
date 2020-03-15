@@ -253,8 +253,6 @@ describe("Filters.", () => {
 
     })
 
-
-
     describe("Filters FilterComposite OR", () => {
         let leftFilter = new Filters.RegexpFilter(/(\s)/);
         let rightFilter = new Filters.RegexpFilter(/\d{2}\.\d{2}/)
@@ -263,7 +261,6 @@ describe("Filters.", () => {
         it("timeCommandMessage must by RegexpFilter(/(\s)/) true", () => {
             assert(leftFilter.filter(new ICQEvent(event.timeCommandMessage)));
         })
-
 
         it("timeCommandMessage must by RegexpFilter(/\d{2}\.\d{2}/) true", () => {
             assert(rightFilter.filter(new ICQEvent(event.timeCommandMessage)));
@@ -277,7 +274,6 @@ describe("Filters.", () => {
             assert(leftFilter.filter(new ICQEvent(event.feedbackCommandMessage)));
         })
 
-
         it("feedbackCommandMessage must by RegexpFilter(/\d{2}\.\d{2}/) false", () => {
             assert(!rightFilter.filter(new ICQEvent(event.feedbackCommandMessage)));
         })
@@ -285,7 +281,6 @@ describe("Filters.", () => {
         it("feedbackCommandMessage must by FilterComposite true", () => {
             assert(!filter.filter(new ICQEvent(event.feedbackCommandMessage)));
         })
-
     })
 
     describe("Filters CommandFilter ", () => {

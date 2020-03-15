@@ -172,9 +172,9 @@ export class UnknownCommandHandler extends CommandHandler {
             dispatcher.handlers.findIndex(h => h != this && h.check(event, dispatcher)) == -1
     }
 
-    public handle(event, dispatcher) {
-        super.handle(event, dispatcher)
-        return new Error("UnknownCommandHandler");
+    public handle(event, dispatcher) { 
+        super.handle(event, dispatcher) 
+        throw new Error("UnknownCommandHandler");
     }
 }
 

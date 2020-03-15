@@ -51,12 +51,13 @@ describe("Handler.", () => {
                 done()
             }
         })
+        it("EventMessage check should by false", () => {
+            let newMessage = new Handlers.MessageHandler(null, () => { });
+            assert(!message.check(new ICQEvent(event.eventMessage), { getHandlers: () => { return [message, newMessage] } }))
+        })
 
     })
     describe("Handler common.", () => {
-
-
-
         it("EventMessage should by true", () => {
             let message = new Handlers.MessageHandler(null, () => { });
             assert(message.check(new ICQEvent(event.eventMessage), null))
@@ -377,6 +378,54 @@ describe("Handler.", () => {
     })
 
 
+
+    describe("HelpCommandHandler.check(event)", () => {
+
+
+
+        it("helpCommandMessage event should by false", () => {
+            let message = new Handlers.HelpCommandHandler(null, () => { });
+            assert(message.check(new ICQEvent(event.helpCommandMessage), null))
+        })
+
+        it("startCommandMessage event should by true", () => {
+            let message = new Handlers.HelpCommandHandler(null, () => { });
+            assert(!message.check(new ICQEvent(event.startCommandMessage), null))
+        })
+
+        it("NewMessage event should by false", () => {
+            let message = new Handlers.HelpCommandHandler(null, () => { });
+            assert(!message.check(new ICQEvent(event.eventMessage), null))
+        })
+        it("EditMessage event should by false", () => {
+            let message = new Handlers.HelpCommandHandler(null, () => { });
+            assert(!message.check(new ICQEvent(event.eventEditMessage), null))
+        })
+
+        it("DeleteMessage event should by false", () => {
+            let message = new Handlers.HelpCommandHandler(null, () => { });
+            assert(!message.check(new ICQEvent(event.eventDeleteMessage), null))
+        })
+        it("PinedMessage event should by false", () => {
+            let message = new Handlers.HelpCommandHandler(null, () => { });
+            assert(!message.check(new ICQEvent(event.eventPinnedMessage), null))
+        })
+        it("UnpinnedMessage event should by false", () => {
+            let message = new Handlers.HelpCommandHandler(null, () => { });
+            assert(!message.check(new ICQEvent(event.eventUnpunnedMessage), null))
+        })
+
+        it("NewChatMembers event should by false", () => {
+            let message = new Handlers.HelpCommandHandler(null, () => { });
+            assert(!message.check(new ICQEvent(event.eventNewChatMembers), null))
+        })
+
+        it("LeftChatMembers event should by false", () => {
+            let message = new Handlers.StartCommandHandler(null, () => { });
+            assert(!message.check(new ICQEvent(event.eventLeftChatMembers), null))
+        })
+    })
+
     describe("StartCommandHandler.check(event)", () => {
 
         it("helpCommandMessage event should by false", () => {
@@ -465,6 +514,22 @@ describe("Handler.", () => {
                 })
         })
 
+        it("feedbackCommandMessage event text should by: Not good!", (done) => {
+            let eventICQ = new ICQEvent(event.feedbackCommandMessage);
+            eventICQ.data.text = "feedback ";
+            message.handle(eventICQ,
+                {
+                    getBot: () => {
+                        return {
+                            sendText: (target, text) => {
+                                if (text == "Not good!") done();
+                                return { ok: true };
+                            }
+                        }
+                    },
+                })
+        })
+
         it("NewMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventMessage), null))
         })
@@ -526,6 +591,15 @@ describe("Handler.", () => {
 
         it("LeftChatMembers event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventLeftChatMembers), dispatcherProxy))
+        })
+
+
+        it("helpCommandMessage event should by handle with error", (done) => {
+            try {
+                message.handle(new ICQEvent(event.helpCommandMessage), dispatcherProxy);
+            } catch(ex) {
+                done()
+            }
         })
     })
 
