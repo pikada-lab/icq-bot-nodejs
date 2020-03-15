@@ -32,16 +32,16 @@ export class DefaultHandler extends HandlerBase {
         super(null, callback);
     }
 
-    check(event, dispatcher) {
-        return this.check(event, dispatcher) && !this.any(event, dispatcher)
+    check(event, dispatcher) { 
+        return super.check(event, dispatcher) && !this.any(event, dispatcher)
     }
     private any(event, dispatcher: Dispatcher): boolean {
         for (let h of dispatcher.getHandlers()) {
             if (h != this) {
-                if (!h.check(event, dispatcher)) return false;
+                if (h.check(event, dispatcher)) return true;
             }
         }
-        return true
+        return false
     }
 
     handle(event, dispatcher) {

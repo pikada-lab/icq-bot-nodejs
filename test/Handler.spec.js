@@ -25,13 +25,31 @@ describe("Handler.", () => {
     describe("Handler HandlerBase.", () => {
 
         let message = new Handlers.HandlerBase(null, () => { });
-        it("EventMessage check should by true", () => { 
+        it("EventMessage check should by true", () => {
             assert(message.check(new ICQEvent(event.eventMessage), null))
         })
-        it("EventMessage handle should by done", (done) => { 
+        it("EventMessage handle should by done", (done) => {
 
-        let message = new Handlers.HandlerBase(null, () => { done() });
-            message.handle(new ICQEvent(event.eventMessage), { getBot: () => {return this}})
+            let message = new Handlers.HandlerBase(null, () => { done() });
+            message.handle(new ICQEvent(event.eventMessage), { getBot: () => { return this } })
+        })
+
+    })
+
+    describe("Handler DefaultHandler.", () => {
+
+        let message = new Handlers.DefaultHandler(() => { });
+        it("EventMessage check should by true", () => {
+            assert(message.check(new ICQEvent(event.eventMessage), { getHandlers: () => { return [message] } }))
+        })
+        it("EventMessage handle should by done", (done) => {
+
+            let message = new Handlers.DefaultHandler(() => { });
+            try {
+                message.handle(new ICQEvent(event.eventMessage), { getBot: () => { return this } })
+            } catch (ex) {
+                done()
+            }
         })
 
     })
@@ -477,36 +495,36 @@ describe("Handler.", () => {
 
     describe("UnknownCommandHandler.check(event)", () => {
         let message = new Handlers.UnknownCommandHandler(null, () => { });
-        let dispatcherProxy = {handlers: [message]}
-        it("feedbackCommandMessage event should by true", () => { 
+        let dispatcherProxy = { handlers: [message] }
+        it("feedbackCommandMessage event should by true", () => {
             assert(message.check(new ICQEvent(event.feedbackCommandMessage), dispatcherProxy))
         })
 
-        it("helpCommandMessage event should by true", () => { 
+        it("helpCommandMessage event should by true", () => {
             assert(message.check(new ICQEvent(event.helpCommandMessage), dispatcherProxy))
         })
-        it("NewMessage event should by true", () => { 
+        it("NewMessage event should by true", () => {
             assert(message.check(new ICQEvent(event.eventMessage), dispatcherProxy))
         })
-        it("EditMessage event should by false", () => { 
+        it("EditMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventEditMessage), dispatcherProxy))
         })
 
-        it("DeleteMessage event should by false", () => { 
+        it("DeleteMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventDeleteMessage), dispatcherProxy))
         })
-        it("PinedMessage event should by false", () => { 
+        it("PinedMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventPinnedMessage), dispatcherProxy))
         })
-        it("UnpinnedMessage event should by false", () => { 
+        it("UnpinnedMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventUnpunnedMessage), dispatcherProxy))
         })
 
-        it("NewChatMembers event should by false", () => { 
+        it("NewChatMembers event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventNewChatMembers), dispatcherProxy))
         })
 
-        it("LeftChatMembers event should by false", () => { 
+        it("LeftChatMembers event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventLeftChatMembers), dispatcherProxy))
         })
     })
@@ -514,37 +532,37 @@ describe("Handler.", () => {
 
     describe("UnknownCommandHandler.check(event) with 2 handlers", () => {
         let message = new Handlers.UnknownCommandHandler(null, () => { });
-        let start = new Handlers.StartCommandHandler(null,() => { });
-        let dispatcherProxy = {handlers: [message, start]}
-        it("startCommandMessage event should by false", () => { 
+        let start = new Handlers.StartCommandHandler(null, () => { });
+        let dispatcherProxy = { handlers: [message, start] }
+        it("startCommandMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.startCommandMessage), dispatcherProxy))
         })
 
-        it("helpCommandMessage event should by true", () => { 
+        it("helpCommandMessage event should by true", () => {
             assert(message.check(new ICQEvent(event.helpCommandMessage), dispatcherProxy))
         })
-        it("NewMessage event should by true", () => { 
+        it("NewMessage event should by true", () => {
             assert(message.check(new ICQEvent(event.eventMessage), dispatcherProxy))
         })
-        it("EditMessage event should by false", () => { 
+        it("EditMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventEditMessage), dispatcherProxy))
         })
 
-        it("DeleteMessage event should by false", () => { 
+        it("DeleteMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventDeleteMessage), dispatcherProxy))
         })
-        it("PinedMessage event should by false", () => { 
+        it("PinedMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventPinnedMessage), dispatcherProxy))
         })
-        it("UnpinnedMessage event should by false", () => { 
+        it("UnpinnedMessage event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventUnpunnedMessage), dispatcherProxy))
         })
 
-        it("NewChatMembers event should by false", () => { 
+        it("NewChatMembers event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventNewChatMembers), dispatcherProxy))
         })
 
-        it("LeftChatMembers event should by false", () => { 
+        it("LeftChatMembers event should by false", () => {
             assert(!message.check(new ICQEvent(event.eventLeftChatMembers), dispatcherProxy))
         })
     })
