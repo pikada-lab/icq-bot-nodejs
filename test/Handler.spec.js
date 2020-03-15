@@ -20,6 +20,21 @@ const event = require("./constant");
 // test MessageHandler кто то отправил сообщение 
 
 describe("Handler.", () => {
+
+
+    describe("Handler HandlerBase.", () => {
+
+        let message = new Handlers.HandlerBase(null, () => { });
+        it("EventMessage check should by true", () => { 
+            assert(message.check(new ICQEvent(event.eventMessage), null))
+        })
+        it("EventMessage handle should by done", (done) => { 
+
+        let message = new Handlers.HandlerBase(null, () => { done() });
+            message.handle(new ICQEvent(event.eventMessage), { getBot: () => {return this}})
+        })
+
+    })
     describe("Handler common.", () => {
 
 
