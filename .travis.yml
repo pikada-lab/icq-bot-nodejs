@@ -11,7 +11,6 @@ install:
     - npm install codecov -g   
 scripts: 
     - tsc
-    - nyc npm test 
     - npm run coverage
     - codecov 
 
