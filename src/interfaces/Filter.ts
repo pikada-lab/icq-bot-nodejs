@@ -73,14 +73,12 @@ export class AudioFilter extends FileFilter {
     }
 }
 
-export class StickerFilter extends FileFilter {
-    filter(event: ICQEvent) {
+export class StickerFilter extends MessageFilter {
+    filter(event: ICQEvent) { 
         return super.filter(event) && event.data['parts'] &&
             event.data['parts'].findIndex(r => r && r.type == PartsType.STICKER) >= 0
     }
 }
-
-
 
 export class MentionFilter extends MessageFilter {
     constructor(public userId: Number) {

@@ -21,6 +21,67 @@ const feedbackCommandMessage = {
         ]
     }
 }
+
+const newMessageWithFileAudio = {
+    "eventId": 1,
+    "type": "newMessage",
+    "payload": {
+        "msgId": "57883346846815032",
+        "chat": {
+            "chatId": "681869378@chat.agent",
+            "type": "channel",
+            "title": "The best channel"
+        },
+        "from": {
+            "userId": "1234567890",
+            "firstName": "Name",
+            "lastName": "SurName"
+        },
+        "timestamp": 1546290000,
+        "text": "Hello!",
+        "parts": [
+            {
+                "type": "file",
+                "payload": {
+                    "fileId": "ZhSnMuaOmF7FRez2jGWuQs5zGZwlLa0",
+                    "type": "audio",
+                    "caption": "Last weekend trip"
+                }
+            }
+        ]
+    }
+};
+
+const newMessageWithFileVideo = {
+    "eventId": 1,
+    "type": "newMessage",
+    "payload": {
+        "msgId": "57883346846815032",
+        "chat": {
+            "chatId": "681869378@chat.agent",
+            "type": "channel",
+            "title": "The best channel"
+        },
+        "from": {
+            "userId": "1234567890",
+            "firstName": "Name",
+            "lastName": "SurName"
+        },
+        "timestamp": 1546290000,
+        "text": "Hello!",
+        "parts": [
+            {
+                "type": "file",
+                "payload": {
+                    "fileId": "ZhSnMuaOmF7FRez2jGWuQs5zGZwlLa0",
+                    "type": "video",
+                    "caption": "Last weekend trip"
+                }
+            }
+        ]
+    }
+};
+
 const newMessageWithFile = {
     "eventId": 1,
     "type": "newMessage",
@@ -69,6 +130,64 @@ const startCommandMessage = {
         "text": "sTart text more",
         "parts": [
             null
+        ]
+    }
+};
+
+const URLMessage = {
+    "eventId": 1,
+    "type": "newMessage",
+    "payload": {
+        "msgId": "57883346846815032",
+        "chat": {
+            "chatId": "681869378@chat.agent",
+            "type": "channel",
+            "title": "The best channel"
+        },
+        "from": {
+            "userId": "1234567890",
+            "firstName": "Name",
+            "lastName": "SurName"
+        },
+        "timestamp": 1546290000,
+        "text": "https://fake-mm.ru/news",
+        "parts": [
+            {
+                "type": "reply",
+                "payload": {
+                    "message": {
+                        "from": {
+                            "firstName": "Name",
+                            "lastName": "SurName",
+                            "userId": "1234567890"
+                        },
+                        "msgId": "6724238139063271643",
+                        "text": "some text",
+                        "timestamp": 1565608694
+                    }
+                }
+            },
+            {
+                "type": "sticker",
+                "payload": {
+                    "fileId": "2IWuJzaNWCJZxJWCvZhDYuJ5XDsr7hU"
+                }
+            },
+            {
+                "type": "forward",
+                "payload": {
+                    "message": {
+                        "from": {
+                            "firstName": "Name",
+                            "lastName": "SurName",
+                            "userId": "1234567890"
+                        },
+                        "msgId": "6724238139063271643",
+                        "text": "some text",
+                        "timestamp": 1565608694
+                    }
+                }
+            }
         ]
     }
 };
@@ -274,3 +393,7 @@ exports.startCommandMessage = startCommandMessage;
 exports.feedbackCommandMessage = feedbackCommandMessage;
 exports.timeCommandMessage = timeCommandMessage;
 exports.newMessageWithFile = newMessageWithFile;
+exports.URLMessage = URLMessage;
+
+exports.newMessageWithFileVideo = newMessageWithFileVideo;
+exports.newMessageWithFileAudio = newMessageWithFileAudio;
