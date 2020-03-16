@@ -1,4 +1,5 @@
-import { HttpClient, FormDataICQ, ICQHttpClient } from "./ICQHttpClient";
+import { HttpClient, ICQHttpClient } from "./ICQHttpClient";
+import { FormDataICQ } from "./FormDataICQ";
 
 import { Self } from "../interfaces/Entities/Self";
 
@@ -36,11 +37,11 @@ export class Bot implements ICQBot {
     private http: HttpClient;
     constructor(token: string, options?: ICQOptions) {
         this.token = token;
-        this.apiBaseUrl = (options.apiUrlBase ? options.apiUrlBase : "https://api.icq.net/bot/v1");
-        this.name = name
-        this.version = options.version
-        this.timeoutS = options.timeoutS ? options.timeoutS : 20
-        this.pollTimeS = options.pollTimeS ? options.pollTimeS : 60
+        this.apiBaseUrl = (options && options.apiUrlBase ? options.apiUrlBase : "https://api.icq.net/bot/v1");
+        this.name = options && options.name ? options.name : "NodeBot";
+        this.version = ( options && options.version) ?options.version : "0.0.1";
+        this.timeoutS = options && options.timeoutS ? options.timeoutS : 20
+        this.pollTimeS = options && options.pollTimeS ? options.pollTimeS : 60
         this.dispatcher = new DispatcherMessage(this)
         this.uin = this.token.split(":")[this.token.split(":").length - 1];
 

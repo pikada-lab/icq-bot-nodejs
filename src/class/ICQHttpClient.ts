@@ -1,60 +1,12 @@
 import { URL } from 'url';
+import { FormDataICQ } from './FormDataICQ';
 
-var https = require('https')
-var fs = require('fs')
+var https = require('https') 
 
 export interface HttpClient {
     get<T>(url: string, params: any, header: { "user-agent": string }): Promise<T>;
     post<T>(url: string, data: FormDataICQ, header: { "user-agent": string }): Promise<T>;
 }
-
-export class FormDataICQ {
-    private data = [];
-    private files = [];
-    private razdel;
-    constructor() {
-        this.razdel = "----WebKitFormBoundary" + (Math.random() * Math.pow(10, 18)).toString(16);
-    }
-
-    getBoundary() {
-        return this.razdel;
-    }
-    public append(name, value) {
-        this.data.push({ name: name, value: value });
-    }
-    public appendFile(name, file) {
-        if (!fs.existsSync(file)) throw "File not exist " + file;
-        this.files.push({ name: name, filename: file });
-    }
-    public toString() {
-        let data = "";
-
-        for (let i of this.files) {
-            try {
-                data += "--" + this.razdel + "\r\n";
-                let fileName = i.filename.split(/\//g);
-                data += "Content-Disposition: form-data; name=\"" + i.name + "\"; filename=\"" + fileName[fileName.length - 1] + "\"\r\n";
-                data += "Content-Type: \"image/png\"\r\n\r\n"; 
-                data += fs.readFileSync(i.filename, "latin1"); // Без latin1 будет битый файл
-            } catch (ex) {
-                console.log(ex);
-            }
-        }
-
-        for (let i of this.data) {
-            if (data)
-                data += "\r\n";
-            data += "--" + this.razdel + "\r\n";
-            data += "Content-Disposition: form-data; name=\"" + i.name + "\"\r\n\r\n";
-            data += i.value;
-        }
-
-
-        data += `\r\n--${this.razdel}--`;
-        return data;
-    }
-}
-
 
 export class ICQHttpClient implements HttpClient {
     get<T>(url: string, params: any, header: { "user-agent": string }): Promise<T> {
