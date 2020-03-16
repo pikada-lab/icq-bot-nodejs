@@ -25,7 +25,7 @@ export interface ICQBot {
     startPolling(): ICQBot;
     stop(): ICQBot;
     // private signalHandler(sig: number): void;
-    idle(): ICQBot;
+    // idle(): ICQBot;
     eventsGet(pollTimeS: number, lastEventId: number): Promise<ResponseEvent>;
     selfGet(): Promise<Self>;
     sendText(chatId: string, text: String, replyMsgId?: string, forwardChatId?: string, forwardMsgId?: string): Promise<ResponseMessage>;

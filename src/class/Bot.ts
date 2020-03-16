@@ -108,18 +108,18 @@ export class Bot implements ICQBot {
         }
         return this;
     }
-    idle(): ICQBot {
-        for (let sig of ["SIGINT", "SIGTERM", "SIGABRT"]) {
-            this.signal(sig)
-        }
-        if (this.running) {
-            setTimeout(_ => this.idle(), 1000);
-        }
-        return this;
-    }
-    private signal(sig) {
-        // Получает сигналы OS
-    }
+    // idle(): ICQBot {
+    //     for (let sig of ["SIGINT", "SIGTERM", "SIGABRT"]) {
+    //         this.signal(sig)
+    //     }
+    //     if (this.running) {
+    //         setTimeout(_ => this.idle(), 1000);
+    //     }
+    //     return this;
+    // }
+    // private signal(sig) {
+    //     // Получает сигналы OS
+    // }
     eventsGet(pollTimeS: number, lastEventId: number): Promise<ResponseEvent> {
         return this.http.get<ResponseEvent>(`${this.apiBaseUrl}/events/get`, {
             token: this.token,
@@ -167,10 +167,7 @@ export class Bot implements ICQBot {
             if (forwardMsgId)
                 data.append("forwardMsgId", forwardMsgId);
             data.appendFile("file", file);
-            // console.log(data.toString());
-            // throw "Нет";
-            // return this.http.post<ResponseUploadFile>(`http://auxilium-system.ru:3601/v1/test`, data, { "user-agent": this.getUserAgent() });
-
+           
             return this.http.post<ResponseUploadFile>(`${this.apiBaseUrl}/messages/sendFile`, data, { "user-agent": this.getUserAgent() });
         } else {
 
@@ -201,7 +198,7 @@ export class Bot implements ICQBot {
         if (forwardMsgId)
             data.append("forwardMsgId", forwardMsgId);
         data.appendFile("file", file);
-        return this.http.post<ResponseUploadVoice>(`${this.apiBaseUrl}/messages/sendFile`, data, { "user-agent": this.getUserAgent() });
+        return this.http.post<ResponseUploadVoice>(`${this.apiBaseUrl}/messages/sendVoice`, data, { "user-agent": this.getUserAgent() });
 
     }
     editText(chatId: string, msgId: string, text: String): Promise<Response> {
@@ -340,8 +337,8 @@ export class Bot implements ICQBot {
         };
         if (approve) options['approve'] = true;
         if (everyone) options['everyone'] = true;
-        if (userId) options['userId'] = userId;
-        if (everyone != !!userId) throw new Error("Должен быть указан один из двух параметров: userId или everyone. Эти параметры не могут быть указаны одновременно.");
+        if (userId) options['userId'] = userId; 
+        if (everyone == !!userId) throw new Error("Должен быть указан один из двух параметров: userId или everyone. Эти параметры не могут быть указаны одновременно.");
         return this.http.get<Response>(`${this.apiBaseUrl}/chats/resolvePending`, options, { "user-agent": this.getUserAgent() });
     }
 }
