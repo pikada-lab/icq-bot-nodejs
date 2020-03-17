@@ -15,7 +15,7 @@ scripts:
 deploy:
     provider: npm
     email: "info@fake-mm.ru"
-    api_key: NPM_TOKEN
+    api_key: $NPM_TOKEN
     
 notifications:
     email: 
