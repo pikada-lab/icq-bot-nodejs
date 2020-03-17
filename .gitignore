@@ -80,7 +80,7 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# dist
 .cc_token
 
 # Gatsby files
@@ -105,4 +105,4 @@ dist
 .tern-port
 
 .DS_Store
-src/index.ts
+

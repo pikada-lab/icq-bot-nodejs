@@ -1,0 +1,44 @@
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Handler_1 = require("../interfaces/Handler");
+/**
+ * Пропускает повторяющиеся транзакции сверяя их номера (сообщений) с номерами в кэше
+ */
+var SkipDuplicateMessageHandler = (function (_super) {
+    __extends(SkipDuplicateMessageHandler, _super);
+    /**
+     *
+     * @param cache Это объект типо ключ значение, где ключ это номер в виде строки, а значение - текст сообщения
+     */
+    function SkipDuplicateMessageHandler(cache) {
+        var _this = _super.call(this, null, null) || this;
+        _this.cache = cache;
+        if (!_this.cache)
+            _this.cache = {};
+        return _this;
+    }
+    SkipDuplicateMessageHandler.prototype.check = function (event, dispatcher) {
+        if (_super.prototype.check.call(this, event, dispatcher)) {
+            for (var i in this.cache) {
+                if (i == event.data.msgId && this.cache[i] == event.text) {
+                    throw new Error("Caught StopDispatching id'" + i + "' exception, stopping dispatching.");
+                }
+            }
+            this.cache[event.data.msgId] = event.text;
+        }
+        return true;
+    };
+    return SkipDuplicateMessageHandler;
+}(Handler_1.MessageHandler));
+exports.SkipDuplicateMessageHandler = SkipDuplicateMessageHandler;
+//# sourceMappingURL=SkipDuplicateMessageHandler.js.map
