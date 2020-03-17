@@ -19,7 +19,7 @@ import { ResponseUsers } from "../interfaces/Response/ResponseUsers";
 import { ICQEvent } from "../class/ICQEvent";
 import { SkipDuplicateMessageHandler } from "./SkipDuplicateMessageHandler";
 
-export class Bot implements ICQBot { 
+export class Bot implements ICQBot {
 
     private token;
     private uin;
@@ -39,7 +39,7 @@ export class Bot implements ICQBot {
         this.token = token;
         this.apiBaseUrl = (options && options.apiUrlBase ? options.apiUrlBase : "https://api.icq.net/bot/v1");
         this.name = options && options.name ? options.name : "NodeBot";
-        this.version = ( options && options.version) ?options.version : "0.0.1";
+        this.version = (options && options.version) ? options.version : "0.0.1";
         this.timeoutS = options && options.timeoutS ? options.timeoutS : 20
         this.pollTimeS = options && options.pollTimeS ? options.pollTimeS : 60
         this.dispatcher = new DispatcherMessage(this)
@@ -67,9 +67,6 @@ export class Bot implements ICQBot {
     }
     startPolling(): ICQBot {
         try {
-            // if (!this.lock) {
-            //     throw new Error("not object Lock");
-            // }
             if (!this.running) {
                 console.log("Starting polling.")
                 this.running = true
@@ -167,7 +164,7 @@ export class Bot implements ICQBot {
             if (forwardMsgId)
                 data.append("forwardMsgId", forwardMsgId);
             data.appendFile("file", file);
-           
+
             return this.http.post<ResponseUploadFile>(`${this.apiBaseUrl}/messages/sendFile`, data, { "user-agent": this.getUserAgent() });
         } else {
 
@@ -337,7 +334,7 @@ export class Bot implements ICQBot {
         };
         if (approve) options['approve'] = true;
         if (everyone) options['everyone'] = true;
-        if (userId) options['userId'] = userId; 
+        if (userId) options['userId'] = userId;
         if (everyone == !!userId) throw new Error("Должен быть указан один из двух параметров: userId или everyone. Эти параметры не могут быть указаны одновременно.");
         return this.http.get<Response>(`${this.apiBaseUrl}/chats/resolvePending`, options, { "user-agent": this.getUserAgent() });
     }

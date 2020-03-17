@@ -136,7 +136,7 @@ describe("Bot.", () => {
         })
     });
 
-    describe("sendFile()  ", () => {
+    describe("sendFile()  with fileID ", () => {
         it(".url == https://api.icq.net/bot/v1/messages/sendFile", () => {
             assert(bot.sendFile("123", "text", null, "432", "543").url == "https://api.icq.net/bot/v1/messages/sendFile");
         })
@@ -152,7 +152,7 @@ describe("Bot.", () => {
             assert(bot.sendFile("123", "text", null, "432", "543").params.token == "X:XX");
         })
     });
-    describe("sendFile()  ", () => {
+    describe("sendFile() width file ", () => {
         it(".url == https://api.icq.net/bot/v1/messages/sendFile", () => {
             assert(bot.sendFile("123", "text", "./test/19.png", "432", "543").url == "https://api.icq.net/bot/v1/messages/sendFile");
         })

@@ -1,5 +1,5 @@
 import { URL } from 'url';
-import { FormDataICQ } from './FormDataICQ';
+import { FormDataICQ } from './FormDataICQ'; 
 
 var https = require('https') 
 
@@ -29,9 +29,18 @@ export class ICQHttpClient implements HttpClient {
                     }
                 },
                 function (res) {
-                    res.on('data', (d: Buffer) => {
-                        resolve(JSON.parse(d.toString()) as T);
-                    })
+
+                                        
+                    res.setEncoding('utf8');
+                    let rawData = '';
+                    res.on('data', (chunk) => { rawData += chunk; });
+                    res.on('end', (d: Buffer) => {  
+                        try {
+                        resolve(JSON.parse(rawData.toString()) as T);
+                        } catch (ex) {
+                            console.log(ex.message);
+                        }
+                  })
                 }
             )
             req.on("error", (d) => {
@@ -61,8 +70,13 @@ export class ICQHttpClient implements HttpClient {
                     }
                 },
                 function (res) {
-                    res.on('data', (d) => {
-                        resolve(JSON.parse(d.toString()) as T);
+
+                    res.setEncoding('utf8'); 
+                    let rawData = '';
+                    res.on('data', (chunk) => { rawData += chunk; });
+                  
+                    res.on('end', () => {
+                        resolve(JSON.parse(rawData.toString()) as T);
                     })
                 }
             )
