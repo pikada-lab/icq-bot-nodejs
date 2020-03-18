@@ -6,7 +6,7 @@ describe("Интеграционные тесты", () => {
     const bot = new ICQ.Bot(TOKEN);
     const chatId = "750623381";
     // const chatGroupId = "682548187@chat.agent";
-    const filePath = '/Users/dzhigurda/Documents/icon/19.png'
+    const filePath = './test/19.png'
 
     describe("Отправка сообщения в конкретный чат", () => {
         let id = null;
