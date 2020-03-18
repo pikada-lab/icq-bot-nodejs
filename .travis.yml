@@ -11,7 +11,7 @@ install:
     - env TOKEN_ICQ=$TOKEN_ICQ
 scripts: 
     - tsc
-    - npm test
+    - npm test 
     - codecov -f coverage/*.json
 deploy:
     provider: npm

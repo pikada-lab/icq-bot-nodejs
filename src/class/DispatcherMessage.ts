@@ -25,7 +25,7 @@ export class DispatcherMessage implements Dispatcher {
     }
     dispatch(event: ICQEvent): void {
         try {
-            console.log(`Dispatching event.`, event.type, this.handlers.filter(r => r.check(event, this)));
+           // console.log(`Dispatching event.`, event.type, this.handlers.filter(r => r.check(event, this)));
             for (let h of this.handlers.filter(r => r.check(event, this))) {
                 h.handle(event, this);
             }

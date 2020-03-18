@@ -18,7 +18,7 @@ var SkipDuplicateMessageHandler = (function (_super) {
     __extends(SkipDuplicateMessageHandler, _super);
     /**
      *
-     * @param cache Это объект типо ключ значение, где ключ это номер в виде строки, а значение - текст сообщения
+     * @param cache Это объект типа ключ значение, где ключ это номер в виде строки, а значение - текст сообщения
      */
     function SkipDuplicateMessageHandler(cache) {
         var _this = _super.call(this, null, null) || this;
@@ -30,7 +30,9 @@ var SkipDuplicateMessageHandler = (function (_super) {
     SkipDuplicateMessageHandler.prototype.check = function (event, dispatcher) {
         if (_super.prototype.check.call(this, event, dispatcher)) {
             for (var i in this.cache) {
-                if (i == event.data.msgId && this.cache[i] == event.text) {
+                console.log(i, event.data.msgId, this.cache[i], event.text);
+                if (i && i == event.data.msgId && this.cache[i] == event.text) {
+                    // return false;
                     throw new Error("Caught StopDispatching id'" + i + "' exception, stopping dispatching.");
                 }
             }

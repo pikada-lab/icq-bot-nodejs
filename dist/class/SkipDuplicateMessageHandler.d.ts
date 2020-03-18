@@ -10,7 +10,7 @@ export declare class SkipDuplicateMessageHandler extends MessageHandler {
     };
     /**
      *
-     * @param cache Это объект типо ключ значение, где ключ это номер в виде строки, а значение - текст сообщения
+     * @param cache Это объект типа ключ значение, где ключ это номер в виде строки, а значение - текст сообщения
      */
     constructor(cache: {
         [key: string]: string;

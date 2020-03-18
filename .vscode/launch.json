@@ -11,7 +11,8 @@
             "skipFiles": [
                 "node_modules/**"
             ],
-            "program": "${workspaceFolder}/dist/index.js",
+            "env": {"TOKEN_ICQ": "001.1188664136.0582363194:751224051"},
+            "program": "${workspaceFolder}/example/example.js",
             "preLaunchTask": "",
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
