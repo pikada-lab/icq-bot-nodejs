@@ -51,7 +51,7 @@
   "main": "dist/index.js",
   "name": "icq-bot",
   "scripts": {
-    "test": "nyc mocha",
+    "test": "nyc mocha --timeout 10000",
     "posttest": "nyc report --reporter=json"
   },
   "version": "2.1.16"
