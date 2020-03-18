@@ -68,12 +68,12 @@ export class Bot implements ICQBot {
     startPolling(): ICQBot {
         try {
             if (!this.running) {
-                console.log("Starting polling.")
+                // console.log("Starting polling.")
                 this.running = true
                 this.pollingThread = setTimeout(_ => this.polling())
             }
         } catch (ex) {
-            console.error("Starting polling.", ex)
+           // console.error("Starting polling.", ex)
         }
         return this;
     }
@@ -100,7 +100,7 @@ export class Bot implements ICQBot {
         //     throw new Error("not object Lock");
         // }
         if (this.running) {
-            console.log("Stopping bot.")
+         //   console.log("Stopping bot.")
             this.running = false
         }
         return this;

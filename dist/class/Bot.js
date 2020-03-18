@@ -38,13 +38,13 @@ var Bot = (function () {
         var _this = this;
         try {
             if (!this.running) {
-                console.log("Starting polling.");
+                // console.log("Starting polling.")
                 this.running = true;
                 this.pollingThread = setTimeout(function (_) { return _this.polling(); });
             }
         }
         catch (ex) {
-            console.error("Starting polling.", ex);
+            // console.error("Starting polling.", ex)
         }
         return this;
     };
@@ -72,7 +72,7 @@ var Bot = (function () {
         //     throw new Error("not object Lock");
         // }
         if (this.running) {
-            console.log("Stopping bot.");
+            //   console.log("Stopping bot.")
             this.running = false;
         }
         return this;
