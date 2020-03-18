@@ -2,7 +2,7 @@ let ICQ = require("../dist/index").default;
 
 describe("Интеграционные тесты", () => {
 
-    let TOKEN = $TOKEN_ICQ ;
+    let TOKEN = process.env.TOKEN_ICQ ;
     const bot = new ICQ.Bot(TOKEN);
     const chatId = "750623381";
     // const chatGroupId = "682548187@chat.agent";

@@ -8,6 +8,7 @@ install:
     - npm ci
     - npm install typescript -g
     - npm install codecov -g   
+    - env TOKEN_ICQ=$TOKEN_ICQ
 scripts: 
     - tsc
     - npm test
