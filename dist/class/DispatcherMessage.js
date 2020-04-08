@@ -25,7 +25,7 @@ var DispatcherMessage = (function () {
     DispatcherMessage.prototype.dispatch = function (event) {
         var _this = this;
         try {
-            console.log("Dispatching event.", event.type, this.handlers.filter(function (r) { return r.check(event, _this); }));
+            // console.log(`Dispatching event.`, event.type, this.handlers.filter(r => r.check(event, this)));
             for (var _i = 0, _a = this.handlers.filter(function (r) { return r.check(event, _this); }); _i < _a.length; _i++) {
                 var h = _a[_i];
                 h.handle(event, this);

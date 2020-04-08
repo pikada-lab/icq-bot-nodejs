@@ -5,6 +5,7 @@ import { PinnedMessageEvent } from "./PinnedMessageEvent";
 import { UnpinnedMessageEvent } from "./UnpinnedMessageEvent";
 import { NewChatMembersEvent } from "./NewChatMembersEvent";
 import { LeftChatMembersEvent } from "./LeftChatMembersEvent";
+import { CallbackQueryEvent } from "./CallbackQueryEvent";
 
 export enum EventType {
     NEW_MESSAGE = "newMessage",
@@ -14,7 +15,8 @@ export enum EventType {
     UNPINNED_MESSAGE = "unpinnedMessage",
     NEW_CHAT_MEMBERS = "newChatMembers",
     LEFT_CHAT_MEMBERS = "leftChatMembers",
-    CHANGED_CHAT_INFO = "changedChatInfo"
+    CHANGED_CHAT_INFO = "changedChatInfo",
+    CALLBACK_QUERY = "callbackQuery"
 }
 
 export interface ResponseEvent {
@@ -24,5 +26,13 @@ export interface ResponseEvent {
 export interface Event {
     eventId: number;
     type: EventType;
-    payload: NewMessageEvent | EditedMessageEvent | DeletedMessageEvent | PinnedMessageEvent | UnpinnedMessageEvent | NewChatMembersEvent | LeftChatMembersEvent; /// ONE OF TYPE
+    payload:    NewMessageEvent |
+                EditedMessageEvent |
+                DeletedMessageEvent |
+                PinnedMessageEvent |
+                UnpinnedMessageEvent |
+                NewChatMembersEvent |
+                LeftChatMembersEvent |
+                CallbackQueryEvent
+    ; /// ONE OF TYPE
 }

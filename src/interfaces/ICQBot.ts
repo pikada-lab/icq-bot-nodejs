@@ -9,6 +9,7 @@ import { ResponseFileInfo } from "./Response/ResponseFileInfo";
 import { ResponseEvent } from "./Events/Event";
 import { ResponseMembers } from "./Response/ResponseMembers";
 import { ResponseUsers } from "./Response/ResponseUsers";
+import { ICQButton } from "../class/ICQButton";
 
 export interface ICQOptions {
     apiUrlBase:string, 
@@ -28,12 +29,15 @@ export interface ICQBot {
     // idle(): ICQBot;
     eventsGet(pollTimeS: number, lastEventId: number): Promise<ResponseEvent>;
     selfGet(): Promise<Self>;
-    sendText(chatId: string, text: String, replyMsgId?: string, forwardChatId?: string, forwardMsgId?: string): Promise<ResponseMessage>;
-    sendFile(chatId: string, fileId: string, file: string, caption: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String): Promise<ResponseUploadFile|ResponseSendFile>;
-    sendVoice(chatId: string, fileId: string, file: string, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String): Promise<ResponseUploadVoice|ResponseSendVoice>;
+    sendText(chatId: string, text: String, replyMsgId?: string, forwardChatId?: string, forwardMsgId?: string, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseMessage>;
+    sendFile(chatId: string, fileId: string, file: string, caption: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseUploadFile|ResponseSendFile>;
+    sendVoice(chatId: string, fileId: string, file: string, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseUploadVoice|ResponseSendVoice>;
 
-    editText(chatId: string, msgId: string, text: String): Promise<Response>;
+    editText(chatId: string, msgId: string, text: String, inlineKeyboardMarkup?: ICQButton[]): Promise<Response>;
     deleteMessages(chatId: string, msgId: string): Promise<Response>;
+
+    /** Работа с событиями на ответ обработки кнопки */
+    answerCallbackQuery(chatId: string, text: string, showAlert: boolean, url: string): Promise<Response>;
 
     /** Отправить действия в чат */
     sendActions(chatId: string, actions:  'looking'|'typing'): Promise<Response>;

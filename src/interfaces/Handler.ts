@@ -178,3 +178,8 @@ export class UnknownCommandHandler extends CommandHandler {
     }
 }
 
+export class BotButtonCommandHandler extends HandlerBase {
+    public check(event, dispatcher) {
+        return super.check(event, dispatcher) && event.type == EventType.CALLBACK_QUERY
+    }
+}
