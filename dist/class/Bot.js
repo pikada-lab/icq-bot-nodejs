@@ -116,19 +116,17 @@ var Bot = (function () {
             if (ICQButtonList)
                 option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
         }
-        console.log(option);
         return this.http.get(this.apiBaseUrl + "/messages/sendText", option, { "user-agent": this.getUserAgent() });
     };
     Bot.prototype.getICQButtonList = function (inlineKeyboardMarkup) {
-        if (inlineKeyboardMarkup) {
-            var ICQButtonList = [];
-            for (var _i = 0, inlineKeyboardMarkup_1 = inlineKeyboardMarkup; _i < inlineKeyboardMarkup_1.length; _i++) {
-                var bt = inlineKeyboardMarkup_1[_i];
-                ICQButtonList.push(bt.getQueryStructure());
-            }
-            return [ICQButtonList];
+        if (!inlineKeyboardMarkup)
+            return null;
+        var ICQButtonList = [];
+        for (var _i = 0, inlineKeyboardMarkup_1 = inlineKeyboardMarkup; _i < inlineKeyboardMarkup_1.length; _i++) {
+            var bt = inlineKeyboardMarkup_1[_i];
+            ICQButtonList.push(bt.getQueryStructure());
         }
-        return null;
+        return [ICQButtonList];
     };
     Bot.prototype.sendFile = function (chatId, fileId, file, caption, replyMsgId, forwardChatId, forwardMsgId, inlineKeyboardMarkup) {
         if (file) {

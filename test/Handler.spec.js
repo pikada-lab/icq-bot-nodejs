@@ -29,7 +29,6 @@ describe("Handler.", () => {
             assert(message.check(new ICQEvent(event.eventMessage), null))
         })
         it("EventMessage handle should by done", (done) => {
-
             let message = new Handlers.HandlerBase(null, () => { done() });
             message.handle(new ICQEvent(event.eventMessage), { getBot: () => { return this } })
         })
@@ -324,6 +323,34 @@ describe("Handler.", () => {
         it("LeftChatMembers event should by true", () => {
             let message = new Handlers.LeftChatMembersHandler(null, () => { });
             assert(message.check(new ICQEvent(event.eventLeftChatMembers), null))
+        })
+    })
+
+    describe("BotButtonCommandHandler.check(event)", () => {
+        let handler = new Handlers.BotButtonCommandHandler(null, () => { });
+        it("NewMessage event should by false", () => {
+            assert(!handler.check(new ICQEvent(event.eventMessage)))
+        })
+        it("EditMessage event should by false", () => {
+            assert(!handler.check(new ICQEvent(event.eventEditMessage)))
+        })
+        it("DeleteMessage event should by false", () => {
+            assert(!handler.check(new ICQEvent(event.eventDeleteMessage)))
+        })
+        it("PinedMessage event should by false", () => {
+            assert(!handler.check(new ICQEvent(event.eventPinnedMessage)))
+        })
+        it("UnpinnedMessage event should by false", () => {
+            assert(!handler.check(new ICQEvent(event.eventUnpunnedMessage)))
+        })
+        it("NewChatMembers event should by false", () => {
+            assert(!handler.check(new ICQEvent(event.eventNewChatMembers)))
+        })
+        it("LeftChatMembers event should by false", () => {
+            assert(!handler.check(new ICQEvent(event.eventLeftChatMembers)))
+        })
+        it("CallbackQuery event should by false", () => {
+            assert(handler.check(new ICQEvent(event.eventCallbackQuery)))
         })
     })
 

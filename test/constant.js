@@ -381,6 +381,49 @@ const eventLeftChatMembers = {
 }
 
 
+const eventCallbackQuery = {
+    "eventId": 8,
+    "type": "callbackQuery",
+    "payload": {
+      "queryId": "QDFWEscvSW",
+      "chat": {
+        "chatId": "681869378@chat.agent",
+        "type": "group",
+        "title": "The best group"
+      },
+      "from": {
+        "userId": "1234567890",
+        "firstName": "Name",
+        "lastName": "SurName"
+      },
+      "message": {
+        "eventId": 1,
+        "type": "newMessage",
+        "payload": {
+          "msgId": "57883346846815032",
+          "chat": {
+            "chatId": "681869378@chat.agent",
+            "type": "channel",
+            "title": "The best channel"
+          },
+          "from": {
+            "userId": "1234567890",
+            "firstName": "Name",
+            "lastName": "SurName"
+          },
+          "timestamp": 1546290000,
+          "text": "Hello!",
+          "parts": [
+            null
+          ]
+        }
+      },
+      "callbackData": "RXhhbXBsZSBjYWxsYmFjayBkYXRhCg=="
+    }
+  }
+
+
+exports.eventCallbackQuery = eventCallbackQuery
 exports.eventMessage = eventMessage;
 exports.eventEditMessage = eventEditMessage;
 exports.eventDeleteMessage = eventDeleteMessage;

@@ -136,22 +136,19 @@ export class Bot implements ICQBot {
         if (inlineKeyboardMarkup) {
             let ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup)
             if (ICQButtonList) option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
-        }
-        console.log(option);
+        } 
         return this.http.get<ResponseMessage>(`${this.apiBaseUrl}/messages/sendText`, option, { "user-agent": this.getUserAgent() });
     }
 
     private getICQButtonList(inlineKeyboardMarkup) {
-        if (inlineKeyboardMarkup) {
-            let ICQButtonList = [];
-            for (let bt of inlineKeyboardMarkup) {
-                ICQButtonList.push(bt.getQueryStructure())
-            }
- 
-            return  [ICQButtonList];
+        if (!inlineKeyboardMarkup) return null;
+        let ICQButtonList = [];
+        for (let bt of inlineKeyboardMarkup) {
+            ICQButtonList.push(bt.getQueryStructure())
         }
-        return null;
+        return  [ICQButtonList];
     }
+    
     sendFile(chatId: string, fileId: string, file?: string, caption?: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseUploadFile | ResponseSendFile> {
 
         if (file) {
