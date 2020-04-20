@@ -279,4 +279,15 @@ var UnknownCommandHandler = (function (_super) {
     return UnknownCommandHandler;
 }(CommandHandler));
 exports.UnknownCommandHandler = UnknownCommandHandler;
+var BotButtonCommandHandler = (function (_super) {
+    __extends(BotButtonCommandHandler, _super);
+    function BotButtonCommandHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    BotButtonCommandHandler.prototype.check = function (event, dispatcher) {
+        return _super.prototype.check.call(this, event, dispatcher) && event.type == Event_1.EventType.CALLBACK_QUERY;
+    };
+    return BotButtonCommandHandler;
+}(HandlerBase));
+exports.BotButtonCommandHandler = BotButtonCommandHandler;
 //# sourceMappingURL=Handler.js.map

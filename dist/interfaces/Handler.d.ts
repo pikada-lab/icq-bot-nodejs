@@ -72,3 +72,6 @@ export declare class UnknownCommandHandler extends CommandHandler {
     check(event: any, dispatcher: any): boolean;
     handle(event: any, dispatcher: any): void;
 }
+export declare class BotButtonCommandHandler extends HandlerBase {
+    check(event: any, dispatcher: any): boolean;
+}

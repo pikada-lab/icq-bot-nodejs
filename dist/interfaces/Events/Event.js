@@ -10,5 +10,6 @@ var EventType;
     EventType["NEW_CHAT_MEMBERS"] = "newChatMembers";
     EventType["LEFT_CHAT_MEMBERS"] = "leftChatMembers";
     EventType["CHANGED_CHAT_INFO"] = "changedChatInfo";
+    EventType["CALLBACK_QUERY"] = "callbackQuery";
 })(EventType = exports.EventType || (exports.EventType = {}));
 //# sourceMappingURL=Event.js.map

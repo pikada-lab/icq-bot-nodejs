@@ -11,6 +11,7 @@ import { ResponseAdmin } from "../interfaces/Response/ResponseAdmin";
 import { ResponseFileInfo } from "../interfaces/Response/ResponseFileInfo";
 import { ResponseMembers } from "../interfaces/Response/ResponseMembers";
 import { ResponseUsers } from "../interfaces/Response/ResponseUsers";
+import { ICQButton } from "./ICQButton";
 export declare class Bot implements ICQBot {
     private token;
     private uin;
@@ -35,11 +36,13 @@ export declare class Bot implements ICQBot {
     stop(): ICQBot;
     eventsGet(pollTimeS: number, lastEventId: number): Promise<ResponseEvent>;
     selfGet(): Promise<Self>;
-    sendText(chatId: string, text: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String): Promise<ResponseMessage>;
-    sendFile(chatId: string, fileId: string, file?: string, caption?: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String): Promise<ResponseUploadFile | ResponseSendFile>;
-    sendVoice(chatId: string, fileId: string, file: string, replyMsgId: String, forwardChatId: String, forwardMsgId: String): Promise<ResponseUploadVoice | ResponseSendVoice>;
-    editText(chatId: string, msgId: string, text: String): Promise<Response>;
+    sendText(chatId: string, text: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseMessage>;
+    private getICQButtonList(inlineKeyboardMarkup);
+    sendFile(chatId: string, fileId: string, file?: string, caption?: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseUploadFile | ResponseSendFile>;
+    sendVoice(chatId: string, fileId: string, file: string, replyMsgId: String, forwardChatId: String, forwardMsgId: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseUploadVoice | ResponseSendVoice>;
+    editText(chatId: string, msgId: string, text: String, inlineKeyboardMarkup?: ICQButton[]): Promise<Response>;
     deleteMessages(chatId: string, msgId: string): Promise<Response>;
+    answerCallbackQuery(chatId: string, text: string, showAlert: boolean, url: string): Promise<Response>;
     sendActions(chatId: string, actions: 'looking' | 'typing'): Promise<Response>;
     getChatInfo(chatId: string): Promise<Chat>;
     getChatAdmins(chatId: string): Promise<ResponseAdmin>;
