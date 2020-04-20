@@ -15,21 +15,16 @@ var ICQButton = (function () {
     }
     ICQButton.prototype.getQueryStructure = function () {
         if (this.url) {
-            return [
-                {
-                    text: this.text,
-                    callbackData: this.callbackData,
-                    url: this.url
-                }
-            ];
+            return {
+                text: this.text,
+                url: this.url
+            };
         }
         else {
-            return [
-                {
-                    text: this.text,
-                    callbackData: this.callbackData
-                }
-            ];
+            return {
+                text: this.text,
+                callbackData: this.callbackData
+            };
         }
     };
     return ICQButton;

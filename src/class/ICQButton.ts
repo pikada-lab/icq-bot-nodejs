@@ -14,20 +14,15 @@ export class ICQButton {
 
     getQueryStructure() {
         if (this.url) {
-            return [
-                {
-                    text: this.text,
-                    callbackData: this.callbackData,
+            return   {
+                    text: this.text, 
                     url: this.url
-                }
-            ];
+                };
         } else {
-            return [
-                {
+            return {
                     text: this.text,
                     callbackData: this.callbackData
                 }
-            ];
         }
     }
 }

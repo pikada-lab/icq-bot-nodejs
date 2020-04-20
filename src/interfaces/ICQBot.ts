@@ -58,7 +58,6 @@ export interface ICQBot {
     setAbout(chatId: string, text: string): Promise<Response>;
     setRules(chatId: string, rules: string): Promise<Response>;
 
-
     getMembers(chatId: string, cursor?: string): Promise<ResponseMembers>;
 
     getBlockedUsers(chatId: string): Promise<ResponseUsers>;

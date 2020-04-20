@@ -116,6 +116,7 @@ var Bot = (function () {
             if (ICQButtonList)
                 option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
         }
+        console.log(option);
         return this.http.get(this.apiBaseUrl + "/messages/sendText", option, { "user-agent": this.getUserAgent() });
     };
     Bot.prototype.getICQButtonList = function (inlineKeyboardMarkup) {
@@ -125,7 +126,7 @@ var Bot = (function () {
                 var bt = inlineKeyboardMarkup_1[_i];
                 ICQButtonList.push(bt.getQueryStructure());
             }
-            return JSON.stringify(ICQButtonList);
+            return [ICQButtonList];
         }
         return null;
     };

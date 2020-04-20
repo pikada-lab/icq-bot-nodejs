@@ -137,7 +137,7 @@ export class Bot implements ICQBot {
             let ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup)
             if (ICQButtonList) option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
         }
-
+        console.log(option);
         return this.http.get<ResponseMessage>(`${this.apiBaseUrl}/messages/sendText`, option, { "user-agent": this.getUserAgent() });
     }
 
@@ -147,7 +147,8 @@ export class Bot implements ICQBot {
             for (let bt of inlineKeyboardMarkup) {
                 ICQButtonList.push(bt.getQueryStructure())
             }
-            return JSON.stringify(ICQButtonList);
+ 
+            return  [ICQButtonList];
         }
         return null;
     }

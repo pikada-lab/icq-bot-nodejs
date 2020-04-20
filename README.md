@@ -45,7 +45,7 @@ npm install icq-bot -s
 # Использование
 
 Инициализация для JS проекта
-```nodejs
+```typescript
 const ICQ = requier("icq-bot").default;
 const TOKEN = "XXX.XXX.XXX:XXX"
 const bot = new ICQ.Bot(TOKEN);
@@ -53,14 +53,14 @@ const bot = new ICQ.Bot(TOKEN);
 где XXX.XXX.XXX:XXX - токен, который выдал метобот в диалоге
 
 Конструктор класса поддерживает два параметра
-```nodehs
+```typescript
 
 const options = { 
-    apiUrlBase:string, 
-    name:string, 
-    version:string, 
-    timeoutS: number, 
-    pollTimeS: number
+    apiUrlBase: string, 
+    name:       string, 
+    version:    string, 
+    timeoutS:   number, 
+    pollTimeS:  number
 };
 
 new ICQ.Bot(TOKEN, options);
@@ -74,7 +74,7 @@ new ICQ.Bot(TOKEN, options);
 
 Отправка сообщений чрез API
 
-```nodejs
+```typescript
 const chatId = "XXX";
 bot.sendText(charID,"TEXT HERE..").then( response =>{ console.log( response.ok ) });
 ```
@@ -99,7 +99,8 @@ bot.sendText(charID,"TEXT HERE..").then( response =>{ console.log( response.ok )
 Хэндлер должен быть помещён в экземпляр класса дипечер в экземпляре класса бот. Для этого в ранее созданном боте необходимо вызвать метод getDispatcher() который вернёт актуальный диспетчер. 
 
 Далее следует вызвать метод addHanler( handler: BaseHandler ) и поместить один из выше перечисленных созданных обработчиков. В примере приведен обработчик Message
-```nodejs
+
+```typescript
 let handler = new ICQ.Handler.Message(null, (bot, event) => { });
 bot.getDispatcher().addHandler(handler);
 bot.startPolling(); 
@@ -129,7 +130,7 @@ bot.startPolling();
 - FilterComposite.not (filter)
 На вход он принемает любые фильтры, которые будут пременяться согласно выбранного правила обработки.
 
-```nodejs
+```typescript
 let handler = new ICQ.Handler.Message(new ICQ.Filter.url(), (bot, event) => { 
    // code here...
 });
@@ -137,7 +138,19 @@ bot.getDispatcher().addHandler(handler);
 bot.startPolling(); 
 ```
 
+## Создание кнопок
 
+Кнопки вынесены в отдельный класс ICQButton
+
+```typescript
+let buttonOk = new ICQ.Button("Ok", "1319184")
+let buttonOpenWeb = new ICQ.Button("Ok", null, "https://fake-mm.ru")
+
+```
+
+* text - Текст, который будет отображен на кнопке. Допустимо использовать **\n** для того, чтобы текст был на несколько строк
+* callbackData - Данные, которые будут отправлены боту в момент нажатия на кнопку
+* url - который необходимо открыть по нажатию на кнопку 
 
 # API description
 <ul>

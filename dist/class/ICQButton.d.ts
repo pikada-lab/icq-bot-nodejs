@@ -11,10 +11,9 @@ export declare class ICQButton {
     constructor(text: string, callbackData: string, url?: any);
     getQueryStructure(): {
         text: string;
-        callbackData: string;
         url: any;
-    }[] | {
+    } | {
         text: string;
         callbackData: string;
-    }[];
+    };
 }
