@@ -16,10 +16,18 @@ import { LeftChatMembersEvent } from "../interfaces/Events/LeftChatMembersEvent"
 
 import { UserWidthName } from "../interfaces/Entities/User";
 import { Event } from "../interfaces/Events/Event";
- 
+import { CallbackQueryEvent } from "../interfaces/Events/CallbackQueryEvent";
+
 export class ICQEvent {
     type: EventType;
-    data: NewMessageEvent | EditedMessageEvent | DeletedMessageEvent | PinnedMessageEvent | UnpinnedMessageEvent | NewChatMembersEvent | LeftChatMembersEvent
+    data: NewMessageEvent |
+        EditedMessageEvent |
+        DeletedMessageEvent |
+        PinnedMessageEvent |
+        UnpinnedMessageEvent |
+        NewChatMembersEvent |
+        LeftChatMembersEvent |
+        CallbackQueryEvent;
     text: String;
     messageAuthor: UserWidthName;
     fromChatId: string;
