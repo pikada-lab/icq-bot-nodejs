@@ -10,6 +10,9 @@ var ICQEvent = (function () {
             this.fromChatId = this.data.chat.chatId;
             this.messageAuthor = this.data.from;
         }
+        if (this.type == Event_1.EventType.DELETED_MESSAGE) {
+            this.fromChatId = this.data.chat.chatId;
+        }
     }
     return ICQEvent;
 }());

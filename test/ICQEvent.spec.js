@@ -7,7 +7,7 @@
  */
 const assert = require('assert')
 const ICQEvent = require('../dist/class/ICQEvent').ICQEvent
-
+const ev = require("./constant");
 
 /**
  * Я
@@ -54,6 +54,25 @@ const event =  {
 
    
 describe("ICQEvent constructor", () => {
+    describe("DeleteMessage interface test", () => {
+ 
+        let icqEvent = new ICQEvent(ev.eventDeleteMessage);
+        it('text should by undefined', () => { 
+            assert(icqEvent.text === undefined);
+        })
+        it('type should by "deletedMessage"', () => { 
+            assert(icqEvent.type === "deletedMessage");
+        })
+        it('chatId should by "681869378@chat.agent"', () => { 
+            assert(icqEvent.fromChatId === "681869378@chat.agent");
+        })
+        it('messageAuthor.lastName should by undefined', () => { 
+            assert(icqEvent.messageAuthor === undefined);
+        })
+        it('icqEvent.data.msgId should by "57883346846815032"', () => { 
+            assert(icqEvent.data.msgId === "57883346846815032");
+        })
+    })
     describe("NewMessageEvent interface test", () => {
  
         let icqEvent = new ICQEvent(event);

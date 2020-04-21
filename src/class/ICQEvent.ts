@@ -39,5 +39,8 @@ export class ICQEvent {
             this.fromChatId = (this.data as NewMessageEvent).chat.chatId
             this.messageAuthor = (this.data as NewMessageEvent).from
         }
+        if( this.type == EventType.DELETED_MESSAGE) {
+            this.fromChatId = (this.data as DeletedMessageEvent).chat.chatId 
+        }
     }
 }
