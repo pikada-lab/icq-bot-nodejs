@@ -36,11 +36,11 @@ export class ICQEvent {
         this.data = event.payload;
         if (this.type == EventType.NEW_MESSAGE || this.type == EventType.EDITED_MESSAGE || this.type == EventType.PINNED_MESSAGE) {
             this.text = (this.data as NewMessageEvent).text
-            this.fromChatId = (this.data as NewMessageEvent).chat.chatId
+            // this.fromChatId = (this.data as NewMessageEvent).chat.chatId
             this.messageAuthor = (this.data as NewMessageEvent).from
         }
-        if( this.type == EventType.DELETED_MESSAGE) {
-            this.fromChatId = (this.data as DeletedMessageEvent).chat.chatId 
+        if( this.data  && this.data.chat ) {
+            this.fromChatId = this.data.chat.chatId 
         }
     }
 }
