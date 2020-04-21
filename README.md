@@ -131,7 +131,7 @@ bot.startPolling();
 На вход он принемает любые фильтры, которые будут пременяться согласно выбранного правила обработки.
 
 ```typescript
-let handler = new ICQ.Handler.Message(new ICQ.Filter.url(), (bot, event) => { 
+let handler = new ICQ.Handler.Message(ICQ.Filter.url, (bot, event) => { 
    // code here...
 });
 bot.getDispatcher().addHandler(handler);
