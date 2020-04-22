@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/mocha": "5.2.5",
     "@types/node": "^13.9.1",
-    "codecov": "^3.6.5", 
+    "codecov": "^3.6.5",
     "mocha": "^7.1.0",
     "nyc": "^15.0.0"
   },
@@ -54,5 +54,5 @@
     "test": "nyc mocha --timeout 10000",
     "posttest": "nyc report --reporter=json"
   },
-  "version": "2.1.20"
+  "version": "2.1.21"
 }
