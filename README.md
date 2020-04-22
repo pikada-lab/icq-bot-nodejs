@@ -198,9 +198,11 @@ mkdir testBot
 cd ./testBot
 npm init --force
 npm i icq-bot -s
+```
 
-# Создаём и вставляем в index.js код выше со своим токеном бота
+Создаём и вставляем в index.js код выше со своим токеном бота
 
+```
 node index.js
 ```
 
