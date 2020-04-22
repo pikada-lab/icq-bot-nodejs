@@ -16,6 +16,7 @@
 - [Регистрация](#Регистрация)
 - [Установка](#Установка)
 - [Использование](#Использование)
+- [Пример кода](#Пример-кода)
 - [Описание API](#api-description)
 
 # Вступление
@@ -159,6 +160,49 @@ let buttonOpenWeb = new ICQ.Button("Ok", null, "https://fake-mm.ru")
 * text - Текст, который будет отображен на кнопке. Допустимо использовать **\n** для того, чтобы текст был на несколько строк
 * callbackData - Данные, которые будут отправлены боту в момент нажатия на кнопку
 * url - который необходимо открыть по нажатию на кнопку 
+
+# Пример кода
+
+Файл index.js
+```javascript
+const ICQ = require('icq-bot').default;
+
+const bot = new ICQ.Bot(ВАШ_ТОКЕН_БОТА);
+
+let handlerNewMessage = new ICQ.Handler.Message(null, (bot, event) => {
+    console.log(`New Message event.fromChatID = ${event.fromChatId}`);
+    const chatId = event.data.chat.chatId;
+    bot.sendText(chatId, "Привет!");
+});
+ 
+
+let handlerDeleteMessage = new ICQ.Handler.DeletedMessage(null, (bot, event) => {
+    console.log(event);
+    console.log(`Deleted Message event.fromChatID = ${event.fromChatId}`);
+    const chatId = event.data.chat.chatId;
+    bot.sendText(chatId, "Зачем!");
+});
+ 
+ 
+bot.getDispatcher().addHandler(handlerNewMessage);
+bot.getDispatcher().addHandler(handlerDeleteMessage);
+
+bot.startPolling();
+ 
+``` 
+
+Команды в терминале bash
+
+```bash
+mkdir testBot
+cd ./testBot
+npm init --force
+npm i icq-bot -s
+
+# Создаём и вставляем в index.js код выше со своим токеном бота
+
+node index.js
+```
 
 # API description
 <ul>
