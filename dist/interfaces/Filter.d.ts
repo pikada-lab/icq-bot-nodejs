@@ -1,25 +1,33 @@
 import { ICQEvent } from "../class/ICQEvent";
-export interface Filter {
+export interface Filters {
     filter(event: ICQEvent): boolean;
 }
 /** Фильтр проверяет тип события и наличие текста в нём */
-export declare class MessageFilter implements Filter {
+export declare class MessageFilter implements Filters {
     filter(event: ICQEvent): boolean;
 }
+/** Фильтр проверяет наличие 1 символа похожего на "/" или "." */
 export declare class CommandFilter extends MessageFilter {
     COMMAND_PREFIXES: String[];
     filter(event: ICQEvent): boolean;
 }
+/** Фильтр проверяет регулярным выражением  текст сообщения   */
 export declare class RegexpFilter extends MessageFilter {
     pattern: RegExp;
     constructor(pattern: RegExp);
     filter(event: any): boolean;
 }
+/**
+ * Фильтрует сообщения конкретного пользователя
+ */
 export declare class SenderFilter extends MessageFilter {
     private user_id;
     constructor(user_id: number);
     filter(event: any): boolean;
 }
+/**
+ * Возвращает истину если тип сообщения файл
+ */
 export declare class FileFilter extends MessageFilter {
     filter(event: any): boolean;
 }
@@ -55,14 +63,14 @@ export declare enum TypeFilterOperation {
     or = 2,
     not = 3,
 }
-export declare class FilterComposite implements Filter {
+export declare class FilterComposite implements Filters {
     private type;
     private leftFilter;
     private rightFilter;
-    constructor(type: TypeFilterOperation, leftFilter: Filter, rightFilter?: Filter);
-    static and(leftFilter: Filter, rightFilter: Filter): FilterComposite;
-    static or(leftFilter: Filter, rightFilter: Filter): FilterComposite;
-    static not(filter: Filter): FilterComposite;
+    constructor(type: TypeFilterOperation, leftFilter: Filters, rightFilter?: Filters);
+    static and(leftFilter: Filters, rightFilter: Filters): FilterComposite;
+    static or(leftFilter: Filters, rightFilter: Filters): FilterComposite;
+    static not(filter: Filters): FilterComposite;
     filter(event: ICQEvent): boolean;
 }
 export declare class Filter {

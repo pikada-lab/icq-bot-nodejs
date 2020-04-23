@@ -4,17 +4,18 @@ import { NewMessageEvent } from "./Events/NewMessageEvent";
 import { ICQEvent } from "../class/ICQEvent";
 
 
-export interface Filter {
+export interface Filters {
     filter(event: ICQEvent): boolean;
 }
 
 /** Фильтр проверяет тип события и наличие текста в нём */
-export class MessageFilter implements Filter {
+export class MessageFilter implements Filters {
     filter(event: ICQEvent): boolean {
         return event.data["text"] && event["text"].length > 0;
     }
 }
 
+/** Фильтр проверяет наличие 1 символа похожего на "/" или "." */
 export class CommandFilter extends MessageFilter {
     COMMAND_PREFIXES: String[] = ["/", "."];
 
@@ -22,6 +23,8 @@ export class CommandFilter extends MessageFilter {
         return (super.filter(event) && this.COMMAND_PREFIXES.findIndex(r => r === (event.data as NewMessageEvent).text.trim()[0]) >= 0)
     }
 }
+
+/** Фильтр проверяет регулярным выражением  текст сообщения   */
 export class RegexpFilter extends MessageFilter {
     pattern: RegExp;
     constructor(pattern: RegExp) {
@@ -35,6 +38,9 @@ export class RegexpFilter extends MessageFilter {
 }
 
 
+/**
+ * Фильтрует сообщения конкретного пользователя
+ */
 export class SenderFilter extends MessageFilter {
     constructor(private user_id: number) {
         super();
@@ -44,6 +50,9 @@ export class SenderFilter extends MessageFilter {
     }
 }
 
+/**
+ * Возвращает истину если тип сообщения файл
+ */
 export class FileFilter extends MessageFilter {
     filter(event) {
         return super.filter(event) && event.data['parts'] &&
@@ -121,17 +130,17 @@ export enum TypeFilterOperation {
     or,
     not
 }
-export class FilterComposite implements Filter {
-    constructor(private type: TypeFilterOperation, private leftFilter: Filter, private rightFilter?: Filter) {
+export class FilterComposite implements Filters {
+    constructor(private type: TypeFilterOperation, private leftFilter: Filters, private rightFilter?: Filters) {
 
     }
-    static and(leftFilter: Filter, rightFilter: Filter) {
+    static and(leftFilter: Filters, rightFilter: Filters) {
         return new FilterComposite(TypeFilterOperation.and, leftFilter, rightFilter);
     }
-    static or(leftFilter: Filter, rightFilter: Filter) {
+    static or(leftFilter: Filters, rightFilter: Filters) {
         return new FilterComposite(TypeFilterOperation.or, leftFilter, rightFilter);
     }
-    static not(filter: Filter) {
+    static not(filter: Filters) {
         return new FilterComposite(TypeFilterOperation.not, filter);
 
     }

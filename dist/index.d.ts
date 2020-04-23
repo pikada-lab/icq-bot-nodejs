@@ -3,7 +3,13 @@ import { HelpCommandHandler as ICQHelpCommandHandler, MessageHandler, NewChatMem
 import { Filter } from "./interfaces/Filter";
 import { ICQButton } from "./class/ICQButton";
 export default class ICQ {
+    /**
+     * Класс кнопки для сообщений
+     */
     static Button: typeof ICQButton;
+    /**
+     * Бот для вызова
+     */
     static Bot: typeof Bot;
     static Filter: Filter;
     static Handler: {

@@ -7,7 +7,13 @@ var ICQButton_1 = require("./class/ICQButton");
 var ICQ = (function () {
     function ICQ() {
     }
+    /**
+     * Класс кнопки для сообщений
+     */
     ICQ.Button = ICQButton_1.ICQButton;
+    /**
+     * Бот для вызова
+     */
     ICQ.Bot = Bot_1.Bot;
     ICQ.Filter = new Filter_1.Filter();
     ICQ.Handler = {

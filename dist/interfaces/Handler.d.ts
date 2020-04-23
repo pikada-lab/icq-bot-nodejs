@@ -1,4 +1,4 @@
-import { Filter } from "./Filter";
+import { Filters } from "./Filter";
 import { Dispatcher } from "./Dispatcher";
 import { Bot } from "../class/Bot";
 import { ICQBot } from "./ICQBot";
@@ -12,9 +12,9 @@ export interface Handler {
     handle(event: ICQEvent, dispatcher: Dispatcher): void;
 }
 export declare class HandlerBase implements Handler {
-    protected filters: Filter;
+    protected filters: Filters;
     protected callback: (bot: ICQBot, event: ICQEvent) => void;
-    constructor(filters: Filter, callback: (bot: ICQBot, event: ICQEvent) => void);
+    constructor(filters: Filters, callback: (bot: ICQBot, event: ICQEvent) => void);
     check(event: ICQEvent, dispatcher: Dispatcher): boolean;
     handle(event: ICQEvent, dispatcher: Dispatcher): void;
 }

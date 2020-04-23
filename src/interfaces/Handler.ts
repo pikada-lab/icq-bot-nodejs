@@ -1,4 +1,4 @@
-import { Filter } from "./Filter";
+import { Filters } from "./Filter";
 import { Dispatcher } from "./Dispatcher";
 import { EventType } from "./Events/Event";
 import { Bot } from "../class/Bot";
@@ -15,7 +15,7 @@ export interface Handler {
 }
 
 export class HandlerBase implements Handler {
-    constructor(protected filters: Filter, protected callback: (bot: ICQBot, event: ICQEvent) => void) { }
+    constructor(protected filters: Filters, protected callback: (bot: ICQBot, event: ICQEvent) => void) { }
 
     check(event: ICQEvent, dispatcher: Dispatcher) { 
         return (!this.filters || this.filters.filter(event));

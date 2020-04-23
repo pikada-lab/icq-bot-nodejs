@@ -21,6 +21,7 @@ var MessageFilter = (function () {
     return MessageFilter;
 }());
 exports.MessageFilter = MessageFilter;
+/** Фильтр проверяет наличие 1 символа похожего на "/" или "." */
 var CommandFilter = (function (_super) {
     __extends(CommandFilter, _super);
     function CommandFilter() {
@@ -34,6 +35,7 @@ var CommandFilter = (function (_super) {
     return CommandFilter;
 }(MessageFilter));
 exports.CommandFilter = CommandFilter;
+/** Фильтр проверяет регулярным выражением  текст сообщения   */
 var RegexpFilter = (function (_super) {
     __extends(RegexpFilter, _super);
     function RegexpFilter(pattern) {
@@ -47,6 +49,9 @@ var RegexpFilter = (function (_super) {
     return RegexpFilter;
 }(MessageFilter));
 exports.RegexpFilter = RegexpFilter;
+/**
+ * Фильтрует сообщения конкретного пользователя
+ */
 var SenderFilter = (function (_super) {
     __extends(SenderFilter, _super);
     function SenderFilter(user_id) {
@@ -60,6 +65,9 @@ var SenderFilter = (function (_super) {
     return SenderFilter;
 }(MessageFilter));
 exports.SenderFilter = SenderFilter;
+/**
+ * Возвращает истину если тип сообщения файл
+ */
 var FileFilter = (function (_super) {
     __extends(FileFilter, _super);
     function FileFilter() {
