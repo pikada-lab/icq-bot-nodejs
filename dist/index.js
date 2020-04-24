@@ -41,7 +41,8 @@ var ICQ = (function () {
         StartCommand: Handler_1.StartCommandHandler,
         FeedbackCommand: Handler_1.FeedbackCommandHandler,
         UnknownCommand: Handler_1.UnknownCommandHandler,
-        Default: Handler_1.DefaultHandler,
+        All: Handler_1.DefaultHandler,
+        BotButtonCommand: Handler_1.BotButtonCommandHandler
     };
     return ICQ;
 }());
