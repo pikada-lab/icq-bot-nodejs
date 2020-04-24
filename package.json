@@ -54,5 +54,5 @@
     "test": "nyc mocha --timeout 10000",
     "posttest": "nyc report --reporter=json"
   },
-  "version": "2.1.25"
+  "version": "2.1.26"
 }
