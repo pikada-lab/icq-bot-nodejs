@@ -7,6 +7,7 @@ import { NewChatMembersEvent } from "./NewChatMembersEvent";
 import { LeftChatMembersEvent } from "./LeftChatMembersEvent";
 import { CallbackQueryEvent } from "./CallbackQueryEvent";
 
+/** Типы сообщений */
 export enum EventType {
     NEW_MESSAGE = "newMessage",
     EDITED_MESSAGE = "editedMessage",
@@ -19,10 +20,15 @@ export enum EventType {
     CALLBACK_QUERY = "callbackQuery"
 }
 
+
 export interface ResponseEvent {
     events: Event[];
 }
 
+/**
+ * Каждое событие имеет идентификатор eventId и type
+ * В зависимости от type параметра будет разная полезная нагрузка payload.
+ */
 export interface Event {
     eventId: number;
     type: EventType;

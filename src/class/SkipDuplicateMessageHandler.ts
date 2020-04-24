@@ -20,7 +20,7 @@ export class SkipDuplicateMessageHandler extends MessageHandler {
     public check(event: ICQEvent, dispatcher: Dispatcher) {
         if (super.check(event, dispatcher)) {
             for (let i in this.cache) {
-                console.log(i,(event.data as NewMessageEvent).msgId, this.cache[i], event.text)
+            //    console.log(i,(event.data as NewMessageEvent).msgId, this.cache[i], event.text)
                 if (i && i == (event.data as NewMessageEvent).msgId && this.cache[i] == event.text) {
                    // return false;
                    throw new Error(`Caught StopDispatching id'${i}' exception, stopping dispatching.`);

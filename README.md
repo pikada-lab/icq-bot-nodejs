@@ -163,46 +163,63 @@ let buttonOpenWeb = new ICQ.Button("Ok", null, "https://fake-mm.ru")
 
 # Пример кода
 
-Файл index.js
+Команды в терминале bash
+
+```bash
+# Создаём директорию
+mkdir testBot
+# Переходим в неё
+cd ./testBot
+# Создаём npm проект по умолчанию
+npm init --force
+# Устанавливаем зависимость icq-bot
+npm i icq-bot -s
+```
+
+Далее создаём и вставляем в index.js код ниже со своим токеном.
+
+- Файл index.js
+
 ```javascript
+// Импортируем бота
 const ICQ = require('icq-bot').default;
 
+// Создаём фасад пакета ICQ
 const bot = new ICQ.Bot(ВАШ_ТОКЕН_БОТА);
 
-let handlerNewMessage = new ICQ.Handler.Message(null, (bot, event) => {
-    console.log(`New Message event.fromChatID = ${event.fromChatId}`);
-    const chatId = event.data.chat.chatId;
+// Создаём обработчик для новых сообщений
+const handlerNewMessage = new ICQ.Handler.Message(null, (bot, event) => {
+    // Получаем номер чата из объекта event
+    const chatId = event.fromChatId;
+    // Выводим в консоль тип события и номер чата
+    console.log(`New Message event.fromChatID = ${chatId}`); 
+    // Отправляем сообщение в чат отправителя
     bot.sendText(chatId, "Привет!");
 });
- 
 
-let handlerDeleteMessage = new ICQ.Handler.DeletedMessage(null, (bot, event) => {
-    console.log(event);
-    console.log(`Deleted Message event.fromChatID = ${event.fromChatId}`);
-    const chatId = event.data.chat.chatId;
+// Создаём обработчик для удалённых сообщений
+const handlerDeleteMessage = new ICQ.Handler.DeletedMessage(null, (bot, event) => { 
+    // Получаем номер чата из объекта event
+    const chatId = event.fromChatId;
+    // Выводим в консоль тип события и номер чата
+    console.log(`Deleted Message event.fromChatID = ${chatId}`); 
+    // Отправляем сообщение в чат отправителя
     bot.sendText(chatId, "Зачем!");
 });
  
- 
+// Получаем диспетчер бота и добавляем в него обработчики 
 bot.getDispatcher().addHandler(handlerNewMessage);
 bot.getDispatcher().addHandler(handlerDeleteMessage);
 
+// Запускаем пулинг для получения команд обработчикам
 bot.startPolling();
  
 ``` 
 
-Команды в терминале bash
+Далее остаётся запустить нашего бота
 
 ```bash
-mkdir testBot
-cd ./testBot
-npm init --force
-npm i icq-bot -s
-```
-
-Создаём и вставляем в index.js код выше со своим токеном бота
-
-```
+# Запускаем проект
 node index.js
 ```
 

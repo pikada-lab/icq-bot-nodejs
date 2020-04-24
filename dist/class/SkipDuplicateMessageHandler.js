@@ -30,7 +30,7 @@ var SkipDuplicateMessageHandler = (function (_super) {
     SkipDuplicateMessageHandler.prototype.check = function (event, dispatcher) {
         if (_super.prototype.check.call(this, event, dispatcher)) {
             for (var i in this.cache) {
-                console.log(i, event.data.msgId, this.cache[i], event.text);
+                //    console.log(i,(event.data as NewMessageEvent).msgId, this.cache[i], event.text)
                 if (i && i == event.data.msgId && this.cache[i] == event.text) {
                     // return false;
                     throw new Error("Caught StopDispatching id'" + i + "' exception, stopping dispatching.");

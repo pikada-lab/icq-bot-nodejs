@@ -15,16 +15,16 @@ export class MessageFilter implements Filters {
     }
 }
 
-/** Фильтр проверяет наличие 1 символа похожего на "/" или "." */
+/** Фильтр проверяет наличие первого символа на равенство "/" или "." */
 export class CommandFilter extends MessageFilter {
     COMMAND_PREFIXES: String[] = ["/", "."];
 
-    filter(event: ICQEvent) {
+    filter(event: ICQEvent) {  
         return (super.filter(event) && this.COMMAND_PREFIXES.findIndex(r => r === (event.data as NewMessageEvent).text.trim()[0]) >= 0)
     }
 }
 
-/** Фильтр проверяет регулярным выражением  текст сообщения   */
+/** Фильтр проверяет регулярным выражением текст сообщения и фильтрует по нему  */
 export class RegexpFilter extends MessageFilter {
     pattern: RegExp;
     constructor(pattern: RegExp) {
@@ -36,7 +36,6 @@ export class RegexpFilter extends MessageFilter {
         return super.filter(event) && this.pattern.test(event.data["text"])
     }
 }
-
 
 /**
  * Фильтрует сообщения конкретного пользователя
@@ -51,7 +50,7 @@ export class SenderFilter extends MessageFilter {
 }
 
 /**
- * Возвращает истину если тип сообщения файл
+ * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа файл
  */
 export class FileFilter extends MessageFilter {
     filter(event) {
@@ -60,7 +59,9 @@ export class FileFilter extends MessageFilter {
     }
 }
 
-
+/**
+ * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа изображение
+ */
 export class ImageFilter extends FileFilter {
     filter(event: ICQEvent) {
         return super.filter(event) &&
@@ -68,6 +69,9 @@ export class ImageFilter extends FileFilter {
     }
 }
 
+/**
+ * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа видел
+ */
 export class VideoFilter extends FileFilter {
     filter(event: ICQEvent) {
         return super.filter(event) &&
@@ -75,6 +79,9 @@ export class VideoFilter extends FileFilter {
     }
 }
 
+/**
+ * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа Аудио
+ */
 export class AudioFilter extends FileFilter {
     filter(event: ICQEvent) {
         return super.filter(event) &&
@@ -82,13 +89,19 @@ export class AudioFilter extends FileFilter {
     }
 }
 
+/**
+ * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа Стикер
+ */
 export class StickerFilter extends MessageFilter {
-    filter(event: ICQEvent) { 
+    filter(event: ICQEvent) {
         return super.filter(event) && event.data['parts'] &&
             event.data['parts'].findIndex(r => r && r.type == PartsType.STICKER) >= 0
     }
 }
 
+/**
+ * Фильтрует события где был упомянут пользователь
+ */
 export class MentionFilter extends MessageFilter {
     constructor(public userId: Number) {
         super();
@@ -99,13 +112,18 @@ export class MentionFilter extends MessageFilter {
     }
 }
 
-
+/**
+ * Фильтрует события и оставляет только сообщения с полезной нагрузкой типо FORWARD - Перенаправленное (Пересылаемое сообщение)
+ */
 export class ForwardFilter extends MessageFilter {
     filter(event: ICQEvent) {
         return event.data['parts'] && (event.data as NewMessageEvent).parts.findIndex(r => r && r.type == PartsType.FORWARD) >= 0
     }
 }
 
+/**
+ * Фильтрует события и оставляет только сообщения с полезной нагрузкой типо Reply - Цитата сообщения
+ */
 export class ReplyFilter extends MessageFilter {
     filter(event: ICQEvent) {
         return super.filter(event) && event.data['parts'] &&
@@ -113,7 +131,9 @@ export class ReplyFilter extends MessageFilter {
     }
 }
 
-
+/**
+ * Фильтрует сообщения состоящии из одной URL ссылки. Допускаются пробелы в начале и конце сообщения.
+ */
 export class URLFilter extends RegexpFilter {
 
     constructor() {
@@ -125,11 +145,14 @@ export class URLFilter extends RegexpFilter {
     }
 }
 
+/** Типы операций над фильтрами */
 export enum TypeFilterOperation {
     and = 1,
     or,
     not
 }
+
+/** Создаёт композитный фильтр из двух, применяя к ним оператор сравнения. Рекомендую использовать статические методы and, or, not */
 export class FilterComposite implements Filters {
     constructor(private type: TypeFilterOperation, private leftFilter: Filters, private rightFilter?: Filters) {
 
@@ -159,20 +182,100 @@ export class FilterComposite implements Filters {
 
 
 export class Filter {
+
+    /** 
+     * Фильтр проверяет тип события 
+     * и наличие текста в нём 
+     */
     static message = new MessageFilter()
+
+    /** 
+     * Фильтр проверяет наличие первого 
+     * символа на равенство "/" или "." 
+     */
     static command = new CommandFilter()
+
+    /** Фильтрует сообщения конкретного пользователя */
     static file = new FileFilter()
+
+    /**
+     * Фильтрует события и оставляет только 
+     * сообщения с полезной нагрузкой типа изображение
+     */
     static image = new ImageFilter()
+
+    /**
+     * Фильтрует события и оставляет только 
+     * сообщения с полезной нагрузкой типа Видео
+     */
     static video = new VideoFilter()
+
+    /**
+     * Фильтрует события и оставляет только 
+     * сообщения с полезной нагрузкой типа Аудио
+     */
     static audio = new AudioFilter()
+
+
+    /**
+     * Фильтрует события и оставляет только сообщения 
+     * с полезной нагрузкой типа Аудио, Видео, Изображение
+     */
     static media = FilterComposite.or(FilterComposite.or(Filter.image, Filter.video), Filter.audio);
+
+
+    /**
+     * Фильтрует события и оставляет только 
+     * сообщения с полезной нагрузкой типа Аудио, 
+     * Видео, Изображение, Файл
+     */
     static data = FilterComposite.and(Filter.file, FilterComposite.not(Filter.media));
+
+    /**
+     * Фильтрует события и оставляет только 
+     * сообщения с полезной нагрузкой типа Стикер
+     */
     static sticker = new StickerFilter()
+
+    /**
+     * Фильтрует сообщения состоящии из одной URL ссылки. 
+     * Допускаются пробелы в начале и конце сообщения.
+     */
     static url = new URLFilter()
+
+
+    /**
+     * Фильтрует события и оставляет только сообщения 
+     * с полезной нагрузкой типа Аудио, Видео, 
+     * Изображение, Файл, Стикер, Ссылка
+     * 
+     * Все сообщения у которых может быть текст.
+     */
     static text = FilterComposite.and(Filter.message, FilterComposite.not(FilterComposite.or(FilterComposite.or(FilterComposite.or(Filter.command, Filter.sticker), Filter.file), Filter.url)));
+
+    /** 
+     * Фильтр проверяет регулярным выражением 
+     * текст сообщения и фильтрует по нему 
+     */
     static regexp = RegexpFilter
+
+    /**
+     * Фильтрует события где был упомянут пользователь
+     */
     static mention = MentionFilter
+
+    /** 
+     * Фильтрует события и оставляет только сообщения 
+     * с полезной нагрузкой типо FORWARD - 
+     * Перенаправленное (Пересылаемое сообщение) */
     static forward = new ForwardFilter()
+
+    /**  Фильтрует события и оставляет только сообщения 
+     * с полезной нагрузкой типо Reply - Цитата сообщения */
     static reply = new ReplyFilter()
+
+    /**
+     * Фильтрует сообщения отпраленные конкретным пользователем
+     */
     static sender = SenderFilter
 }

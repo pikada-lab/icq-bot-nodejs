@@ -41,8 +41,7 @@ describe("Интеграционные тесты", () => {
 
         it("Отпарвка файла в чат", (done) => {
             bot.sendFile(chatId, null, filePath).then(r => {
-                if (r.ok) done();
-                console.log("sendFile", r)
+                if (r.ok) done(); 
                 bot.deleteMessages(chatId, r.msgId).then(r => { });
             });
         });

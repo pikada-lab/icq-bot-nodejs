@@ -2,6 +2,9 @@ import { Bot } from "./class/Bot";
 import { HelpCommandHandler as ICQHelpCommandHandler, MessageHandler, NewChatMembersHandler, LeftChatMembersHandler, UnknownCommandHandler, PinnedMessageHandler, UnPinnedMessageHandler, EditedMessageHandler, DeletedMessageHandler, CommandHandler, StartCommandHandler, FeedbackCommandHandler } from "./interfaces/Handler";
 import { Filter } from "./interfaces/Filter";
 import { ICQButton } from "./class/ICQButton";
+/**
+ * Фасад ICQ
+ */
 export default class ICQ {
     /**
      * Класс кнопки для сообщений
@@ -11,7 +14,16 @@ export default class ICQ {
      * Бот для вызова
      */
     static Bot: typeof Bot;
-    static Filter: Filter;
+    /**
+     * Базовые фильтры для обработчиков
+     */
+    static Filter: typeof Filter;
+    /**
+     * Базовые обработчики.
+     *
+     * Обратите внимание, что если под одно событие
+     * подходят несколько обработчиков, то будут вызваны оба.
+     */
     static Handler: {
         HelpCommand: typeof ICQHelpCommandHandler;
         Message: typeof MessageHandler;

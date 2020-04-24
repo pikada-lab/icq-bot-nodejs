@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/** Типы сообщений */
 var EventType;
 (function (EventType) {
     EventType["NEW_MESSAGE"] = "newMessage";

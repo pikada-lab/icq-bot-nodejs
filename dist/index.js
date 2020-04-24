@@ -4,6 +4,9 @@ var Bot_1 = require("./class/Bot");
 var Handler_1 = require("./interfaces/Handler");
 var Filter_1 = require("./interfaces/Filter");
 var ICQButton_1 = require("./class/ICQButton");
+/**
+ * Фасад ICQ
+ */
 var ICQ = (function () {
     function ICQ() {
     }
@@ -15,7 +18,16 @@ var ICQ = (function () {
      * Бот для вызова
      */
     ICQ.Bot = Bot_1.Bot;
-    ICQ.Filter = new Filter_1.Filter();
+    /**
+     * Базовые фильтры для обработчиков
+     */
+    ICQ.Filter = Filter_1.Filter;
+    /**
+     * Базовые обработчики.
+     *
+     * Обратите внимание, что если под одно событие
+     * подходят несколько обработчиков, то будут вызваны оба.
+     */
     ICQ.Handler = {
         HelpCommand: Handler_1.HelpCommandHandler,
         Message: Handler_1.MessageHandler,

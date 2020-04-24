@@ -1,4 +1,4 @@
-import { Filters } from "./Filter";
+import { Filters, Filter } from "./Filter";
 import { Dispatcher } from "./Dispatcher";
 import { EventType } from "./Events/Event";
 import { Bot } from "../class/Bot";
@@ -14,11 +14,26 @@ export interface Handler {
     handle(event: ICQEvent, dispatcher: Dispatcher): void;
 }
 
+/**
+ * Базовый обработчик. 
+ * 
+ * Срабатывает на все события если не установлен фильтр 
+ * или на события отфильтрованные установленным фильтром
+ */
 export class HandlerBase implements Handler {
+
+    /**
+     * Параметр filters может быть равен null. 
+     * В таком случае вызов callback будет происходить 
+     * каждый раз, когда приходит событие
+     * 
+     * @param filters Фильтр 
+     * @param callback Функция обратного вызова
+     */
     constructor(protected filters: Filters, protected callback: (bot: ICQBot, event: ICQEvent) => void) { }
 
     check(event: ICQEvent, dispatcher: Dispatcher) { 
-        return (!this.filters || this.filters.filter(event));
+         return (!this.filters || this.filters.filter(event));
     }
     handle(event: ICQEvent, dispatcher: Dispatcher) {
         if (this.callback) {
@@ -27,6 +42,11 @@ export class HandlerBase implements Handler {
     }
 }
 
+/**
+ * Обработчик для всех событий
+ * 
+ * Срабатывает всегда, когда приходит событие из пуллинга
+ */
 export class DefaultHandler extends HandlerBase {
     constructor(callback = null) {
         super(null, callback);
@@ -48,37 +68,57 @@ export class DefaultHandler extends HandlerBase {
         throw new Error("DefaultHandler");
     }
 }
+
+/**
+ * Обработчик новых участников группового чата 
+ * 
+ * Срабатывает когда в группу вступает новый пользователь
+ */
 export class NewChatMembersHandler extends HandlerBase {
     public check(event, dispatcher) {
         return (super.check(event, dispatcher) && event.type == EventType.NEW_CHAT_MEMBERS);
     }
 }
+
+/**
+ * Обработчик выхода из группы участника
+ */
 export class LeftChatMembersHandler extends HandlerBase {
     public check(event, dispatcher) {
         return (super.check(event, dispatcher) && event.type == EventType.LEFT_CHAT_MEMBERS);
     }
 }
 
+/**
+ * Обработчик закрепа сообщения в чате
+ */
 export class PinnedMessageHandler extends HandlerBase {
     public check(event, dispatcher) {
         return (super.check(event, dispatcher) && event.type == EventType.PINNED_MESSAGE);
     }
 }
 
+/**
+ * Обработчик открепления сообщения в чате
+ */
 export class UnPinnedMessageHandler extends HandlerBase {
     public check(event, dispatcher) {
         return (super.check(event = event, dispatcher = dispatcher) && event.type == EventType.UNPINNED_MESSAGE);
     }
 }
 
-
+/**
+ * Обработчик текстовых сообщений 
+ */
 export class MessageHandler extends HandlerBase {
     public check(event, dispatcher) { 
-        return (super.check(event, dispatcher) && event.type == EventType.NEW_MESSAGE)
+         return (super.check(event, dispatcher) && event.type == EventType.NEW_MESSAGE)
     }
 }
 
-
+/**
+ * Обработчик событий редактирования сообщений
+ */
 export class EditedMessageHandler extends HandlerBase {
     public check(event, dispatcher) {
         return (
@@ -88,6 +128,9 @@ export class EditedMessageHandler extends HandlerBase {
     }
 }
 
+/**
+ * Обработчик событий удаления сообщений
+ */
 export class DeletedMessageHandler extends HandlerBase {
     public check(event, dispatcher) {
         return (super.check(event, dispatcher) && event.type == EventType.DELETED_MESSAGE)
@@ -95,21 +138,31 @@ export class DeletedMessageHandler extends HandlerBase {
 }
 
 
+/**
+ * Обработчик комманд 
+ * 
+ * new CommandHandler("test", null, (bot, event) => {})
+ * 
+ * new CommandHandler(["test"], null, (bot, event) => {})
+ * 
+ * Пример комманд .test или /test
+ */
 export class CommandHandler extends MessageHandler {
     protected command;
     constructor(command = null, filters = null, callback = null) {
         super(filters, callback);
-        this.filters = (filters) ? filters : null; //  Filter.command if filters is None else Filter.command & filters,
+        this.filters = (filters) ? filters : Filter.command;  
         this.callback = callback
         this.command = command
     }
     public check(event, dispatcher) {
         if (super.check(event, dispatcher)) {
             if (!this.command) return true;
-            let command = event.data["text"].split(" ")[0].toLowerCase()
+            let command = event.data.text.split(" ")[0].toLowerCase().replace(/^(.|\/)/,'') 
             if (Array.isArray(this.command)) return this.command.findIndex(c => c.toLowerCase() == command) >= 0
             return this.command == command;
         }
+        return false;
     }
 }
 export class HelpCommandHandler extends CommandHandler {
@@ -132,6 +185,7 @@ export class FeedbackCommandHandler extends CommandHandler {
     private message: String;
     private reply;
     private error_reply;
+
     constructor(target: string, message = "Feedback from {source}: {message}", reply = "Got it!", error_reply = null,
         command = "feedback", filters = null
     ) {
@@ -142,8 +196,13 @@ export class FeedbackCommandHandler extends CommandHandler {
         this.reply = reply
         this.error_reply = error_reply
     }
-    public async message_cb(bot: Bot, event: ICQEvent) {
 
+    public check(event, dispatcher) {
+        return (super.check(event, dispatcher))
+    }
+
+    private async message_cb(bot: Bot, event: ICQEvent) {
+ 
         let source = event.data['chat']['chatId'];
         let chunks = event.data["text"].split(" ");
         chunks.shift();
@@ -155,7 +214,7 @@ export class FeedbackCommandHandler extends CommandHandler {
             if (this.reply != "") {
                 let result = await bot.sendText(source, this.reply)
                 if (!result.ok) console.log("Не удалось отправить запрос sendText");
-            }
+            }  
         } else if (this.error_reply != "") {
             let result = await bot.sendText(source, this.error_reply)
             if (!result.ok) console.log("Не удалось отправить запрос sendText");
@@ -168,7 +227,8 @@ export class UnknownCommandHandler extends CommandHandler {
         super(null, filters, callback);
     }
     public check(event, dispatcher) {
-        return super.check(event, dispatcher) &&
+
+         return super.check(event, dispatcher) &&
             dispatcher.handlers.findIndex(h => h != this && h.check(event, dispatcher)) == -1
     }
 

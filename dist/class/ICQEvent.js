@@ -7,7 +7,6 @@ var ICQEvent = (function () {
         this.data = event.payload;
         if (this.type == Event_1.EventType.NEW_MESSAGE || this.type == Event_1.EventType.EDITED_MESSAGE || this.type == Event_1.EventType.PINNED_MESSAGE) {
             this.text = this.data.text;
-            // this.fromChatId = (this.data as NewMessageEvent).chat.chatId
             this.messageAuthor = this.data.from;
         }
         if (this.data && this.data.chat) {

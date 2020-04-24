@@ -45,8 +45,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var Filter_1 = require("./Filter");
 var Event_1 = require("./Events/Event");
+/**
+ * Базовый обработчик.
+ *
+ * Срабатывает на все события если не установлен фильтр
+ * или на события отфильтрованные установленным фильтром
+ */
 var HandlerBase = (function () {
+    /**
+     * Параметр filters может быть равен null.
+     * В таком случае вызов callback будет происходить
+     * каждый раз, когда приходит событие
+     *
+     * @param filters Фильтр
+     * @param callback Функция обратного вызова
+     */
     function HandlerBase(filters, callback) {
         this.filters = filters;
         this.callback = callback;
@@ -62,6 +77,11 @@ var HandlerBase = (function () {
     return HandlerBase;
 }());
 exports.HandlerBase = HandlerBase;
+/**
+ * Обработчик для всех событий
+ *
+ * Срабатывает всегда, когда приходит событие из пуллинга
+ */
 var DefaultHandler = (function (_super) {
     __extends(DefaultHandler, _super);
     function DefaultHandler(callback) {
@@ -87,6 +107,11 @@ var DefaultHandler = (function (_super) {
     return DefaultHandler;
 }(HandlerBase));
 exports.DefaultHandler = DefaultHandler;
+/**
+ * Обработчик новых участников группового чата
+ *
+ * Срабатывает когда в группу вступает новый пользователь
+ */
 var NewChatMembersHandler = (function (_super) {
     __extends(NewChatMembersHandler, _super);
     function NewChatMembersHandler() {
@@ -98,6 +123,9 @@ var NewChatMembersHandler = (function (_super) {
     return NewChatMembersHandler;
 }(HandlerBase));
 exports.NewChatMembersHandler = NewChatMembersHandler;
+/**
+ * Обработчик выхода из группы участника
+ */
 var LeftChatMembersHandler = (function (_super) {
     __extends(LeftChatMembersHandler, _super);
     function LeftChatMembersHandler() {
@@ -109,6 +137,9 @@ var LeftChatMembersHandler = (function (_super) {
     return LeftChatMembersHandler;
 }(HandlerBase));
 exports.LeftChatMembersHandler = LeftChatMembersHandler;
+/**
+ * Обработчик закрепа сообщения в чате
+ */
 var PinnedMessageHandler = (function (_super) {
     __extends(PinnedMessageHandler, _super);
     function PinnedMessageHandler() {
@@ -120,6 +151,9 @@ var PinnedMessageHandler = (function (_super) {
     return PinnedMessageHandler;
 }(HandlerBase));
 exports.PinnedMessageHandler = PinnedMessageHandler;
+/**
+ * Обработчик открепления сообщения в чате
+ */
 var UnPinnedMessageHandler = (function (_super) {
     __extends(UnPinnedMessageHandler, _super);
     function UnPinnedMessageHandler() {
@@ -131,6 +165,9 @@ var UnPinnedMessageHandler = (function (_super) {
     return UnPinnedMessageHandler;
 }(HandlerBase));
 exports.UnPinnedMessageHandler = UnPinnedMessageHandler;
+/**
+ * Обработчик текстовых сообщений
+ */
 var MessageHandler = (function (_super) {
     __extends(MessageHandler, _super);
     function MessageHandler() {
@@ -142,6 +179,9 @@ var MessageHandler = (function (_super) {
     return MessageHandler;
 }(HandlerBase));
 exports.MessageHandler = MessageHandler;
+/**
+ * Обработчик событий редактирования сообщений
+ */
 var EditedMessageHandler = (function (_super) {
     __extends(EditedMessageHandler, _super);
     function EditedMessageHandler() {
@@ -154,6 +194,9 @@ var EditedMessageHandler = (function (_super) {
     return EditedMessageHandler;
 }(HandlerBase));
 exports.EditedMessageHandler = EditedMessageHandler;
+/**
+ * Обработчик событий удаления сообщений
+ */
 var DeletedMessageHandler = (function (_super) {
     __extends(DeletedMessageHandler, _super);
     function DeletedMessageHandler() {
@@ -165,6 +208,15 @@ var DeletedMessageHandler = (function (_super) {
     return DeletedMessageHandler;
 }(HandlerBase));
 exports.DeletedMessageHandler = DeletedMessageHandler;
+/**
+ * Обработчик комманд
+ *
+ * new CommandHandler("test", null, (bot, event) => {})
+ *
+ * new CommandHandler(["test"], null, (bot, event) => {})
+ *
+ * Пример комманд .test или /test
+ */
 var CommandHandler = (function (_super) {
     __extends(CommandHandler, _super);
     function CommandHandler(command, filters, callback) {
@@ -172,7 +224,7 @@ var CommandHandler = (function (_super) {
         if (filters === void 0) { filters = null; }
         if (callback === void 0) { callback = null; }
         var _this = _super.call(this, filters, callback) || this;
-        _this.filters = (filters) ? filters : null; //  Filter.command if filters is None else Filter.command & filters,
+        _this.filters = (filters) ? filters : Filter_1.Filter.command;
         _this.callback = callback;
         _this.command = command;
         return _this;
@@ -181,11 +233,12 @@ var CommandHandler = (function (_super) {
         if (_super.prototype.check.call(this, event, dispatcher)) {
             if (!this.command)
                 return true;
-            var command_1 = event.data["text"].split(" ")[0].toLowerCase();
+            var command_1 = event.data.text.split(" ")[0].toLowerCase().replace(/^(.|\/)/, '');
             if (Array.isArray(this.command))
                 return this.command.findIndex(function (c) { return c.toLowerCase() == command_1; }) >= 0;
             return this.command == command_1;
         }
+        return false;
     };
     return CommandHandler;
 }(MessageHandler));
@@ -222,6 +275,9 @@ var FeedbackCommandHandler = (function (_super) {
         _this.error_reply = error_reply;
         return _this;
     }
+    FeedbackCommandHandler.prototype.check = function (event, dispatcher) {
+        return (_super.prototype.check.call(this, event, dispatcher));
+    };
     FeedbackCommandHandler.prototype.message_cb = function (bot, event) {
         return __awaiter(this, void 0, void 0, function () {
             var source, chunks, feedback_text, result, result_1, result;

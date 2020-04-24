@@ -15,7 +15,7 @@ const feedbackCommandMessage = {
             "lastName": "SurName"
         },
         "timestamp": 1546290000,
-        "text": "feedback text more",
+        "text": ".feedback text more",
         "parts": [
             null
         ]
@@ -127,7 +127,7 @@ const startCommandMessage = {
             "lastName": "SurName"
         },
         "timestamp": 1546290000,
-        "text": "sTart text more",
+        "text": ".sTart text more",
         "parts": [
             null
         ]
@@ -232,7 +232,7 @@ const helpCommandMessage = {
             "lastName": "SurName"
         },
         "timestamp": 1546290000,
-        "text": "help full text",
+        "text": "/help full text",
         "parts": [
             null
         ]
@@ -257,6 +257,30 @@ const eventMessage = {
         },
         "timestamp": 1546290000,
         "text": "Hello!",
+        "parts": [
+            null
+        ]
+    }
+};
+
+
+const eventUnknow= {
+    "eventId": 1,
+    "type": "newMessage",
+    "payload": {
+        "msgId": "57883346846815032",
+        "chat": {
+            "chatId": "681869378@chat.agent",
+            "type": "channel",
+            "title": "The best channel"
+        },
+        "from": {
+            "userId": "1234567890",
+            "firstName": "Name",
+            "lastName": "SurName"
+        },
+        "timestamp": 1546290000,
+        "text": ".madCommand",
         "parts": [
             null
         ]
@@ -425,6 +449,7 @@ const eventCallbackQuery = {
 
 exports.eventCallbackQuery = eventCallbackQuery
 exports.eventMessage = eventMessage;
+exports.eventUnknow = eventUnknow;
 exports.eventEditMessage = eventEditMessage;
 exports.eventDeleteMessage = eventDeleteMessage;
 exports.eventUnpunnedMessage = eventUnpunnedMessage;

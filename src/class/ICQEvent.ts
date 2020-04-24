@@ -35,8 +35,7 @@ export class ICQEvent {
         this.type = event.type;
         this.data = event.payload;
         if (this.type == EventType.NEW_MESSAGE || this.type == EventType.EDITED_MESSAGE || this.type == EventType.PINNED_MESSAGE) {
-            this.text = (this.data as NewMessageEvent).text
-            // this.fromChatId = (this.data as NewMessageEvent).chat.chatId
+            this.text = (this.data as NewMessageEvent).text 
             this.messageAuthor = (this.data as NewMessageEvent).from
         }
         if( this.data  && this.data.chat ) {

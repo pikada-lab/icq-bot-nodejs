@@ -17,13 +17,10 @@ describe("Bot.", () => {
                     url: url,
                     header: header,
                     params: params,
-                    then: (clback) => {
-                        return {
-                            url: url,
-                            header: header,
-                            params: params,
-                            clbk: clback
-                        };
+                    clbk: null,
+                    then: function(clback) { 
+                        this.clbk = clback;
+                        return this;
                     }
                 }
             },
@@ -33,10 +30,11 @@ describe("Bot.", () => {
                     url: url,
                     data: data,
                     header: header,
-
-                    then: (clback) => {
+                    clbk: null, 
+                    then: function(clback) {
                         this['clbk'] = clback
                         return this;
+ 
                     }
                 }
             }
@@ -101,13 +99,14 @@ describe("Bot.", () => {
 
     describe("eventsGet()  ", () => {
         it(".url == https://api.icq.net/bot/v1/events/get", () => {
-            assert(bot.eventsGet(10, 0).url == "https://api.icq.net/bot/v1/events/get");
+ 
+            assert( bot.eventsGet(10, 0).url === "https://api.icq.net/bot/v1/events/get" )
         })
         it(".header['user-agent'] == 'NodeBot/0.0.1 (uin=XX) bot-nodejs/2.0.0-beta'", () => {
-            assert(bot.eventsGet(10, 0).header['user-agent'] == 'NodeBot/0.0.1 (uin=XX) bot-nodejs/2.0.0-beta');
+            assert( bot.eventsGet(10, 0).header['user-agent'] === "NodeBot/0.0.1 (uin=XX) bot-nodejs/2.0.0-beta" )
         })
-        it(".params == .token", () => {
-            assert(bot.eventsGet(10, 0).params.token == "X:XX");
+        it(".params == .token", () => { 
+            assert( bot.eventsGet(10, 0).params.token === "X:XX" ) 
         })
     });
 
