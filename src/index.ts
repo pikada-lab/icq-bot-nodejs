@@ -1,5 +1,5 @@
 import { Bot } from "./class/Bot";
-import { HelpCommandHandler as ICQHelpCommandHandler, MessageHandler, NewChatMembersHandler, LeftChatMembersHandler, UnknownCommandHandler, PinnedMessageHandler, UnPinnedMessageHandler, EditedMessageHandler, DeletedMessageHandler, CommandHandler, StartCommandHandler, FeedbackCommandHandler, DefaultHandler } from "./interfaces/Handler";
+import { HelpCommandHandler as ICQHelpCommandHandler, MessageHandler, NewChatMembersHandler, LeftChatMembersHandler, UnknownCommandHandler, PinnedMessageHandler, UnPinnedMessageHandler, EditedMessageHandler, DeletedMessageHandler, CommandHandler, StartCommandHandler, FeedbackCommandHandler, DefaultHandler, BotButtonCommandHandler } from "./interfaces/Handler";
 import { Filter } from "./interfaces/Filter";
 import { ICQButton } from "./class/ICQButton";
 
@@ -41,6 +41,7 @@ export default class ICQ {
         StartCommand: StartCommandHandler,
         FeedbackCommand: FeedbackCommandHandler,
         UnknownCommand: UnknownCommandHandler,
-        Default: DefaultHandler,
+        All: DefaultHandler,
+        BotButtonCommand:  BotButtonCommandHandler
     };
 }
