@@ -40,7 +40,8 @@ var ICQ = (function () {
         Command: Handler_1.CommandHandler,
         StartCommand: Handler_1.StartCommandHandler,
         FeedbackCommand: Handler_1.FeedbackCommandHandler,
-        UnknownCommand: Handler_1.UnknownCommandHandler
+        UnknownCommand: Handler_1.UnknownCommandHandler,
+        Default: Handler_1.DefaultHandler,
     };
     return ICQ;
 }());
