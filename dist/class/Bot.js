@@ -232,10 +232,10 @@ var Bot = (function () {
             "msgId": msgId
         }, { "user-agent": this.getUserAgent() });
     };
-    Bot.prototype.answerCallbackQuery = function (chatId, text, showAlert, url) {
+    Bot.prototype.answerCallbackQuery = function (queryId, text, showAlert, url) {
         var options = {
             "token": this.token,
-            "chatId": chatId,
+            "queryId": queryId,
             "text": text
         };
         if (showAlert)

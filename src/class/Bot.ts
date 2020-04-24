@@ -255,10 +255,10 @@ export class Bot implements ICQBot {
             }, { "user-agent": this.getUserAgent() });
     }
 
-    answerCallbackQuery(chatId: string, text: string, showAlert: boolean, url: string): Promise<Response> {
+    answerCallbackQuery(queryId: string, text: string, showAlert: boolean, url: string): Promise<Response> {
         let options = { 
             "token": this.token,
-            "chatId": chatId,
+            "queryId": queryId,
             "text": text
         }
 
