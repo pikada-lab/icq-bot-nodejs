@@ -32,14 +32,14 @@ export declare class HandlerBase implements Handler {
     handle(event: ICQEvent, dispatcher: Dispatcher): void;
 }
 /**
- * Обработчик для всех событий
+ * Обработчик для всех событий которые небудут обработаны
  *
- * Срабатывает всегда, когда приходит событие из пуллинга
+ * Срабатывает всегда, когда приходит событие из и на это событие нет обработчика пуллинга
  */
 export declare class DefaultHandler extends HandlerBase {
     constructor(callback?: any);
     check(event: any, dispatcher: any): boolean;
-    private any(event, dispatcher);
+    protected any(event: any, dispatcher: Dispatcher): boolean;
     handle(event: any, dispatcher: any): void;
 }
 /**
@@ -99,6 +99,7 @@ export declare class CommandHandler extends MessageHandler {
     protected command: any;
     constructor(command?: any, filters?: any, callback?: any);
     check(event: any, dispatcher: any): boolean;
+    protected any(event: any, dispatcher: Dispatcher): boolean;
 }
 export declare class HelpCommandHandler extends CommandHandler {
     constructor(filters: any, callback: any);

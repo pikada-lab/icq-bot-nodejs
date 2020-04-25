@@ -4,6 +4,7 @@ import { EventType } from "./Events/Event";
 import { Bot } from "../class/Bot";
 import { ICQBot } from "./ICQBot";
 import { ICQEvent } from "../class/ICQEvent";
+import { SkipDuplicateMessageHandler } from "../class/SkipDuplicateMessageHandler";
 
 /**
  * Обработчик событий по фильтру
@@ -43,9 +44,9 @@ export class HandlerBase implements Handler {
 }
 
 /**
- * Обработчик для всех событий
+ * Обработчик для всех событий которые небудут обработаны
  * 
- * Срабатывает всегда, когда приходит событие из пуллинга
+ * Срабатывает всегда, когда приходит событие из и на это событие нет обработчика пуллинга
  */
 export class DefaultHandler extends HandlerBase {
     constructor(callback = null) {
@@ -55,9 +56,9 @@ export class DefaultHandler extends HandlerBase {
     check(event, dispatcher) { 
         return super.check(event, dispatcher) && !this.any(event, dispatcher)
     }
-    private any(event, dispatcher: Dispatcher): boolean {
+    protected any(event, dispatcher: Dispatcher): boolean {
         for (let h of dispatcher.getHandlers()) {
-            if (h != this) {
+            if (h != this && !(h instanceof SkipDuplicateMessageHandler)) {
                 if (h.check(event, dispatcher)) return true;
             }
         }
@@ -164,6 +165,16 @@ export class CommandHandler extends MessageHandler {
         }
         return false;
     }
+
+    protected any(event, dispatcher: Dispatcher): boolean {
+        for (let h of dispatcher.getHandlers()) {
+            if (h != this && h instanceof CommandHandler) {
+                if (h.check(event, dispatcher)) return true;
+            }
+        }
+        return false
+    }
+
 }
 export class HelpCommandHandler extends CommandHandler {
     constructor(filters, callback) {

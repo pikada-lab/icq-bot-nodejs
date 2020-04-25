@@ -47,6 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Filter_1 = require("./Filter");
 var Event_1 = require("./Events/Event");
+var SkipDuplicateMessageHandler_1 = require("../class/SkipDuplicateMessageHandler");
 /**
  * Базовый обработчик.
  *
@@ -78,9 +79,9 @@ var HandlerBase = (function () {
 }());
 exports.HandlerBase = HandlerBase;
 /**
- * Обработчик для всех событий
+ * Обработчик для всех событий которые небудут обработаны
  *
- * Срабатывает всегда, когда приходит событие из пуллинга
+ * Срабатывает всегда, когда приходит событие из и на это событие нет обработчика пуллинга
  */
 var DefaultHandler = (function (_super) {
     __extends(DefaultHandler, _super);
@@ -94,7 +95,7 @@ var DefaultHandler = (function (_super) {
     DefaultHandler.prototype.any = function (event, dispatcher) {
         for (var _i = 0, _a = dispatcher.getHandlers(); _i < _a.length; _i++) {
             var h = _a[_i];
-            if (h != this) {
+            if (h != this && !(h instanceof SkipDuplicateMessageHandler_1.SkipDuplicateMessageHandler)) {
                 if (h.check(event, dispatcher))
                     return true;
             }
@@ -237,6 +238,16 @@ var CommandHandler = (function (_super) {
             if (Array.isArray(this.command))
                 return this.command.findIndex(function (c) { return c.toLowerCase() == command_1; }) >= 0;
             return this.command == command_1;
+        }
+        return false;
+    };
+    CommandHandler.prototype.any = function (event, dispatcher) {
+        for (var _i = 0, _a = dispatcher.getHandlers(); _i < _a.length; _i++) {
+            var h = _a[_i];
+            if (h != this && h instanceof CommandHandler) {
+                if (h.check(event, dispatcher))
+                    return true;
+            }
         }
         return false;
     };

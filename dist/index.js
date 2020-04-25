@@ -40,7 +40,9 @@ var ICQ = (function () {
         Command: Handler_1.CommandHandler,
         StartCommand: Handler_1.StartCommandHandler,
         FeedbackCommand: Handler_1.FeedbackCommandHandler,
+        /** Сробатывает, когда приходит паттерн комманды, для которой нет обработчика в диспетчере */
         UnknownCommand: Handler_1.UnknownCommandHandler,
+        /** Срабатывает на все события, Если это событие не будет обработано другими обработчиками */
         All: Handler_1.DefaultHandler,
         BotButtonCommand: Handler_1.BotButtonCommandHandler
     };

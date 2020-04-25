@@ -40,7 +40,9 @@ export default class ICQ {
         Command: CommandHandler,
         StartCommand: StartCommandHandler,
         FeedbackCommand: FeedbackCommandHandler,
+        /** Сробатывает, когда приходит паттерн комманды, для которой нет обработчика в диспетчере */
         UnknownCommand: UnknownCommandHandler,
+        /** Срабатывает на все события, Если это событие не будет обработано другими обработчиками */
         All: DefaultHandler,
         BotButtonCommand:  BotButtonCommandHandler
     };
