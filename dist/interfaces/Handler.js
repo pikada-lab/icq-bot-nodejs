@@ -102,9 +102,6 @@ var DefaultHandler = (function (_super) {
         }
         return false;
     };
-    DefaultHandler.prototype.handle = function (event, dispatcher) {
-        throw new Error("DefaultHandler");
-    };
     return DefaultHandler;
 }(HandlerBase));
 exports.DefaultHandler = DefaultHandler;

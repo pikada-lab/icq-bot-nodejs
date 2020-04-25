@@ -44,11 +44,11 @@ describe("Handler.", () => {
         it("EventMessage handle should by done", (done) => {
 
             let message = new Handlers.DefaultHandler(() => { });
-            try {
-                message.handle(new ICQEvent(event.eventMessage), { getBot: () => { return this } })
-            } catch (ex) {
-                done()
-            }
+            // try {
+                message.handle(new ICQEvent(event.eventMessage), { getBot: () => { done(); return this } })
+            // } catch (ex) {
+            //     done()
+            // }
         })
         it("EventMessage check should by false", () => {
             let newMessage = new Handlers.MessageHandler(null, () => { });

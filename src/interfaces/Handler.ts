@@ -65,9 +65,9 @@ export class DefaultHandler extends HandlerBase {
         return false
     }
 
-    handle(event, dispatcher) {
-        throw new Error("DefaultHandler");
-    }
+    // handle(event, dispatcher) {
+    //     throw new Error("DefaultHandler");
+    // }
 }
 
 /**

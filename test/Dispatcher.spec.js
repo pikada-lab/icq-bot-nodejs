@@ -55,8 +55,8 @@ describe("Dispatcher.", () => {
             dispatcher.dispatch(new ICQEvent(event.eventMessage))
         })
         it("removeHandler(h) == 1", (done) => {
-            const dispatcher = new Dispatcher({ "name": "BOT4", stop: () => {done()} });
-            let h = new Handlers.DefaultHandler(() => { });
+            const dispatcher = new Dispatcher({ "name": "BOT4", stop: () => {  } });
+            let h = new Handlers.DefaultHandler(() => {  done() });
             dispatcher.addHandler(h) 
             dispatcher.dispatch(new ICQEvent(event.eventMessage))
         })

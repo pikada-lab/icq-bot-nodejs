@@ -40,7 +40,6 @@ export declare class DefaultHandler extends HandlerBase {
     constructor(callback?: any);
     check(event: any, dispatcher: any): boolean;
     protected any(event: any, dispatcher: Dispatcher): boolean;
-    handle(event: any, dispatcher: any): void;
 }
 /**
  * Обработчик новых участников группового чата
