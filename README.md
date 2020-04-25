@@ -163,6 +163,17 @@ let buttonOpenWeb = new ICQ.Button("Ok", null, "https://fake-mm.ru")
 
 # Пример кода
 
+## Простой бот
+
+Цель: 
+
+* Пишем боту любое сообщение
+* Получаем в ответ "Привет!"
+* Удаляем своё сообщение у всех
+* Получаем в ответ сообщение "Зачем!"
+
+### Исполнение
+
 Команды в терминале bash
 
 ```bash
@@ -222,7 +233,126 @@ bot.startPolling();
 # Запускаем проект
 node index.js
 ```
+ 
 
+
+## Бот с кнопками
+
+Цель: 
+Сценарий 1
+* Отпарвляем команду  "/update" или ".update"
+* Получаем сообщение с 2 кнопками 
+* Нажимаем на кнопку "Отменить обработку"
+* Получаем нотификацию "Обработка данных прервана; ID: 1"
+* Нажимаем на эту кнопку повторно
+* Получаем попап "Задача ID: 1 не найдена!"
+* Нажимаем на кнопку "Читать статьи"
+* Открывается сторонний сайт
+
+Сценарий 2
+* Отправляем команду ".help" или "/help"
+* Получаем сообщение с 1 кнопкой
+* Нажимаем кнопку "Открыть мануал"
+* Появляется диалоговое окно с предложением перейти на сторонний сайт
+
+
+### Исполнение
+Аналогично первому примеру создадим проект и в файл index.js добавим следующий код:
+
+```javascript 
+const ICQ = require('icq-bot').default;
+const TaskService = require("./TaskService").default; 
+  
+const bot = new ICQ.Bot(ВАШ_ТОКЕН_БОТА);
+
+const service = new TaskService();
+
+const handlerCommand = new ICQ.Handler.Command("update",null, (bot, event) => { 
+    let buttonOpenWeb = new ICQ.Button("Читать статьи", null, "https://fake-mm.ru")  
+    // Вызов метода сервиса обработки данных и получение ID задачи
+    const id = service.addTask();
+    let buttonOk = new ICQ.Button("Отменить обработку", `{"name": "removeTask","id": ${id}}`)
+    bot.sendText(event.fromChatId, "Данные в очереди на обработку ", null,null,null,[buttonOk,buttonOpenWeb ]);
+});
+
+const helpCommand = new ICQ.Handler.HelpCommand(null,(bot, event) => {
+    const id = Math.random();
+    let buttonOk = new ICQ.Button("Открыть мануал", `{"name": "openManual", "id": ${id}}`)
+    bot.sendText(event.fromChatId, "Вся документация доступна по кнопке", null,null,null,[buttonOk]);
+}) 
+
+const handlerButton = new ICQ.Handler.BotButtonCommand(null,(bot,event) => { 
+    try {
+        const command = JSON.parse(event.data.callbackData);
+        switch(command.name) {
+            case "removeTask" :
+                if(service.removeTask(command.id)) {
+                    bot.answerCallbackQuery(event.data.queryId,"Обработка данных прервана; ID: "+command.id,false)
+                } else {
+                    bot.answerCallbackQuery(event.data.queryId,"Задача ID: "+command.id + " не найдена!",true) 
+                }
+            break;
+            case "openManual" :
+                bot.answerCallbackQuery(event.data.queryId,"Мануал по ссылке",false,"https://fake-mm.ru/features") 
+            break;
+            default: 
+                bot.answerCallbackQuery(event.data.queryId,"Обработка кнопки не задана!",true) 
+        }
+    } catch(ex) {
+        bot.answerCallbackQuery(event.data.queryId,"Ошибка распознания команды!",true) 
+    }
+})
+
+bot.getDispatcher().addHandler(handlerCommand);  
+bot.getDispatcher().addHandler(helpCommand);  
+bot.getDispatcher().addHandler(handlerButton); 
+
+bot.startPolling();
+```
+
+Далее создадим файл сервиса  **TaskService.js** и вставим код ниже
+
+```javascript
+
+class TaskService {
+    static inc = 0;
+    constructor() {
+        this.task = [];
+    }
+    addTask() {
+        const id = ++TaskService.inc;
+        this.task.push(id)
+        console.log(this.task)
+        return id;
+    }
+    removeTask(id) { 
+        const index = this.getIndex(id); 
+        if(index != -1) {
+            delete this.task[index]
+
+            console.log(this.task)
+            return true;
+        }
+
+        console.log(this.task)
+        return false;
+    } 
+    getIndex(id) {
+        return this.task.findIndex(tid => tid == id);
+    }
+}
+
+exports.default = TaskService;
+```
+
+Далее остаётся запустить нашего бота
+
+```bash
+# Запускаем проект
+node index.js
+```
+ 
+ 
 # API description
 <ul>
     <li><a href="https://icq.com/botapi/">icq.com/botapi/</a></li>
