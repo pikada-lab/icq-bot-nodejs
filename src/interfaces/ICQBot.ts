@@ -29,9 +29,9 @@ export interface ICQBot {
     // idle(): ICQBot;
     eventsGet(pollTimeS: number, lastEventId: number): Promise<ResponseEvent>;
     selfGet(): Promise<Self>;
-    sendText(chatId: string, text: String, replyMsgId?: string, forwardChatId?: string, forwardMsgId?: string, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseMessage>;
-    sendFile(chatId: string, fileId: string, file: string, caption: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseUploadFile|ResponseSendFile>;
-    sendVoice(chatId: string, fileId: string, file: string, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseUploadVoice|ResponseSendVoice>;
+    sendText(chatId: string, text: String, replyMsgId?: string, forwardChatId?: string, forwardMsgId?: string, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseMessage>;
+    sendFile(chatId: string, fileId: string, file: string, caption: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadFile|ResponseSendFile>;
+    sendVoice(chatId: string, fileId: string, file: string, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadVoice|ResponseSendVoice>;
 
     editText(chatId: string, msgId: string, text: String, inlineKeyboardMarkup?: ICQButton[]): Promise<Response>;
     deleteMessages(chatId: string, msgId: string): Promise<Response>;

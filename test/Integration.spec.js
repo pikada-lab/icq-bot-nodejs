@@ -10,7 +10,7 @@ describe("Интеграционные тесты", () => {
 
     describe("Отправка сообщения с кнопкой", () => {
         it("Отправлка кнопки с данными", (done) => {
-            bot.sendText(chatId,"Сообщение с кнопкой",null,null,null,[new ICQ.Button("Нажми меня","test")]).then(r => {
+            bot.sendText(chatId,"Сообщение с кнопкой",null,null,null,new ICQ.Button("Нажми меня","test")).then(r => {
                 if (r.ok) {   
                     done();
                 }
@@ -18,6 +18,13 @@ describe("Интеграционные тесты", () => {
         })
         it("Отправлка кнопки со ссылкой", (done) => {
             bot.sendText(chatId,"Сообщение со ссылкой",null,null,null,[new ICQ.Button("Открой меня меня",null,"https://fake-mm.ru")]).then( r => {     
+                if (r.ok) {   
+                    done();
+                }
+            })
+        })
+        it("Отправлка кнопки со ссылкой", (done) => {
+            bot.sendText(chatId,"Сообщение со ссылкой",null,null,null,[[new ICQ.Button("Открой меня меня",null,"https://fake-mm.ru")],[new ICQ.Button("Открой меня и меня",null,"https://fake-mm.ru")]]).then( r => {     
                 if (r.ok) {   
                     done();
                 }

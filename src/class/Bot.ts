@@ -123,7 +123,7 @@ export class Bot implements ICQBot {
     selfGet(): Promise<Self> {
         return this.http.get<Self>(`${this.apiBaseUrl}/self/get`, { token: this.token }, { "user-agent": this.getUserAgent() });
     }
-    sendText(chatId: string, text: String, replyMsgId: String = "", forwardChatId: String = "", forwardMsgId: String = "", inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseMessage> {
+    sendText(chatId: string, text: String, replyMsgId: String = "", forwardChatId: String = "", forwardMsgId: String = "", inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseMessage> {
         let option = {
             token: this.token,
             chatId: chatId,
@@ -140,16 +140,31 @@ export class Bot implements ICQBot {
         return this.http.get<ResponseMessage>(`${this.apiBaseUrl}/messages/sendText`, option, { "user-agent": this.getUserAgent() });
     }
 
-    private getICQButtonList(inlineKeyboardMarkup) {
+    private getICQButtonList(inlineKeyboardMarkup: ICQButton | ICQButton[] | ICQButton[][]) {
+
         if (!inlineKeyboardMarkup) return null;
         let ICQButtonList = [];
-        for (let bt of inlineKeyboardMarkup) {
-            ICQButtonList.push(bt.getQueryStructure())
+        if(Array.isArray(inlineKeyboardMarkup[0])) {
+            for (let bts of inlineKeyboardMarkup as ICQButton[][]) {
+                let line = [];
+                for (let bt of bts) {
+                    line.push(bt.getQueryStructure())
+                }
+                ICQButtonList.push(line);
+            }
+            return  ICQButtonList;
+
+        } else  if(Array.isArray(inlineKeyboardMarkup)) {
+            for (let bt of inlineKeyboardMarkup as ICQButton[]) {
+                ICQButtonList.push(bt.getQueryStructure())
+            }
+            return  [ICQButtonList];
+        } else {
+            return [[(inlineKeyboardMarkup as ICQButton).getQueryStructure()]];
         }
-        return  [ICQButtonList];
     }
     
-    sendFile(chatId: string, fileId: string, file?: string, caption?: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseUploadFile | ResponseSendFile> {
+    sendFile(chatId: string, fileId: string, file?: string, caption?: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadFile | ResponseSendFile> {
 
         if (file) {
             const data = new FormDataICQ();
@@ -192,7 +207,7 @@ export class Bot implements ICQBot {
 
         }
     }
-    sendVoice(chatId: string, fileId: string, file: string, replyMsgId: String, forwardChatId: String, forwardMsgId: String, inlineKeyboardMarkup?: ICQButton[]): Promise<ResponseUploadVoice | ResponseSendVoice> {
+    sendVoice(chatId: string, fileId: string, file: string, replyMsgId: String, forwardChatId: String, forwardMsgId: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadVoice | ResponseSendVoice> {
         if (file) {
             const data = new FormDataICQ();
             data.append("token", this.token);

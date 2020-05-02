@@ -122,11 +122,28 @@ var Bot = (function () {
         if (!inlineKeyboardMarkup)
             return null;
         var ICQButtonList = [];
-        for (var _i = 0, inlineKeyboardMarkup_1 = inlineKeyboardMarkup; _i < inlineKeyboardMarkup_1.length; _i++) {
-            var bt = inlineKeyboardMarkup_1[_i];
-            ICQButtonList.push(bt.getQueryStructure());
+        if (Array.isArray(inlineKeyboardMarkup[0])) {
+            for (var _i = 0, _a = inlineKeyboardMarkup; _i < _a.length; _i++) {
+                var bts = _a[_i];
+                var line = [];
+                for (var _b = 0, bts_1 = bts; _b < bts_1.length; _b++) {
+                    var bt = bts_1[_b];
+                    line.push(bt.getQueryStructure());
+                }
+                ICQButtonList.push(line);
+            }
+            return ICQButtonList;
         }
-        return [ICQButtonList];
+        else if (Array.isArray(inlineKeyboardMarkup)) {
+            for (var _c = 0, _d = inlineKeyboardMarkup; _c < _d.length; _c++) {
+                var bt = _d[_c];
+                ICQButtonList.push(bt.getQueryStructure());
+            }
+            return [ICQButtonList];
+        }
+        else {
+            return [[inlineKeyboardMarkup.getQueryStructure()]];
+        }
     };
     Bot.prototype.sendFile = function (chatId, fileId, file, caption, replyMsgId, forwardChatId, forwardMsgId, inlineKeyboardMarkup) {
         if (file) {
