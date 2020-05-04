@@ -261,7 +261,7 @@ export class Bot implements ICQBot {
         return this.http.get<Response>(`${this.apiBaseUrl}/messages/editText`,
            options, { "user-agent": this.getUserAgent() });
     }
-    deleteMessages(chatId: string, msgId: string): Promise<Response> {
+    deleteMessages(chatId: string, msgId: string | string[]): Promise<Response> {
         return this.http.get<Response>(`${this.apiBaseUrl}/messages/deleteMessages`,
             {
                 "token": this.token,

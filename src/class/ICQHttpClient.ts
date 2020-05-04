@@ -13,8 +13,14 @@ export class ICQHttpClient implements HttpClient {
         return new Promise((resolve, reject) => {
             let requestString = "?";
             for (let i in params) {
+                if(Array.isArray(params[i])) {
+                    for( let j of params[i]) {
+                        requestString += `${encodeURI(i)}=${encodeURI(j)}&`
+                    }
+                } else {
                 requestString += `${encodeURI(i)}=${encodeURI(params[i])}&`
             }
+        }
             requestString = requestString.slice(0, -1);
             let urlData = new URL(url);
             var req = https.request(
