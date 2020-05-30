@@ -42,7 +42,7 @@ export class FormDataICQ {
                 data += "\r\n";
             data += "--" + this.razdel + "\r\n";
             data += "Content-Disposition: form-data; name=\"" + i.name + "\"\r\n\r\n";
-            data += i.value;
+            data += Buffer.from(i.value.toString(), "utf8").toString("latin1");
         }
         data += `\r\n--${this.razdel}--`;
         return data;
