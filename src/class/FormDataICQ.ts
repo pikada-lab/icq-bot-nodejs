@@ -21,7 +21,7 @@ export class FormDataICQ {
         let data = "";
         for (let i of this.files) {
             data += "--" + this.razdel + "\r\n";
-            let fileName = i.filename.split(/\//g);
+            let fileName = i.filename.split(/(\/|\\)/g);
             let parts = i.filename.split(".");
             let ext = parts[parts.length - 1];
             data += "Content-Disposition: form-data; name=\"" + i.name + "\"; filename=\"" + fileName[fileName.length - 1] + "\"\r\n";
