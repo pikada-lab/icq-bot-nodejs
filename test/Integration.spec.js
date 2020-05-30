@@ -9,6 +9,7 @@ describe("Интеграционные тесты", () => {
     const filePath = './test/19.png'
 
     describe("Отправка сообщения с кнопкой", () => {
+
         it("Отправлка кнопки с данными", (done) => {
             bot.sendText(chatId,"Сообщение с кнопкой",null,null,null,new ICQ.Button("Нажми меня","test")).then(r => {
                 if (r.ok) {   
@@ -30,6 +31,16 @@ describe("Интеграционные тесты", () => {
                 }
             })
         })
+    })
+
+    describe("Отпавить сообщение с текстом имеющим # @ ? &" ,(done) => {
+        bot.sendText(chatId, "Test # 1 @ 2 ? 3 & 4").then(r => {
+            if (r.ok) {
+                if (r.ok) bot.deleteMessages(chatId, id).then(r => {
+                    if (r.ok) done(); else done(2); 
+                })
+            } else done(1); 
+        });
     })
     describe("Отправка сообщения в конкретный чат", () => {
         let id = null;

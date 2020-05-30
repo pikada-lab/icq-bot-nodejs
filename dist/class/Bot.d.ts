@@ -41,7 +41,7 @@ export declare class Bot implements ICQBot {
     sendFile(chatId: string, fileId: string, file?: string, caption?: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadFile | ResponseSendFile>;
     sendVoice(chatId: string, fileId: string, file: string, replyMsgId: String, forwardChatId: String, forwardMsgId: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadVoice | ResponseSendVoice>;
     editText(chatId: string, msgId: string, text: String, inlineKeyboardMarkup?: ICQButton[]): Promise<Response>;
-    deleteMessages(chatId: string, msgId: string): Promise<Response>;
+    deleteMessages(chatId: string, msgId: string | string[]): Promise<Response>;
     answerCallbackQuery(queryId: string, text: string, showAlert: boolean, url: string): Promise<Response>;
     sendActions(chatId: string, actions: 'looking' | 'typing'): Promise<Response>;
     getChatInfo(chatId: string): Promise<Chat>;

@@ -127,7 +127,7 @@ export class Bot implements ICQBot {
         let option = {
             token: this.token,
             chatId: chatId,
-            text: text
+            text: text.toString()
         };
         if (replyMsgId) option['replyMsgId'] = replyMsgId;
         if (forwardChatId) option['forwardChatId'] = forwardChatId;

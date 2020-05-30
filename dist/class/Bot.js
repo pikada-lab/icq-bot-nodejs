@@ -103,7 +103,7 @@ var Bot = (function () {
         var option = {
             token: this.token,
             chatId: chatId,
-            text: text
+            text: text.toString()
         };
         if (replyMsgId)
             option['replyMsgId'] = replyMsgId;

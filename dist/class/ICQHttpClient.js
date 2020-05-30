@@ -9,7 +9,15 @@ var ICQHttpClient = (function () {
         return new Promise(function (resolve, reject) {
             var requestString = "?";
             for (var i in params) {
-                requestString += encodeURI(i) + "=" + encodeURI(params[i]) + "&";
+                if (Array.isArray(params[i])) {
+                    for (var _i = 0, _a = params[i]; _i < _a.length; _i++) {
+                        var j = _a[_i];
+                        requestString += encodeURIComponent(i) + "=" + encodeURIComponent(j) + "&";
+                    }
+                }
+                else {
+                    requestString += encodeURIComponent(i) + "=" + encodeURIComponent(params[i]) + "&";
+                }
             }
             requestString = requestString.slice(0, -1);
             var urlData = new url_1.URL(url);
