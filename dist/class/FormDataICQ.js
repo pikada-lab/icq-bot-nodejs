@@ -23,7 +23,7 @@ var FormDataICQ = (function () {
         for (var _i = 0, _a = this.files; _i < _a.length; _i++) {
             var i = _a[_i];
             data += "--" + this.razdel + "\r\n";
-            var fileName = i.filename.split(/\//g);
+            var fileName = i.filename.split(/(\/|\\)/g);
             var parts = i.filename.split(".");
             var ext = parts[parts.length - 1];
             data += "Content-Disposition: form-data; name=\"" + i.name + "\"; filename=\"" + fileName[fileName.length - 1] + "\"\r\n";
@@ -44,7 +44,7 @@ var FormDataICQ = (function () {
                 data += "\r\n";
             data += "--" + this.razdel + "\r\n";
             data += "Content-Disposition: form-data; name=\"" + i.name + "\"\r\n\r\n";
-            data += i.value;
+            data += Buffer.from(i.value.toString(), "utf8").toString("latin1");
         }
         data += "\r\n--" + this.razdel + "--";
         return data;
