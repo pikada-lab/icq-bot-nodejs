@@ -2,6 +2,7 @@
 
 [![codecov](https://codecov.io/gh/pikada-lab/icq-bot-nodejs/branch/master/graph/badge.svg)](https://codecov.io/gh/pikada-lab/icq-bot-nodejs)
 [![Build Status](https://travis-ci.org/pikada-lab/icq-bot-nodejs.svg?branch=master)](https://travis-ci.org/github/pikada-lab/icq-bot-nodejs)
+[![Known Vulnerabilities](https://snyk.io/test/github/pikada-lab/icq-bot-nodejs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/pikada-lab/icq-bot-nodejs?targetFile=package.json)
 
 Interface for working with ICQ bots for NodeJS / TypeScript. In this package, I (the developer) tried to get rid of all the dependencies as much as possible and made the most similar code and interface to the version of "bot-python" from pip from mail.ru
 
