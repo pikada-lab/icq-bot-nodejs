@@ -19,6 +19,9 @@ export interface ICQOptions {
     pollTimeS: number
 }
 
+export interface MembersItem {
+    sn: string | number;
+}
 export interface ICQBot {
  
     getUNI(): number;
@@ -57,11 +60,13 @@ export interface ICQBot {
     setTitle(chatId: string, title: string): Promise<Response>;
     setAbout(chatId: string, text: string): Promise<Response>;
     setRules(chatId: string, rules: string): Promise<Response>;
+    setAvatar(chatId: string, file: string): Promise<Response>;
 
     getMembers(chatId: string, cursor?: string): Promise<ResponseMembers>;
-
+    deleteMembers(chatId: string, members: MembersItem[]): Promise<Response>;
     getBlockedUsers(chatId: string): Promise<ResponseUsers>;
     getPendingUsers(chatId: string): Promise<ResponseUsers>;
+
 
     blockUser(chatId: string, userId: string, delLastMessages?: boolean): Promise<Response>;
     unblockUser(chatId: string, userId: string): Promise<Response>;

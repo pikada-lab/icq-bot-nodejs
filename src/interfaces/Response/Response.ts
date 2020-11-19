@@ -4,4 +4,6 @@
          * статус запроса
          */
         ok: boolean;
+
+        description?: string;
     }

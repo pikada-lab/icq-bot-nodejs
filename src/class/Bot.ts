@@ -4,7 +4,7 @@ import { FormDataICQ } from "./FormDataICQ";
 import { Self } from "../interfaces/Entities/Self";
 
 import { Chat } from "../interfaces/Entities/Chat";
-import { ICQBot, ICQOptions } from "../interfaces/ICQBot";
+import { ICQBot, ICQOptions, MembersItem } from "../interfaces/ICQBot";
 
 import { Event, ResponseEvent } from "../interfaces/Events/Event";
 import { Dispatcher } from "../interfaces/Dispatcher";
@@ -354,7 +354,13 @@ export class Bot implements ICQBot {
                 "rules": rules
             }, { "user-agent": this.getUserAgent() });
     }
-
+    setAvatar(chatId: string, file: string): Promise<Response> {
+        const data = new FormDataICQ();
+        data.append("token", this.token);
+        data.append("chatId", chatId); 
+        data.appendFile("image", file); 
+        return this.http.post<Response>(`${this.apiBaseUrl}/chats/avatar/set`, data, { "user-agent": this.getUserAgent() });
+    }
     getMembers(chatId: string, cursor?: string): Promise<ResponseMembers> {
         const options = {
             "token": this.token,
@@ -362,6 +368,16 @@ export class Bot implements ICQBot {
         };
         if (cursor) options['cursor'] = cursor;
         return this.http.get<ResponseMembers>(`${this.apiBaseUrl}/chats/getMembers`,
+            options, { "user-agent": this.getUserAgent() });
+    }
+
+    deleteMembers(chatId: string, members: MembersItem[]): Promise<Response> {
+        const options = {
+            "token": this.token,
+            "chatId": chatId,
+            "members": members
+        }; 
+        return this.http.get<Response>(`${this.apiBaseUrl}/chats/members/delete`,
             options, { "user-agent": this.getUserAgent() });
     }
     getBlockedUsers(chatId: string): Promise<ResponseUsers> {
