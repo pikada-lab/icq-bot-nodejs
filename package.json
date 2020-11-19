@@ -54,5 +54,8 @@
     "test": "nyc mocha --timeout 10000",
     "posttest": "nyc report --reporter=json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "version": "2.1.40"
 }

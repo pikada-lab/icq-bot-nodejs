@@ -17,6 +17,8 @@ deploy:
     provider: npm
     email: "info@fake-mm.ru"
     api_key: $NPM_TOKEN
+    on:
+        branch: master
     
 notifications:
     email: 
