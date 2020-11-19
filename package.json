@@ -32,8 +32,8 @@
   "description": "ICQ-BOT",
   "devDependencies": {
     "@types/mocha": "5.2.5",
-    "@types/node": "^13.13.14",
-    "codecov": "^3.7.1",
+    "@types/node": "^13.13.31",
+    "codecov": "^3.8.1",
     "mocha": "^7.2.0",
     "nyc": "^15.1.0"
   },
