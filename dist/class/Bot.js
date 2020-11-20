@@ -321,6 +321,13 @@ var Bot = (function () {
             "rules": rules
         }, { "user-agent": this.getUserAgent() });
     };
+    Bot.prototype.setAvatar = function (chatId, file) {
+        var data = new FormDataICQ_1.FormDataICQ();
+        data.append("token", this.token);
+        data.append("chatId", chatId);
+        data.appendFile("image", file);
+        return this.http.post(this.apiBaseUrl + "/chats/avatar/set", data, { "user-agent": this.getUserAgent() });
+    };
     Bot.prototype.getMembers = function (chatId, cursor) {
         var options = {
             "token": this.token,
@@ -329,6 +336,14 @@ var Bot = (function () {
         if (cursor)
             options['cursor'] = cursor;
         return this.http.get(this.apiBaseUrl + "/chats/getMembers", options, { "user-agent": this.getUserAgent() });
+    };
+    Bot.prototype.deleteMembers = function (chatId, members) {
+        var options = {
+            "token": this.token,
+            "chatId": chatId,
+            "members": members
+        };
+        return this.http.get(this.apiBaseUrl + "/chats/members/delete", options, { "user-agent": this.getUserAgent() });
     };
     Bot.prototype.getBlockedUsers = function (chatId) {
         return this.http.get(this.apiBaseUrl + "/chats/getBlockedUsers", {

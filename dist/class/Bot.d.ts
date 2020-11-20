@@ -1,7 +1,7 @@
 import { HttpClient } from "./ICQHttpClient";
 import { Self } from "../interfaces/Entities/Self";
 import { Chat } from "../interfaces/Entities/Chat";
-import { ICQBot, ICQOptions } from "../interfaces/ICQBot";
+import { ICQBot, ICQOptions, MembersItem } from "../interfaces/ICQBot";
 import { ResponseEvent } from "../interfaces/Events/Event";
 import { Dispatcher } from "../interfaces/Dispatcher";
 import { ResponseMessage } from "../interfaces/Response/ResponseMessage";
@@ -52,7 +52,9 @@ export declare class Bot implements ICQBot {
     setTitle(chatId: string, title: string): Promise<Response>;
     setAbout(chatId: string, text: string): Promise<Response>;
     setRules(chatId: string, rules: string): Promise<Response>;
+    setAvatar(chatId: string, file: string): Promise<Response>;
     getMembers(chatId: string, cursor?: string): Promise<ResponseMembers>;
+    deleteMembers(chatId: string, members: MembersItem[]): Promise<Response>;
     getBlockedUsers(chatId: string): Promise<ResponseUsers>;
     getPendingUsers(chatId: string): Promise<ResponseUsers>;
     blockUser(chatId: string, userId: string, delLastMessages?: boolean): Promise<Response>;
