@@ -375,7 +375,7 @@ export class Bot implements ICQBot {
         const options = {
             "token": this.token,
             "chatId": chatId,
-            "members": members
+            "members": JSON.stringify(members)
         }; 
         return this.http.get<Response>(`${this.apiBaseUrl}/chats/members/delete`,
             options, { "user-agent": this.getUserAgent() });
