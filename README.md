@@ -99,6 +99,10 @@ bot.sendText(charID,"TEXT HERE..").then( response =>{ console.log( response.ok )
 * UnknownCommand - Все не обработанные команды другими обработчиками
 * BotButtonCommandHandler - пользователь нажал на кнопку с командой
 
+### С версии 2.1.42
+* deleteMembers - удалить членов группы по номеру пользователя или массиву. Бот должен быть администратором.
+* setAvatar - установить аватар для группы. Бот должен быть администратором.
+
 Хэндлер должен быть помещён в экземпляр класса дипечер в экземпляре класса бот. Для этого в ранее созданном боте необходимо вызвать метод getDispatcher() который вернёт актуальный диспетчер. 
 
 Далее следует вызвать метод addHanler( handler: BaseHandler ) и поместить один из выше перечисленных созданных обработчиков. В примере приведен обработчик Message
@@ -131,6 +135,8 @@ bot.startPolling();
 * new ICQ.Filters.regexp(pattern: RegExp)
 * new ICQ.Filters.mention(userId: Number)
 * new ICQ.Filters.sender(userId: Number)
+
+Обратите внимание, что все классы находятся в пространстве имён ICQ
 
 Также доступен класс FilterComposite с тремя статическими методами: 
 - FilterComposite.or(filter, filter) 
