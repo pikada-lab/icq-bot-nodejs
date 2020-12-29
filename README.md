@@ -48,7 +48,7 @@ npm install icq-bot -s
 
 Инициализация для JS проекта
 ```typescript
-const ICQ = requier("icq-bot").default;
+const ICQ = require("icq-bot").default;
 const TOKEN = "XXX.XXX.XXX:XXX"
 const bot = new ICQ.Bot(TOKEN);
 ```
