@@ -103,4 +103,9 @@ export interface ChatPrivate extends Chat {
      * Признак ответа бота
      */
     isBot: boolean;
+
+    /**
+     * ISO2 low
+     */
+    language: string;
 }
