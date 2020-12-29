@@ -24,16 +24,71 @@ export interface MembersItem {
 }
 export interface ICQBot {
  
+    /** Вовзращает уникальный номер бота, он находится в токене после символа двоеточие. */
     getUNI(): number;
+    /** Возвращает название агента для заголовков запроса */
     getUserAgent(): string;
+    /** Запускает считывание событий через лонг пуллинг */
     startPolling(): ICQBot;
+    /** Корректно останавливает работу лонг пуллинга */
     stop(): ICQBot;
     // private signalHandler(sig: number): void;
     // idle(): ICQBot;
+    /**
+     * ## Events/get
+     * Каждое событие имеет идентификатор **eventId**. 
+     * При вызове метода нужно передать максимальный из известных 
+     * идентификаторов событий в параметре **lastEventId**. 
+     * При первом вызове данного метода в качестве значения этого параметра следует передать 0. 
+     * При отсутствии событий на сервере в момент выполнения запроса, 
+     * соединение остается открытым. Как только появится событие сервер его вернёт, 
+     * завершив открытый запрос. Если в течении **pollTime** секунд события не появились, 
+     * возвращается пустой массив **events**.
+     * 
+     * 
+     * 
+     * @param pollTimeS Время удержания соединения (в секундах).
+     * @param lastEventId Id последнего известного события.
+     */
     eventsGet(pollTimeS: number, lastEventId: number): Promise<ResponseEvent>;
+
+    /**
+     * ## Self/get
+     * 
+     * Возвращает самого себя
+     */
     selfGet(): Promise<Self>;
+
+    /**
+     * ## Messages/sendText
+     * 
+     * Отправляет текстовое сообщение в чат/группу
+     * 
+     * @param chatId Уникальный ник или id чата или пользователя. Id можно получить из входящих **events** (поле chatId).
+     * @param text Текст сообщения. Можно упомянуть пользователя, добавив в текст его userId в следующем формате @[userId].
+     * @param replyMsgId Id цитируемого сообщения. Не может быть передано одновременно с параметрами forwardChatId и forwardMsgId.
+     * @param forwardChatId Id чата, из которого будет переслано сообщение. Передается только с forwardMsgId. Не может быть передано с параметром replyMsgId.
+     * @param forwardMsgId Id пересылаемого сообщения. Передается только с forwardChatId. Не может быть передано с параметром replyMsgId.
+     * @param inlineKeyboardMarkup Это массив массивов с описанием кнопок. Верхний уровень это массив строк кнопок, ниже уровнем массив кнопок в конкретной строке.
+     */
     sendText(chatId: string, text: String, replyMsgId?: string, forwardChatId?: string, forwardMsgId?: string, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseMessage>;
+
+    /**
+     * ## Messages/sendFile
+     * 
+     * Загружает файл на сервер / отправляет файл в чат по номеру
+     * 
+     * @param chatId Уникальный ник или id чата или пользователя. Id можно получить из входящих events (поле chatId).
+     * @param fileId Id ранее загруженного файла.
+     * @param file Файл (Обязателен если нет fileId)
+     * @param caption Подпись к файлу.
+     * @param replyMsgId Id цитируемого сообщения. Не может быть передано одновременно с параметрами forwardChatId и forwardMsgId.
+     * @param forwardChatId Id чата, из которого будет переслано сообщение. Передается только с forwardMsgId. Не может быть передано с параметром replyMsgId.
+     * @param forwardMsgId Id пересылаемого сообщения. Передается только с forwardChatId. Не может быть передано с параметром replyMsgId.
+     * @param inlineKeyboardMarkup Это массив массивов с описанием кнопок. Верхний уровень это массив строк кнопок, ниже уровнем массив кнопок в конкретной строке.
+     */
     sendFile(chatId: string, fileId: string, file: string, caption: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadFile|ResponseSendFile>;
+   
     sendVoice(chatId: string, fileId: string, file: string, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadVoice|ResponseSendVoice>;
 
     editText(chatId: string, msgId: string, text: String, inlineKeyboardMarkup?: ICQButton[]): Promise<Response>;

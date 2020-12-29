@@ -270,7 +270,7 @@ export class Bot implements ICQBot {
             }, { "user-agent": this.getUserAgent() });
     }
 
-    answerCallbackQuery(queryId: string, text: string, showAlert: boolean, url: string): Promise<Response> {
+    answerCallbackQuery(queryId: string, text: string, showAlert?: boolean, url?: string): Promise<Response> {
         let options = { 
             "token": this.token,
             "queryId": queryId,
