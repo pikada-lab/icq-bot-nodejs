@@ -12,8 +12,10 @@ export declare class ICQButton {
     getQueryStructure(): {
         text: string;
         url: any;
+        callbackData?: undefined;
     } | {
         text: string;
         callbackData: string;
+        url?: undefined;
     };
 }

@@ -108,3 +108,9 @@ typings/
 
 PRIVATE.md
 message.json
+
+test.js
+test*.js
+
+test.ts
+test*.ts

@@ -9,7 +9,7 @@ export declare enum PartsType {
     MENTION = "mention",
     VOICE = "voice",
     FORWARD = "forward",
-    REPLY = "reply",
+    REPLY = "reply"
 }
 export interface Part {
     type: PartsType;
@@ -35,7 +35,7 @@ export interface PartVoice {
 export declare enum PayLoadFileType {
     IMAGE = "image",
     VIDEO = "video",
-    AUDIO = "audio",
+    AUDIO = "audio"
 }
 export interface PartFile {
     /**

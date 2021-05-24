@@ -7,7 +7,7 @@ export declare enum ImageType {
     IMAGE_ANIMATED = 4,
     STICKER_ANIMATED = 5,
     RESERVED_6 = 6,
-    RESERVED_7 = 7,
+    RESERVED_7 = 7
 }
 /** Типы видео */
 export declare enum VideoType {
@@ -18,7 +18,7 @@ export declare enum VideoType {
     RESERVED_C = "C",
     STICKER = "D",
     RESERVED_E = "E",
-    RESERVED_F = "F",
+    RESERVED_F = "F"
 }
 /** Типы аудио */
 export declare enum AudioType {
@@ -29,5 +29,5 @@ export declare enum AudioType {
     RESERVED_K = "K",
     RESERVED_L = "L",
     RESERVED_M = "M",
-    RESERVED_N = "N",
+    RESERVED_N = "N"
 }

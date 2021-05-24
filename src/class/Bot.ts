@@ -19,6 +19,7 @@ import { ResponseUsers } from "../interfaces/Response/ResponseUsers";
 import { ICQEvent } from "../class/ICQEvent";
 import { SkipDuplicateMessageHandler } from "./SkipDuplicateMessageHandler";
 import { ICQButton } from "./ICQButton";
+import { Format } from "../interfaces/Format";
 
 export class Bot implements ICQBot {
 
@@ -37,7 +38,7 @@ export class Bot implements ICQBot {
     private apiBaseUrl;
     private http: HttpClient;
     constructor(token: string, options?: ICQOptions) {
-        if(!token) throw new Error("Нет токена");
+        if (!token) throw new Error("Нет токена");
         this.token = token;
         this.apiBaseUrl = (options && options.apiUrlBase ? options.apiUrlBase : "https://api.icq.net/bot/v1");
         this.name = options && options.name ? options.name : "NodeBot";
@@ -123,28 +124,35 @@ export class Bot implements ICQBot {
     selfGet(): Promise<Self> {
         return this.http.get<Self>(`${this.apiBaseUrl}/self/get`, { token: this.token }, { "user-agent": this.getUserAgent() });
     }
-    sendText(chatId: string, text: String, replyMsgId: String = "", forwardChatId: String = "", forwardMsgId: String = "", inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseMessage> {
-        let option = {
+    sendText(chatId: string, text: String, replyMsgId: String = "", forwardChatId: String = "", forwardMsgId: String = "", inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][], format?: Format): Promise<ResponseMessage> {
+        let options = {
             token: this.token,
             chatId: chatId,
             text: text.toString()
         };
-        if (replyMsgId) option['replyMsgId'] = replyMsgId;
-        if (forwardChatId) option['forwardChatId'] = forwardChatId;
-        if (forwardMsgId) option['forwardMsgId'] = forwardMsgId;
+        if (replyMsgId) options['replyMsgId'] = replyMsgId;
+        if (forwardChatId) options['forwardChatId'] = forwardChatId;
+        if (forwardMsgId) options['forwardMsgId'] = forwardMsgId;
 
         if (inlineKeyboardMarkup) {
             let ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup)
-            if (ICQButtonList) option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
-        } 
-        return this.http.get<ResponseMessage>(`${this.apiBaseUrl}/messages/sendText`, option, { "user-agent": this.getUserAgent() });
+            if (ICQButtonList) options['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
+        }
+        if (format) {
+            if (!format.mode) {
+                options['format'] = JSON.stringify(format.range);
+            } else {
+                options['parseMode'] = format.mode;
+            }
+        }
+        return this.http.get<ResponseMessage>(`${this.apiBaseUrl}/messages/sendText`, options, { "user-agent": this.getUserAgent() });
     }
 
     private getICQButtonList(inlineKeyboardMarkup: ICQButton | ICQButton[] | ICQButton[][]) {
 
         if (!inlineKeyboardMarkup) return null;
         let ICQButtonList = [];
-        if(Array.isArray(inlineKeyboardMarkup[0])) {
+        if (Array.isArray(inlineKeyboardMarkup[0])) {
             for (let bts of inlineKeyboardMarkup as ICQButton[][]) {
                 let line = [];
                 for (let bt of bts) {
@@ -152,19 +160,19 @@ export class Bot implements ICQBot {
                 }
                 ICQButtonList.push(line);
             }
-            return  ICQButtonList;
+            return ICQButtonList;
 
-        } else  if(Array.isArray(inlineKeyboardMarkup)) {
+        } else if (Array.isArray(inlineKeyboardMarkup)) {
             for (let bt of inlineKeyboardMarkup as ICQButton[]) {
                 ICQButtonList.push(bt.getQueryStructure())
             }
-            return  [ICQButtonList];
+            return [ICQButtonList];
         } else {
             return [[(inlineKeyboardMarkup as ICQButton).getQueryStructure()]];
         }
     }
-    
-    sendFile(chatId: string, fileId: string, file?: string, caption?: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadFile | ResponseSendFile> {
+
+    sendFile(chatId: string, fileId: string, file?: string, caption?: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][], format?: Format): Promise<ResponseUploadFile | ResponseSendFile> {
 
         if (file) {
             const data = new FormDataICQ();
@@ -185,6 +193,13 @@ export class Bot implements ICQBot {
                 if (ICQButtonList) data.append('inlineKeyboardMarkup', ICQButtonList);
             }
 
+            if (format) {
+                if (!format.mode) {
+                    data.append('format', JSON.stringify(format.range));
+                } else {
+                    data.append('parseMode', format.mode);
+                }
+            }
             return this.http.post<ResponseUploadFile>(`${this.apiBaseUrl}/messages/sendFile`, data, { "user-agent": this.getUserAgent() });
         } else {
 
@@ -202,7 +217,13 @@ export class Bot implements ICQBot {
                 let ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup)
                 if (ICQButtonList) option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
             }
-
+            if (format) {
+                if (!format.mode) {
+                    option['format'] = JSON.stringify(format.range);
+                } else {
+                    option['parseMode'] = format.mode;
+                }
+            }
             return this.http.get<ResponseSendFile>(`${this.apiBaseUrl}/messages/sendFile`, option, { "user-agent": this.getUserAgent() });
 
         }
@@ -230,25 +251,25 @@ export class Bot implements ICQBot {
             return this.http.post<ResponseUploadVoice>(`${this.apiBaseUrl}/messages/sendVoice`, data, { "user-agent": this.getUserAgent() });
         } else {
 
-            let option = {
+            let options = {
                 token: this.token,
                 chatId: chatId,
                 fileId: fileId
             };
 
-            if (replyMsgId) option['replyMsgId'] = replyMsgId;
-            if (forwardChatId) option['forwardChatId'] = forwardChatId;
-            if (forwardMsgId) option['forwardMsgId'] = forwardMsgId;
+            if (replyMsgId) options['replyMsgId'] = replyMsgId;
+            if (forwardChatId) options['forwardChatId'] = forwardChatId;
+            if (forwardMsgId) options['forwardMsgId'] = forwardMsgId;
 
             if (inlineKeyboardMarkup) {
                 let ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup)
-                if (ICQButtonList) option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
+                if (ICQButtonList) options['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
             }
-            return this.http.get<ResponseSendVoice>(`${this.apiBaseUrl}/messages/sendVoice`, option, { "user-agent": this.getUserAgent() });
+            return this.http.get<ResponseSendVoice>(`${this.apiBaseUrl}/messages/sendVoice`, options, { "user-agent": this.getUserAgent() });
         }
     }
-    editText(chatId: string, msgId: string, text: String, inlineKeyboardMarkup?: ICQButton[]): Promise<Response> {
-        let options =  {
+    editText(chatId: string, msgId: string, text: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][], format?: Format): Promise<Response> {
+        let options = {
             "token": this.token,
             "chatId": chatId,
             "msgId": msgId,
@@ -258,8 +279,16 @@ export class Bot implements ICQBot {
             let ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup)
             if (ICQButtonList) options['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
         }
+
+        if (format) {
+            if (!format.mode) {
+                options['format'] = JSON.stringify(format.range);
+            } else {
+                options['parseMode'] = format.mode;
+            }
+        }
         return this.http.get<Response>(`${this.apiBaseUrl}/messages/editText`,
-           options, { "user-agent": this.getUserAgent() });
+            options, { "user-agent": this.getUserAgent() });
     }
     deleteMessages(chatId: string, msgId: string | string[]): Promise<Response> {
         return this.http.get<Response>(`${this.apiBaseUrl}/messages/deleteMessages`,
@@ -271,7 +300,7 @@ export class Bot implements ICQBot {
     }
 
     answerCallbackQuery(queryId: string, text: string, showAlert?: boolean, url?: string): Promise<Response> {
-        let options = { 
+        let options = {
             "token": this.token,
             "queryId": queryId,
             "text": text
@@ -279,7 +308,7 @@ export class Bot implements ICQBot {
 
         if (showAlert) options['showAlert'] = showAlert;
         if (url) options['url'] = url;
-        return this.http.get<Response>(`${this.apiBaseUrl}/messages/answerCallbackQuery`, options,  { "user-agent": this.getUserAgent()})
+        return this.http.get<Response>(`${this.apiBaseUrl}/messages/answerCallbackQuery`, options, { "user-agent": this.getUserAgent() })
     }
 
 
@@ -357,8 +386,8 @@ export class Bot implements ICQBot {
     setAvatar(chatId: string, file: string): Promise<Response> {
         const data = new FormDataICQ();
         data.append("token", this.token);
-        data.append("chatId", chatId); 
-        data.appendFile("image", file); 
+        data.append("chatId", chatId);
+        data.appendFile("image", file);
         return this.http.post<Response>(`${this.apiBaseUrl}/chats/avatar/set`, data, { "user-agent": this.getUserAgent() });
     }
     getMembers(chatId: string, cursor?: string): Promise<ResponseMembers> {
@@ -376,7 +405,7 @@ export class Bot implements ICQBot {
             "token": this.token,
             "chatId": chatId,
             "members": JSON.stringify(members)
-        }; 
+        };
         return this.http.get<Response>(`${this.apiBaseUrl}/chats/members/delete`,
             options, { "user-agent": this.getUserAgent() });
     }
@@ -422,5 +451,5 @@ export class Bot implements ICQBot {
         if (everyone == !!userId) throw new Error("Должен быть указан один из двух параметров: userId или everyone. Эти параметры не могут быть указаны одновременно.");
         return this.http.get<Response>(`${this.apiBaseUrl}/chats/resolvePending`, options, { "user-agent": this.getUserAgent() });
     }
- 
+
 }

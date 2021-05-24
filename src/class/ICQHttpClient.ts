@@ -22,6 +22,7 @@ export class ICQHttpClient implements HttpClient {
                 }
             }
             requestString = requestString.slice(0, -1);
+            console.log(requestString);
             let urlData = new URL(url);
             var req = https.request(
                 {

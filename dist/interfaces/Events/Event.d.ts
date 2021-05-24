@@ -16,7 +16,7 @@ export declare enum EventType {
     NEW_CHAT_MEMBERS = "newChatMembers",
     LEFT_CHAT_MEMBERS = "leftChatMembers",
     CHANGED_CHAT_INFO = "changedChatInfo",
-    CALLBACK_QUERY = "callbackQuery",
+    CALLBACK_QUERY = "callbackQuery"
 }
 export interface ResponseEvent {
     events: Event[];

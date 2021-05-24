@@ -86,13 +86,13 @@ export declare class URLFilter extends RegexpFilter {
 export declare enum TypeFilterOperation {
     and = 1,
     or = 2,
-    not = 3,
+    not = 3
 }
 /** Создаёт композитный фильтр из двух, применяя к ним оператор сравнения. Рекомендую использовать статические методы and, or, not */
 export declare class FilterComposite implements Filters {
     private type;
     private leftFilter;
-    private rightFilter;
+    private rightFilter?;
     constructor(type: TypeFilterOperation, leftFilter: Filters, rightFilter?: Filters);
     static and(leftFilter: Filters, rightFilter: Filters): FilterComposite;
     static or(leftFilter: Filters, rightFilter: Filters): FilterComposite;

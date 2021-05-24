@@ -116,7 +116,7 @@ export declare class FeedbackCommandHandler extends CommandHandler {
     private error_reply;
     constructor(target: string, message?: string, reply?: string, error_reply?: any, command?: string, filters?: any);
     check(event: any, dispatcher: any): boolean;
-    private message_cb(bot, event);
+    private message_cb;
 }
 export declare class UnknownCommandHandler extends CommandHandler {
     constructor(filters: any, callback: any);

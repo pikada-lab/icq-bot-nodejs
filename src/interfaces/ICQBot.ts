@@ -10,12 +10,13 @@ import { ResponseEvent } from "./Events/Event";
 import { ResponseMembers } from "./Response/ResponseMembers";
 import { ResponseUsers } from "./Response/ResponseUsers";
 import { ICQButton } from "../class/ICQButton";
+import { Format, ParseMode } from "./Format";
 
 export interface ICQOptions {
-    apiUrlBase:string, 
-    name:string, 
-    version:string, 
-    timeoutS: number, 
+    apiUrlBase: string,
+    name: string,
+    version: string,
+    timeoutS: number,
     pollTimeS: number
 }
 
@@ -23,7 +24,7 @@ export interface MembersItem {
     sn: string | number;
 }
 export interface ICQBot {
- 
+
     /** Вовзращает уникальный номер бота, он находится в токене после символа двоеточие. */
     getUNI(): number;
     /** Возвращает название агента для заголовков запроса */
@@ -71,7 +72,7 @@ export interface ICQBot {
      * @param forwardMsgId Id пересылаемого сообщения. Передается только с forwardChatId. Не может быть передано с параметром replyMsgId.
      * @param inlineKeyboardMarkup Это массив массивов с описанием кнопок. Верхний уровень это массив строк кнопок, ниже уровнем массив кнопок в конкретной строке.
      */
-    sendText(chatId: string, text: String, replyMsgId?: string, forwardChatId?: string, forwardMsgId?: string, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseMessage>;
+    sendText(chatId: string, text: String, replyMsgId?: string, forwardChatId?: string, forwardMsgId?: string, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][], format?: Format): Promise<ResponseMessage>;
 
     /**
      * ## Messages/sendFile
@@ -87,18 +88,18 @@ export interface ICQBot {
      * @param forwardMsgId Id пересылаемого сообщения. Передается только с forwardChatId. Не может быть передано с параметром replyMsgId.
      * @param inlineKeyboardMarkup Это массив массивов с описанием кнопок. Верхний уровень это массив строк кнопок, ниже уровнем массив кнопок в конкретной строке.
      */
-    sendFile(chatId: string, fileId: string, file: string, caption: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadFile|ResponseSendFile>;
-   
-    sendVoice(chatId: string, fileId: string, file: string, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadVoice|ResponseSendVoice>;
+    sendFile(chatId: string, fileId: string, file: string, caption: String, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][], format?: Format): Promise<ResponseUploadFile | ResponseSendFile>;
 
-    editText(chatId: string, msgId: string, text: String, inlineKeyboardMarkup?: ICQButton[]): Promise<Response>;
+    sendVoice(chatId: string, fileId: string, file: string, replyMsgId?: String, forwardChatId?: String, forwardMsgId?: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][]): Promise<ResponseUploadVoice | ResponseSendVoice>;
+
+    editText(chatId: string, msgId: string, text: String, inlineKeyboardMarkup?: ICQButton | ICQButton[] | ICQButton[][], format?: Format): Promise<Response>;
     deleteMessages(chatId: string, msgId: string): Promise<Response>;
 
     /** Работа с событиями на ответ обработки кнопки */
     answerCallbackQuery(chatId: string, text: string, showAlert: boolean, url: string): Promise<Response>;
 
     /** Отправить действия в чат */
-    sendActions(chatId: string, actions:  'looking'|'typing'): Promise<Response>;
+    sendActions(chatId: string, actions: 'looking' | 'typing'): Promise<Response>;
 
     /** Получить информацию о чате */
     getChatInfo(chatId: string): Promise<Chat>;

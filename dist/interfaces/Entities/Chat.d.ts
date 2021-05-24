@@ -4,7 +4,7 @@
 export declare enum ChatType {
     PRIVATE = "private",
     GROUP = "group",
-    CHANNEL = "channel",
+    CHANNEL = "channel"
 }
 /** Чат в ICQ */
 export interface Chat {
@@ -80,4 +80,8 @@ export interface ChatPrivate extends Chat {
      * Признак ответа бота
      */
     isBot: boolean;
+    /**
+     * ISO2 low
+     */
+    language: string;
 }
