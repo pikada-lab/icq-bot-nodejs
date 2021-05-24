@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.FormDataICQ = void 0;
 var fs = require('fs');
-var FormDataICQ = (function () {
+var FormDataICQ = /** @class */ (function () {
     function FormDataICQ() {
         this.data = [];
         this.files = [];

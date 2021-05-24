@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ICQButton = (function () {
+exports.ICQButton = void 0;
+var ICQButton = /** @class */ (function () {
     /**
      *
      * @param text example: Push me - Текст, который будет отображен на кнопке. Допустимо использовать \n для того, чтобы текст был на несколько строк

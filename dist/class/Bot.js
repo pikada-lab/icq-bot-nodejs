@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Bot = void 0;
 var ICQHttpClient_1 = require("./ICQHttpClient");
 var FormDataICQ_1 = require("./FormDataICQ");
 var DispatcherMessage_1 = require("./DispatcherMessage");
 var ICQEvent_1 = require("../class/ICQEvent");
 var SkipDuplicateMessageHandler_1 = require("./SkipDuplicateMessageHandler");
-var Bot = (function () {
+var Bot = /** @class */ (function () {
     function Bot(token, options) {
         this.running = false;
         this.lastEventId = 0;
@@ -96,27 +97,35 @@ var Bot = (function () {
     Bot.prototype.selfGet = function () {
         return this.http.get(this.apiBaseUrl + "/self/get", { token: this.token }, { "user-agent": this.getUserAgent() });
     };
-    Bot.prototype.sendText = function (chatId, text, replyMsgId, forwardChatId, forwardMsgId, inlineKeyboardMarkup) {
+    Bot.prototype.sendText = function (chatId, text, replyMsgId, forwardChatId, forwardMsgId, inlineKeyboardMarkup, format) {
         if (replyMsgId === void 0) { replyMsgId = ""; }
         if (forwardChatId === void 0) { forwardChatId = ""; }
         if (forwardMsgId === void 0) { forwardMsgId = ""; }
-        var option = {
+        var options = {
             token: this.token,
             chatId: chatId,
             text: text.toString()
         };
         if (replyMsgId)
-            option['replyMsgId'] = replyMsgId;
+            options['replyMsgId'] = replyMsgId;
         if (forwardChatId)
-            option['forwardChatId'] = forwardChatId;
+            options['forwardChatId'] = forwardChatId;
         if (forwardMsgId)
-            option['forwardMsgId'] = forwardMsgId;
+            options['forwardMsgId'] = forwardMsgId;
         if (inlineKeyboardMarkup) {
             var ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup);
             if (ICQButtonList)
-                option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
+                options['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
         }
-        return this.http.get(this.apiBaseUrl + "/messages/sendText", option, { "user-agent": this.getUserAgent() });
+        if (format) {
+            if (!format.mode) {
+                options['format'] = JSON.stringify(format.range);
+            }
+            else { 
+                options['parseMode'] = `${format.mode}`; 
+            }
+        }
+        return this.http.get(this.apiBaseUrl + "/messages/sendText", options, { "user-agent": this.getUserAgent() });
     };
     Bot.prototype.getICQButtonList = function (inlineKeyboardMarkup) {
         if (!inlineKeyboardMarkup)
@@ -145,7 +154,7 @@ var Bot = (function () {
             return [[inlineKeyboardMarkup.getQueryStructure()]];
         }
     };
-    Bot.prototype.sendFile = function (chatId, fileId, file, caption, replyMsgId, forwardChatId, forwardMsgId, inlineKeyboardMarkup) {
+    Bot.prototype.sendFile = function (chatId, fileId, file, caption, replyMsgId, forwardChatId, forwardMsgId, inlineKeyboardMarkup, format) {
         if (file) {
             var data = new FormDataICQ_1.FormDataICQ();
             data.append("token", this.token);
@@ -163,6 +172,14 @@ var Bot = (function () {
                 var ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup);
                 if (ICQButtonList)
                     data.append('inlineKeyboardMarkup', ICQButtonList);
+            }
+            if (format) {
+                if (!format.mode) {
+                    data.append('format', JSON.stringify(format.range));
+                }
+                else {
+                    data.append('parseMode', format.mode);
+                }
             }
             return this.http.post(this.apiBaseUrl + "/messages/sendFile", data, { "user-agent": this.getUserAgent() });
         }
@@ -184,6 +201,14 @@ var Bot = (function () {
                 var ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup);
                 if (ICQButtonList)
                     option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
+            }
+            if (format) {
+                if (!format.mode) {
+                    option['format'] = JSON.stringify(format.range);
+                }
+                else {
+                    option['parseMode'] = format.mode;
+                }
             }
             return this.http.get(this.apiBaseUrl + "/messages/sendFile", option, { "user-agent": this.getUserAgent() });
         }
@@ -209,26 +234,26 @@ var Bot = (function () {
             return this.http.post(this.apiBaseUrl + "/messages/sendVoice", data, { "user-agent": this.getUserAgent() });
         }
         else {
-            var option = {
+            var options = {
                 token: this.token,
                 chatId: chatId,
                 fileId: fileId
             };
             if (replyMsgId)
-                option['replyMsgId'] = replyMsgId;
+                options['replyMsgId'] = replyMsgId;
             if (forwardChatId)
-                option['forwardChatId'] = forwardChatId;
+                options['forwardChatId'] = forwardChatId;
             if (forwardMsgId)
-                option['forwardMsgId'] = forwardMsgId;
+                options['forwardMsgId'] = forwardMsgId;
             if (inlineKeyboardMarkup) {
                 var ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup);
                 if (ICQButtonList)
-                    option['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
+                    options['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
             }
-            return this.http.get(this.apiBaseUrl + "/messages/sendVoice", option, { "user-agent": this.getUserAgent() });
+            return this.http.get(this.apiBaseUrl + "/messages/sendVoice", options, { "user-agent": this.getUserAgent() });
         }
     };
-    Bot.prototype.editText = function (chatId, msgId, text, inlineKeyboardMarkup) {
+    Bot.prototype.editText = function (chatId, msgId, text, inlineKeyboardMarkup, format) {
         var options = {
             "token": this.token,
             "chatId": chatId,
@@ -239,6 +264,14 @@ var Bot = (function () {
             var ICQButtonList = this.getICQButtonList(inlineKeyboardMarkup);
             if (ICQButtonList)
                 options['inlineKeyboardMarkup'] = JSON.stringify(ICQButtonList);
+        }
+        if (format) {
+            if (!format.mode) {
+                options['format'] = JSON.stringify(format.range);
+            }
+            else {
+                options['parseMode'] = format.mode;
+            }
         }
         return this.http.get(this.apiBaseUrl + "/messages/editText", options, { "user-agent": this.getUserAgent() });
     };
@@ -341,7 +374,7 @@ var Bot = (function () {
         var options = {
             "token": this.token,
             "chatId": chatId,
-            "members": members
+            "members": JSON.stringify(members)
         };
         return this.http.get(this.apiBaseUrl + "/chats/members/delete", options, { "user-agent": this.getUserAgent() });
     };

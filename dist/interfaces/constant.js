@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AudioType = exports.VideoType = exports.ImageType = void 0;
 /** Типы изображений */
 var ImageType;
 (function (ImageType) {

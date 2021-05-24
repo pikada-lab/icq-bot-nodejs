@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PayLoadFileType = exports.PartsType = void 0;
 /**
  * Части
  */

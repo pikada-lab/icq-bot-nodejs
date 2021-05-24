@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ICQHttpClient = void 0;
 var url_1 = require("url");
 var https = require('https');
-var ICQHttpClient = (function () {
+var ICQHttpClient = /** @class */ (function () {
     function ICQHttpClient() {
     }
     ICQHttpClient.prototype.get = function (url, params, header) {
@@ -20,6 +21,7 @@ var ICQHttpClient = (function () {
                 }
             }
             requestString = requestString.slice(0, -1);
+            console.log(requestString);
             var urlData = new url_1.URL(url);
             var req = https.request({
                 host: urlData.hostname,

@@ -1,8 +1,11 @@
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -10,10 +13,11 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -24,8 +28,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
         while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
                 case 0: case 1: t = op; break;
                 case 4: _.label++; return { value: op[1], done: false };
@@ -45,6 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BotButtonCommandHandler = exports.UnknownCommandHandler = exports.FeedbackCommandHandler = exports.StartCommandHandler = exports.HelpCommandHandler = exports.CommandHandler = exports.DeletedMessageHandler = exports.EditedMessageHandler = exports.MessageHandler = exports.UnPinnedMessageHandler = exports.PinnedMessageHandler = exports.LeftChatMembersHandler = exports.NewChatMembersHandler = exports.DefaultHandler = exports.HandlerBase = void 0;
 var Filter_1 = require("./Filter");
 var Event_1 = require("./Events/Event");
 var SkipDuplicateMessageHandler_1 = require("../class/SkipDuplicateMessageHandler");
@@ -54,7 +59,7 @@ var SkipDuplicateMessageHandler_1 = require("../class/SkipDuplicateMessageHandle
  * Срабатывает на все события если не установлен фильтр
  * или на события отфильтрованные установленным фильтром
  */
-var HandlerBase = (function () {
+var HandlerBase = /** @class */ (function () {
     /**
      * Параметр filters может быть равен null.
      * В таком случае вызов callback будет происходить
@@ -83,7 +88,7 @@ exports.HandlerBase = HandlerBase;
  *
  * Срабатывает всегда, когда приходит событие из и на это событие нет обработчика пуллинга
  */
-var DefaultHandler = (function (_super) {
+var DefaultHandler = /** @class */ (function (_super) {
     __extends(DefaultHandler, _super);
     function DefaultHandler(callback) {
         if (callback === void 0) { callback = null; }
@@ -110,7 +115,7 @@ exports.DefaultHandler = DefaultHandler;
  *
  * Срабатывает когда в группу вступает новый пользователь
  */
-var NewChatMembersHandler = (function (_super) {
+var NewChatMembersHandler = /** @class */ (function (_super) {
     __extends(NewChatMembersHandler, _super);
     function NewChatMembersHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -124,7 +129,7 @@ exports.NewChatMembersHandler = NewChatMembersHandler;
 /**
  * Обработчик выхода из группы участника
  */
-var LeftChatMembersHandler = (function (_super) {
+var LeftChatMembersHandler = /** @class */ (function (_super) {
     __extends(LeftChatMembersHandler, _super);
     function LeftChatMembersHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -138,7 +143,7 @@ exports.LeftChatMembersHandler = LeftChatMembersHandler;
 /**
  * Обработчик закрепа сообщения в чате
  */
-var PinnedMessageHandler = (function (_super) {
+var PinnedMessageHandler = /** @class */ (function (_super) {
     __extends(PinnedMessageHandler, _super);
     function PinnedMessageHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -152,7 +157,7 @@ exports.PinnedMessageHandler = PinnedMessageHandler;
 /**
  * Обработчик открепления сообщения в чате
  */
-var UnPinnedMessageHandler = (function (_super) {
+var UnPinnedMessageHandler = /** @class */ (function (_super) {
     __extends(UnPinnedMessageHandler, _super);
     function UnPinnedMessageHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -166,7 +171,7 @@ exports.UnPinnedMessageHandler = UnPinnedMessageHandler;
 /**
  * Обработчик текстовых сообщений
  */
-var MessageHandler = (function (_super) {
+var MessageHandler = /** @class */ (function (_super) {
     __extends(MessageHandler, _super);
     function MessageHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -180,7 +185,7 @@ exports.MessageHandler = MessageHandler;
 /**
  * Обработчик событий редактирования сообщений
  */
-var EditedMessageHandler = (function (_super) {
+var EditedMessageHandler = /** @class */ (function (_super) {
     __extends(EditedMessageHandler, _super);
     function EditedMessageHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -195,7 +200,7 @@ exports.EditedMessageHandler = EditedMessageHandler;
 /**
  * Обработчик событий удаления сообщений
  */
-var DeletedMessageHandler = (function (_super) {
+var DeletedMessageHandler = /** @class */ (function (_super) {
     __extends(DeletedMessageHandler, _super);
     function DeletedMessageHandler() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -215,7 +220,7 @@ exports.DeletedMessageHandler = DeletedMessageHandler;
  *
  * Пример комманд .test или /test
  */
-var CommandHandler = (function (_super) {
+var CommandHandler = /** @class */ (function (_super) {
     __extends(CommandHandler, _super);
     function CommandHandler(command, filters, callback) {
         if (command === void 0) { command = null; }
@@ -251,7 +256,7 @@ var CommandHandler = (function (_super) {
     return CommandHandler;
 }(MessageHandler));
 exports.CommandHandler = CommandHandler;
-var HelpCommandHandler = (function (_super) {
+var HelpCommandHandler = /** @class */ (function (_super) {
     __extends(HelpCommandHandler, _super);
     function HelpCommandHandler(filters, callback) {
         return _super.call(this, "help", filters, callback) || this;
@@ -259,7 +264,7 @@ var HelpCommandHandler = (function (_super) {
     return HelpCommandHandler;
 }(CommandHandler));
 exports.HelpCommandHandler = HelpCommandHandler;
-var StartCommandHandler = (function (_super) {
+var StartCommandHandler = /** @class */ (function (_super) {
     __extends(StartCommandHandler, _super);
     function StartCommandHandler(filters, callback) {
         return _super.call(this, "start", filters, callback) || this;
@@ -267,7 +272,7 @@ var StartCommandHandler = (function (_super) {
     return StartCommandHandler;
 }(CommandHandler));
 exports.StartCommandHandler = StartCommandHandler;
-var FeedbackCommandHandler = (function (_super) {
+var FeedbackCommandHandler = /** @class */ (function (_super) {
     __extends(FeedbackCommandHandler, _super);
     function FeedbackCommandHandler(target, message, reply, error_reply, command, filters) {
         if (message === void 0) { message = "Feedback from {source}: {message}"; }
@@ -326,7 +331,7 @@ var FeedbackCommandHandler = (function (_super) {
     return FeedbackCommandHandler;
 }(CommandHandler));
 exports.FeedbackCommandHandler = FeedbackCommandHandler;
-var UnknownCommandHandler = (function (_super) {
+var UnknownCommandHandler = /** @class */ (function (_super) {
     __extends(UnknownCommandHandler, _super);
     function UnknownCommandHandler(filters, callback) {
         return _super.call(this, null, filters, callback) || this;
@@ -343,7 +348,7 @@ var UnknownCommandHandler = (function (_super) {
     return UnknownCommandHandler;
 }(CommandHandler));
 exports.UnknownCommandHandler = UnknownCommandHandler;
-var BotButtonCommandHandler = (function (_super) {
+var BotButtonCommandHandler = /** @class */ (function (_super) {
     __extends(BotButtonCommandHandler, _super);
     function BotButtonCommandHandler() {
         return _super !== null && _super.apply(this, arguments) || this;

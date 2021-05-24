@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var DispatcherMessage = (function () {
+exports.DispatcherMessage = void 0;
+var DispatcherMessage = /** @class */ (function () {
     function DispatcherMessage(bot) {
         this.bot = bot;
         this.handlers = [];

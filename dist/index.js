@@ -7,7 +7,7 @@ var ICQButton_1 = require("./class/ICQButton");
 /**
  * Фасад ICQ
  */
-var ICQ = (function () {
+var ICQ = /** @class */ (function () {
     function ICQ() {
     }
     /**

@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ICQEvent = void 0;
 var Event_1 = require("../interfaces/Events/Event");
-var ICQEvent = (function () {
+var ICQEvent = /** @class */ (function () {
     function ICQEvent(event) {
         this.type = event.type;
         this.data = event.payload;

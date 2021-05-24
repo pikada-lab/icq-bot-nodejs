@@ -1,8 +1,11 @@
 "use strict";
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -10,9 +13,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Filter = exports.FilterComposite = exports.TypeFilterOperation = exports.URLFilter = exports.ReplyFilter = exports.ForwardFilter = exports.MentionFilter = exports.StickerFilter = exports.AudioFilter = exports.VideoFilter = exports.ImageFilter = exports.FileFilter = exports.SenderFilter = exports.RegexpFilter = exports.CommandFilter = exports.MessageFilter = void 0;
 var Part_1 = require("./Entities/Part");
 /** Фильтр проверяет тип события и наличие текста в нём */
-var MessageFilter = (function () {
+var MessageFilter = /** @class */ (function () {
     function MessageFilter() {
     }
     MessageFilter.prototype.filter = function (event) {
@@ -22,7 +26,7 @@ var MessageFilter = (function () {
 }());
 exports.MessageFilter = MessageFilter;
 /** Фильтр проверяет наличие первого символа на равенство "/" или "." */
-var CommandFilter = (function (_super) {
+var CommandFilter = /** @class */ (function (_super) {
     __extends(CommandFilter, _super);
     function CommandFilter() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -36,7 +40,7 @@ var CommandFilter = (function (_super) {
 }(MessageFilter));
 exports.CommandFilter = CommandFilter;
 /** Фильтр проверяет регулярным выражением текст сообщения и фильтрует по нему  */
-var RegexpFilter = (function (_super) {
+var RegexpFilter = /** @class */ (function (_super) {
     __extends(RegexpFilter, _super);
     function RegexpFilter(pattern) {
         var _this = _super.call(this) || this;
@@ -52,7 +56,7 @@ exports.RegexpFilter = RegexpFilter;
 /**
  * Фильтрует сообщения конкретного пользователя
  */
-var SenderFilter = (function (_super) {
+var SenderFilter = /** @class */ (function (_super) {
     __extends(SenderFilter, _super);
     function SenderFilter(user_id) {
         var _this = _super.call(this) || this;
@@ -68,7 +72,7 @@ exports.SenderFilter = SenderFilter;
 /**
  * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа файл
  */
-var FileFilter = (function (_super) {
+var FileFilter = /** @class */ (function (_super) {
     __extends(FileFilter, _super);
     function FileFilter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -83,7 +87,7 @@ exports.FileFilter = FileFilter;
 /**
  * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа изображение
  */
-var ImageFilter = (function (_super) {
+var ImageFilter = /** @class */ (function (_super) {
     __extends(ImageFilter, _super);
     function ImageFilter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -98,7 +102,7 @@ exports.ImageFilter = ImageFilter;
 /**
  * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа видел
  */
-var VideoFilter = (function (_super) {
+var VideoFilter = /** @class */ (function (_super) {
     __extends(VideoFilter, _super);
     function VideoFilter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -113,7 +117,7 @@ exports.VideoFilter = VideoFilter;
 /**
  * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа Аудио
  */
-var AudioFilter = (function (_super) {
+var AudioFilter = /** @class */ (function (_super) {
     __extends(AudioFilter, _super);
     function AudioFilter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -128,7 +132,7 @@ exports.AudioFilter = AudioFilter;
 /**
  * Фильтрует события и оставляет только сообщения с полезной нагрузкой типа Стикер
  */
-var StickerFilter = (function (_super) {
+var StickerFilter = /** @class */ (function (_super) {
     __extends(StickerFilter, _super);
     function StickerFilter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -143,7 +147,7 @@ exports.StickerFilter = StickerFilter;
 /**
  * Фильтрует события где был упомянут пользователь
  */
-var MentionFilter = (function (_super) {
+var MentionFilter = /** @class */ (function (_super) {
     __extends(MentionFilter, _super);
     function MentionFilter(userId) {
         var _this = _super.call(this) || this;
@@ -161,7 +165,7 @@ exports.MentionFilter = MentionFilter;
 /**
  * Фильтрует события и оставляет только сообщения с полезной нагрузкой типо FORWARD - Перенаправленное (Пересылаемое сообщение)
  */
-var ForwardFilter = (function (_super) {
+var ForwardFilter = /** @class */ (function (_super) {
     __extends(ForwardFilter, _super);
     function ForwardFilter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -175,7 +179,7 @@ exports.ForwardFilter = ForwardFilter;
 /**
  * Фильтрует события и оставляет только сообщения с полезной нагрузкой типо Reply - Цитата сообщения
  */
-var ReplyFilter = (function (_super) {
+var ReplyFilter = /** @class */ (function (_super) {
     __extends(ReplyFilter, _super);
     function ReplyFilter() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -190,7 +194,7 @@ exports.ReplyFilter = ReplyFilter;
 /**
  * Фильтрует сообщения состоящии из одной URL ссылки. Допускаются пробелы в начале и конце сообщения.
  */
-var URLFilter = (function (_super) {
+var URLFilter = /** @class */ (function (_super) {
     __extends(URLFilter, _super);
     function URLFilter() {
         return _super.call(this, /^\s*https?:\/\/\S+\s*$/i) || this;
@@ -209,7 +213,7 @@ var TypeFilterOperation;
     TypeFilterOperation[TypeFilterOperation["not"] = 3] = "not";
 })(TypeFilterOperation = exports.TypeFilterOperation || (exports.TypeFilterOperation = {}));
 /** Создаёт композитный фильтр из двух, применяя к ним оператор сравнения. Рекомендую использовать статические методы and, or, not */
-var FilterComposite = (function () {
+var FilterComposite = /** @class */ (function () {
     function FilterComposite(type, leftFilter, rightFilter) {
         this.type = type;
         this.leftFilter = leftFilter;
@@ -238,7 +242,7 @@ var FilterComposite = (function () {
     return FilterComposite;
 }());
 exports.FilterComposite = FilterComposite;
-var Filter = (function () {
+var Filter = /** @class */ (function () {
     function Filter() {
     }
     /**
