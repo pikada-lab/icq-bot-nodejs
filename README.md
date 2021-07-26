@@ -359,6 +359,7 @@ exports.default = TaskService;
 node index.js
 ```
  
+Бот может аварийно завершить работу в случае обрыва интернет соединения.
  
 # API description
 <ul>
